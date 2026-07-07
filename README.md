@@ -31,9 +31,11 @@ Tunables (edit `docker-compose.yml` command or run the binary directly):
 
 ## What is measured, and how
 
-The suite seeds a plain MongoDB database, imports it through the real
-`argon` CLI (which creates the project and its WAL history), then measures
-through `pkg/walcli` — the same Go services the CLI itself uses.
+The suite seeds a plain MongoDB database, imports it through
+`walcli.ImportDatabase` (the same code path the `argon` CLI drives, which
+creates the project and its WAL history), then measures through
+`pkg/walcli` — the same Go services the CLI itself uses. The engine
+version is pinned in `go.mod` and embedded in every report automatically.
 
 1. **Branch creation latency** — p50/p95/p99 over `-iters` creations on a
    project that already has real history. Argon's claim is architectural:
@@ -50,9 +52,9 @@ through `pkg/walcli` — the same Go services the CLI itself uses.
    reads in (3).
 5. **Storage cost per branch** — `dbStats` delta (data+index bytes) across
    `-branches` creations: the metadata-only claim, measured.
-6. **Import throughput** — end-to-end wall time of `argon import` including
-   CLI process overhead. Labeled as such; this is not an engine write-path
-   microbenchmark.
+6. **Bulk import throughput** — wall time of `walcli.ImportDatabase` for the
+   whole seeded dataset. This is the bulk-ingest path, not a per-operation
+   write microbenchmark (see below).
 
 ## What is deliberately NOT measured (yet)
 
@@ -67,8 +69,9 @@ through `pkg/walcli` — the same Go services the CLI itself uses.
 
 ## Methodology notes
 
-- The engine commit is pinned via `ENGINE_REF` (compose arg) and `go.mod`.
-  A result without a pinned ref is not a result.
+- The engine version is pinned in `go.mod` and read from build info at
+  runtime, so it appears in every report. A result without a pinned ref is
+  not a result.
 - Runs happen inside Docker on whatever machine you have; absolute numbers
   vary with hardware. The report always embeds the environment. Compare
   shapes and ratios (e.g. flat branch-create latency vs history size, the

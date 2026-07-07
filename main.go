@@ -19,8 +19,8 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"os/exec"
 	"runtime"
+	"runtime/debug"
 	"sort"
 	"strings"
 	"time"
@@ -37,7 +37,6 @@ var (
 	nBranches = flag.Int("branches", 200, "branches to create for the storage suite")
 	depthsArg = flag.String("depths", "1000,10000,50000", "comma-separated history depths (LSNs) for time-travel")
 	outPath   = flag.String("out", "", "also write the markdown report to this path")
-	cliPath   = flag.String("cli", "argon", "path to the argon CLI binary")
 )
 
 func main() {
@@ -68,9 +67,11 @@ func main() {
 	fmt.Fprintf(os.Stderr, "seeding %d documents into %s.items...\n", *nDocs, srcDB)
 	must(seedSource(ctx, client, srcDB, *nDocs), "seed source database")
 
-	fmt.Fprintf(os.Stderr, "importing through the argon CLI...\n")
-	importDur, err := runImport(uri, srcDB, project)
-	must(err, "argon import")
+	fmt.Fprintf(os.Stderr, "importing through walcli.ImportDatabase...\n")
+	t0 := time.Now()
+	_, err = svcs.ImportDatabase(ctx, uri, srcDB, project, false, 1000)
+	importDur := time.Since(t0)
+	must(err, "import database")
 	r.importDocs = *nDocs
 	r.importDur = importDur
 
@@ -106,7 +107,7 @@ func main() {
 	}
 
 	// ── 3. snapshot at head: bounded replay vs the same read before ──
-	t0 := time.Now()
+	t0 = time.Now()
 	pre, err := svcs.TimeTravel.MaterializeAtLSN(main0, "items", main0.HeadLSN)
 	r.headBefore = time.Since(t0)
 	must(err, "materialize head (before explicit snapshot)")
@@ -175,16 +176,6 @@ func seedSource(ctx context.Context, client *mongo.Client, dbName string, n int)
 		}
 	}
 	return nil
-}
-
-func runImport(uri, srcDB, project string) (time.Duration, error) {
-	cmd := exec.Command(*cliPath, "import", "database",
-		"--uri", uri, "--database", srcDB, "--project", project)
-	cmd.Env = append(os.Environ(), "ENABLE_WAL=true")
-	cmd.Stderr = os.Stderr
-	t0 := time.Now()
-	err := cmd.Run()
-	return time.Since(t0), err
 }
 
 // ── helpers ─────────────────────────────────────────────────────
@@ -269,9 +260,13 @@ func collectEnv(ctx context.Context, client *mongo.Client) envInfo {
 		Version string `bson:"version"`
 	}
 	_ = client.Database("admin").RunCommand(ctx, bson.D{{Key: "buildInfo", Value: 1}}).Decode(&build)
-	ref := os.Getenv("ENGINE_REF")
-	if ref == "" {
-		ref = "unknown"
+	ref := "unknown"
+	if bi, ok := debug.ReadBuildInfo(); ok {
+		for _, dep := range bi.Deps {
+			if dep.Path == "github.com/argon-lab/argon" {
+				ref = dep.Version
+			}
+		}
 	}
 	return envInfo{
 		goVersion: runtime.Version(), goos: runtime.GOOS, goarch: runtime.GOARCH,
@@ -358,7 +353,7 @@ func (r report) markdown() string {
 	w("|---|")
 	w("| %.0f B |", r.bytesPerBranch)
 	w("")
-	w("## 6 · End-to-end import throughput (CLI, includes process overhead)")
+	w("## 6 · Bulk import throughput (walcli.ImportDatabase)")
 	w("")
 	w("| documents | wall time | docs/second |")
 	w("|---|---|---|")

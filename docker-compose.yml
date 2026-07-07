@@ -8,15 +8,9 @@ services:
       retries: 20
 
   bench:
-    build:
-      context: .
-      args:
-        # Pin the engine commit being measured; results are meaningless
-        # without it. Bump deliberately, together with go.mod.
-        ENGINE_REF: ${ENGINE_REF:-master}
+    build: .
     environment:
       MONGODB_URI: mongodb://mongo:27017
-      ENABLE_WAL: "true"
     depends_on:
       mongo:
         condition: service_healthy
