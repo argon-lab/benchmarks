@@ -1,0 +1,24 @@
+services:
+  mongo:
+    image: mongo:7
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.runCommand({ping: 1}).ok"]
+      interval: 3s
+      timeout: 5s
+      retries: 20
+
+  bench:
+    build:
+      context: .
+      args:
+        # Pin the engine commit being measured; results are meaningless
+        # without it. Bump deliberately, together with go.mod.
+        ENGINE_REF: ${ENGINE_REF:-master}
+    environment:
+      MONGODB_URI: mongodb://mongo:27017
+      ENABLE_WAL: "true"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    volumes:
+      - ./results:/out
