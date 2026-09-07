@@ -1,0 +1,26 @@
+=== RUN   TestWALPerformance
+=== RUN   TestWALPerformance/Append_performance
+    wal_stress_test.go:48: Appended 1000 entries in 12.304663875s (81 ops/sec)
+    wal_stress_test.go:54: absolute performance floor recorded (set ARGON_PERF_ASSERT=1 to enforce): actual=81.2699973082361 minimum=150
+--- PASS: TestWALPerformance (12.50s)
+    --- PASS: TestWALPerformance/Append_performance (12.31s)
+=== RUN   TestBranchPerformance
+=== RUN   TestBranchPerformance/Branch_creation_performance
+    wal_stress_test.go:151: Created 100 branches in 2.018882542s (avg: 20.188825ms per branch)
+    wal_stress_test.go:152: absolute performance ceiling recorded (set ARGON_PERF_ASSERT=1 to enforce): actual=20.188825ms maximum=10ms
+--- PASS: TestBranchPerformance (2.26s)
+    --- PASS: TestBranchPerformance/Branch_creation_performance (2.06s)
+=== RUN   TestWriteOperationPerformance
+=== RUN   TestWriteOperationPerformance/Sequential_put_performance
+    write_performance_test.go:58: Sequential puts: 1000 docs in 13.749808166s
+    write_performance_test.go:59: Performance: 73 ops/sec, avg latency: 13.749808ms
+    write_performance_test.go:68: absolute performance floor recorded (set ARGON_PERF_ASSERT=1 to enforce): actual=72.72828740060257 minimum=100
+    write_performance_test.go:69: absolute performance ceiling recorded (set ARGON_PERF_ASSERT=1 to enforce): actual=13.749808ms maximum=50ms
+=== RUN   TestWriteOperationPerformance/Concurrent_put_performance
+    write_performance_test.go:133: Concurrent puts: 1000 docs in 13.963797208s (72 ops/sec)
+    write_performance_test.go:139: absolute performance floor recorded (set ARGON_PERF_ASSERT=1 to enforce): actual=71.61375842862354 minimum=500
+--- PASS: TestWriteOperationPerformance (28.00s)
+    --- PASS: TestWriteOperationPerformance/Sequential_put_performance (13.76s)
+    --- PASS: TestWriteOperationPerformance/Concurrent_put_performance (13.97s)
+PASS
+ok  	github.com/argon-lab/argon/tests/wal	43.123s
