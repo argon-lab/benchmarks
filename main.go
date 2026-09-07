@@ -297,6 +297,10 @@ func runScenario(ctx context.Context, uri string, client *mongo.Client, c config
 		for id := range active {
 			_ = svcs.Ingest.Stop(clean, id)
 		}
+
+		if waitErr := svcs.WaitAuto(clean); waitErr != nil && err == nil {
+			err = fmt.Errorf("snapshot fixture cleanup: %w", waitErr)
+		}
 		svcs.Monitor.Stop()
 		for db := range physical {
 			_ = client.Database(db).Drop(clean)
