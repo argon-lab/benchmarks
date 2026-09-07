@@ -1,0 +1,40 @@
+=== RUN   TestWALPerformance
+=== RUN   TestWALPerformance/Append_performance
+    wal_stress_test.go:48: Appended 1000 entries in 11.166873s (90 ops/sec)
+    wal_stress_test.go:54: 
+        	Error Trace:	/private/tmp/argon-perf-baseline/tests/wal/wal_stress_test.go:54
+        	Error:      	"89.55058412502765" is not greater than "150"
+        	Test:       	TestWALPerformance/Append_performance
+        	Messages:   	Should handle at least 150 sequential ops/sec
+--- FAIL: TestWALPerformance (11.27s)
+    --- FAIL: TestWALPerformance/Append_performance (11.17s)
+=== RUN   TestBranchPerformance
+=== RUN   TestBranchPerformance/Branch_creation_performance
+    wal_stress_test.go:134: Created 100 branches in 1.576944625s (avg: 15.769446ms per branch)
+    wal_stress_test.go:135: 
+        	Error Trace:	/private/tmp/argon-perf-baseline/tests/wal/wal_stress_test.go:135
+        	Error:      	"15.769446ms" is not less than "10ms"
+        	Test:       	TestBranchPerformance/Branch_creation_performance
+        	Messages:   	Branch creation should be under 10ms
+--- FAIL: TestBranchPerformance (1.85s)
+    --- FAIL: TestBranchPerformance/Branch_creation_performance (1.61s)
+=== RUN   TestWriteOperationPerformance
+=== RUN   TestWriteOperationPerformance/Sequential_put_performance
+    write_performance_test.go:58: Sequential puts: 1000 docs in 17.776074417s
+    write_performance_test.go:59: Performance: 56 ops/sec, avg latency: 17.776074ms
+    write_performance_test.go:66: 
+        	Error Trace:	/private/tmp/argon-perf-baseline/tests/wal/write_performance_test.go:66
+        	Error:      	"56.25539005640404" is not greater than "100"
+        	Test:       	TestWriteOperationPerformance/Sequential_put_performance
+=== RUN   TestWriteOperationPerformance/Concurrent_put_performance
+    write_performance_test.go:130: Concurrent puts: 1000 docs in 2.6494105s (377 ops/sec)
+    write_performance_test.go:132: 
+        	Error Trace:	/private/tmp/argon-perf-baseline/tests/wal/write_performance_test.go:132
+        	Error:      	"377.44245370809847" is not greater than "500"
+        	Test:       	TestWriteOperationPerformance/Concurrent_put_performance
+--- FAIL: TestWriteOperationPerformance (20.71s)
+    --- FAIL: TestWriteOperationPerformance/Sequential_put_performance (17.78s)
+    --- FAIL: TestWriteOperationPerformance/Concurrent_put_performance (2.65s)
+FAIL
+FAIL	github.com/argon-lab/argon/tests/wal	34.135s
+FAIL

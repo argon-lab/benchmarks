@@ -1,87 +1,72 @@
-# argon-benchmarks
+# Argon workflow benchmarks
 
-Reproducible benchmarks for [Argon](https://github.com/argon-lab/argon), the
-Git-like branching and time-travel engine for MongoDB.
+This suite measures an explicit Argon engine checkout. It distinguishes a metadata-only fork from a sandbox with a physical MongoDB copy and capture ready, then measures the first native query, captured-write visibility and storage after divergence. Every successful run writes all timing samples, nearest-rank p50/p95/p99, configuration, environment and source provenance.
 
-**The contract:** every performance number Argon publishes — on
-[argonlabs.tech](https://www.argonlabs.tech), in the README, anywhere — must
-come from a run of this suite that you can reproduce yourself. No number
-without a runnable source. Numbers that predate this suite were removed from
-all Argon materials in July 2026.
+The workflow runner requires the engine's `StartCapture`, `SyncBranch` and `WaitAuto` APIs. The dependency in `go.mod` is the historical published baseline, **not** the code measured by this runner. Until these APIs are released, an explicit checkout containing the hardening changes is required. `scripts/run.py` uses a temporary module replacement, freezes the exact engine source, and records its Git ref, dirty status, tracked diff SHA256, complete source manifest/hash and build module information. It also archives the frozen engine and executable suite source, including untracked files; unpublished code is labelled accordingly. The suite's executable source hash identifies runner changes before a suite commit exists.
 
-## Run it
+## Run locally
 
-```bash
-git clone https://github.com/argon-lab/benchmarks
-cd benchmarks
-docker compose up --build --abort-on-container-exit
+Requires Go 1.26.6+, Python 3.12+, Git and MongoDB 7+ configured as a replica set. Use an isolated database deployment. The suite creates unique `argonbench_meta_*` and `argonbench_src_*` databases plus physical sandbox databases, and removes its databases after each scenario. It never uses the normal `argon_wal` metadata database. Abrupt process termination can leave these fixture databases behind.
+
+```sh
+export MONGODB_URI='mongodb://localhost:27017/?replicaSet=rs0'
+export GOCACHE=/tmp/argon-benchmark-go-cache
+export GOTOOLCHAIN=go1.26.6
+python3 scripts/run.py --engine /absolute/path/to/argon -- \
+  -sizes 1000,10000 -concurrency 1,4 -depths 1,4 \
+  -metadata-samples 100 -workflow-samples 20 -read-samples 20
 ```
 
-The report prints to stdout and lands in `./results/report.md`, including the
-exact engine commit, MongoDB version, and hardware context of the run.
+Each run gets a fresh `results/<UTC timestamp>/` directory. Set `--results /new/output/directory` before `--` to choose it. Existing result directories are rejected. Add `--ref <exact-engine-commit>` before `--` to measure that committed tree even if the source checkout later changes. Both engine and suite source are frozen before building; later edits in the original checkouts cannot affect the measured binary. The wrapper rejects edits detected during the copy.
 
-Tunables (edit `docker-compose.yml` command or run the binary directly):
+To run both the suite and MongoDB in containers (an explicitly selected engine is still required):
 
-| flag | default | meaning |
-|---|---|---|
-| `-docs` | 50000 | documents seeded and imported (history size) |
-| `-iters` | 200 | iterations for branch-create latency |
-| `-branches` | 200 | branches created for the storage suite |
-| `-depths` | 1000,10000,50000 | history depths (LSNs) for time-travel reads |
+```sh
+export ARGON_ENGINE_SOURCE=/absolute/path/to/argon
+mkdir -p results
+docker compose up --build --abort-on-container-exit --exit-code-from bench
+# Removes only this Compose project's test deployment.
+docker compose down
+```
 
-## What is measured, and how
+The Compose configuration pins MongoDB 7.0.14 and configures replica set `rs0`. Host-local and container measurements are separate environments and must not be compared as equivalent runs. The current local report was run on the host; the container recipe has not yet been exercised on this machine.
 
-The suite seeds a plain MongoDB database, imports it through
-`walcli.ImportDatabase` (the same code path the `argon` CLI drives, which
-creates the project and its WAL history), then measures through
-`pkg/walcli` — the same Go services the CLI itself uses. The engine
-version is pinned in `go.mod` and embedded in every report automatically.
+## Measurements and definitions
 
-1. **Branch creation latency** — p50/p95/p99 over `-iters` creations on a
-   project that already has real history. Argon's claim is architectural:
-   a branch is one metadata document, so latency must not depend on data
-   size.
-2. **Time-travel materialization** — latency of reconstructing collection
-   state at increasing history depths, with the engine's shipped defaults
-   (automatic snapshots on). The report also prints how many auto-snapshots
-   existed after import, so the effect is attributable.
-3. **Snapshot at head** — the same read before an explicit snapshot, the
-   snapshot's creation cost, and the read after it: the bounded-replay
-   effect in isolation.
-4. **Materialization throughput** — documents/second derived from the head
-   reads in (3).
-5. **Storage cost per branch** — `dbStats` delta (data+index bytes) across
-   `-branches` creations: the metadata-only claim, measured.
-6. **Bulk import throughput** — wall time of `walcli.ImportDatabase` for the
-   whole seeded dataset. This is the bulk-ingest path, not a per-operation
-   write microbenchmark (see below).
+| Metric | Boundary |
+|---|---|
+| `metadata_fork_ms` | `CreateBranch` against inherited history, no physical checkout |
+| `sandbox_capture_ready_ms` | Fork + full checkout + capture startup readiness acknowledgement |
+| `first_native_query_ms` | New Mongo client/handshake + verified indexed `FindOne`, after readiness |
+| `native_write_ack_ms` | One native `$inc` with majority write concern |
+| `capture_ack_to_observed_ms` | Native acknowledgement → polling observes the committed WAL event; includes polling/query overhead |
+| `native_write_to_observed_ms` | Native update start → that same visibility observation |
+| `head_materialize_as_shipped_ms` | Full inherited collection read, before this suite creates an explicit snapshot |
+| `head_materialize_after_snapshot_ms` | Same read after an explicit snapshot at imported main |
+| `historical_25pct_ms`, `historical_50pct_ms` | Full collection replay at 25%/50% of seeded document count as a target LSN; control records also consume LSNs |
+| `divergence_bulk_and_capture_ms` | Repeated native bulk updates + capture barrier, one sample per concurrent branch |
 
-## What is deliberately NOT measured (yet)
+The imported data has deterministic string IDs and a 128-byte payload. `-depths` counts ancestry edges from imported main to the workload parent; it is distinct from historical replay LSN. Sandbox workflows and divergence run after the imported-main snapshot phase, so their inherited source has an explicit snapshot. Every first query must return the known document; captured point materialization must contain the new value. Divergence must capture exactly `workers × min(documents, divergence-docs) × divergence-rounds` WAL records; any mismatch fails the run.
 
-- **Per-operation write throughput** through the driver interceptor, and
-  **storage amplification under branch divergence** — both need write access
-  from an external module, which the engine does not currently export
-  (`internal/driver` is not reachable through `pkg/walcli`). Tracked in
-  [argon-lab/argon#16](https://github.com/argon-lab/argon/issues/16); the
-  suites land here as soon as the surface exists.
-- Anything involving a wire-protocol proxy or per-branch connection strings
-  (that's M3).
+Metadata storage observations use MongoDB `dbStats` and keep logical data, allocated collection bytes and allocated index bytes separate. Each checked-out database is measured too: a sandbox consumes a full physical copy in this architecture. Divergence records raw stored WAL BSON bytes and changed current-document BSON bytes, followed by explicit divergent snapshots. That ratio counts repeated updates in the numerator and each changed current document once in the denominator; it excludes snapshots, indexes and physical copies. It is not disk amplification. WiredTiger allocation deltas are quantized, can include retained freed pages and are not universal per-branch prices. Storage measurements currently require the MongoDB chunk backend.
 
-## Methodology notes
+All samples are retained, including first executions. There is no discarded warmup or coordinated-omission correction. A fixed worker count submits the next operation after the previous finishes (closed loop); scenarios and phases run sequentially. Concurrency is within a phase, not an externally sustained arrival rate. Small local sample counts describe that run; p99 with fewer than 100 samples is generally the maximum and does not establish production tail latency. Absolute rates depend on journal, write concern, CPU, RAM, storage and topology.
 
-- The engine version is pinned in `go.mod` and read from build info at
-  runtime, so it appears in every report. A result without a pinned ref is
-  not a result.
-- Runs happen inside Docker on whatever machine you have; absolute numbers
-  vary with hardware. The report always embeds the environment. Compare
-  shapes and ratios (e.g. flat branch-create latency vs history size, the
-  before/after-snapshot delta), not absolute values across machines.
-- One warm MongoDB instance per run, fresh and empty. No connection reuse
-  tricks, no cache pre-warming beyond what a real user gets.
-- The suite exits non-zero on any error: a partial run never yields a report.
+## Expanded scale/concurrency matrix
 
-## Publishing rules for maintainers
+```sh
+export ARGON_ENGINE_SOURCE=/absolute/path/to/argon
+./scripts/expanded.sh
+```
 
-Official numbers quoted by Argon come from runs recorded in
-[RESULTS.md](RESULTS.md), each entry with the machine, engine ref, and the
-full report. Update the website/README only by linking one of those entries.
+This runs 1k/50k/1m documents × 1/4/16 workers × 1/4/16 ancestry depth, with 1,000 fork, 200 workflow and 100 read samples per phase, 1,000 changed documents and 10 divergence rounds. It is resource intensive and has a 24-hour deadline. It is a runnable experiment plan, **not a claim that this matrix has been measured**. Override flags at the end to scope a run. For a quick smoke test use one size, one worker and two samples.
+
+## Pull-request CI
+
+The PR workflow checks out companion engine commit `ba6e06a9a3b31124d6c37475b5667dd70ab42379` beside the suite, builds the Go 1.26.6 Docker recipe, and starts the Compose MongoDB replica set. It runs the runner's Go unit tests followed by one 100-document / one-worker / one-level smoke cell, with two workflow samples and six required captured divergence updates. `--ref` is explicit; CI verifies the engine/suite refs and actual Go version in the generated provenance. Raw samples, reports, both source archives and logs are retained as a workflow artifact for 14 days, including available diagnostics on failure.
+
+This job checks correctness and reproducibility of the container workflow. Its tiny sample counts and shared CI runner are unsuitable for performance SLAs or comparisons with the recorded local matrix. The historical reports and their measured suite refs remain unchanged.
+
+## Published results
+
+See [RESULTS.md](RESULTS.md). Historical numbers retain their original date and exact scope. New results include raw samples and source hashes; no dirty working tree is identified as a released engine version. Benchmark failure exits nonzero and does not publish a complete report.
