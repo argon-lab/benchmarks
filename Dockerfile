@@ -1,4 +1,4 @@
-FROM golang:1.26.6-bookworm
+FROM golang:1.26.6-trixie
 RUN apt-get update && apt-get install -y --no-install-recommends python3 git ca-certificates && rm -rf /var/lib/apt/lists/*
 WORKDIR /suite
 COPY . .

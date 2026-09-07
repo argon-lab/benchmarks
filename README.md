@@ -6,7 +6,7 @@ The workflow runner requires the engine's `StartCapture`, `SyncBranch` and `Wait
 
 ## Run locally
 
-Requires Go 1.26.6+, Python 3, Git and MongoDB 7+ configured as a replica set. Use an isolated database deployment. The suite creates unique `argonbench_meta_*` and `argonbench_src_*` databases plus physical sandbox databases, and removes its databases after each scenario. It never uses the normal `argon_wal` metadata database. Abrupt process termination can leave these fixture databases behind.
+Requires Go 1.26.6+, Python 3.12+, Git and MongoDB 7+ configured as a replica set. Use an isolated database deployment. The suite creates unique `argonbench_meta_*` and `argonbench_src_*` databases plus physical sandbox databases, and removes its databases after each scenario. It never uses the normal `argon_wal` metadata database. Abrupt process termination can leave these fixture databases behind.
 
 ```sh
 export MONGODB_URI='mongodb://localhost:27017/?replicaSet=rs0'
