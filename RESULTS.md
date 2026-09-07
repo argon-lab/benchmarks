@@ -2,6 +2,38 @@
 
 Every number below is scoped to its recorded engine, suite and environment. Historical measurements are retained as history; current hardening measurements are separately labelled. A dirty source snapshot is not a released engine version. See [README.md](README.md) for methodology and reproducible commands.
 
+## 2026-09-07 · committed hardening engine, Go 1.26.6
+
+This final local matrix uses exact engine commit `ba6e06a9a3b31124d6c37475b5667dd70ab42379` and suite commit `a05950938a8eae5ba8cd089a02d9b7207a641945`. Both were frozen from clean committed sources. **This identifies a local commit build, not a tag release.** The previous dirty-source diagnostic below remains a separate historical record.
+
+The matrix completed all 8 cells (1k/10k documents × 1/4 workers × 1/4 ancestry), with 800 metadata fork samples, 160 sandbox/capture workflows, 20 reads per phase per cell and verified divergence capture counts. Runtime was Go 1.26.6 on darwin/arm64, MongoDB 7.0.14 in one-member rs0, on the shared Apple M1 Pro / 16 GiB host. Native measured writes and engine transaction commits use majority acknowledgement. No other Argon heavy test suite ran concurrently; background host activity remains uncontrolled.
+
+| Provenance | Value |
+|---|---|
+| Window UTC | 2026-09-07T08:03:37.922135Z → 2026-09-07T08:05:50.845488Z |
+| Engine source SHA256 | `4d4e861c6717dcb48fa2fb64004e6b94d6c2b4c4643542c4e1165104e0d285ad` |
+| Engine tracked diff SHA256 | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` (empty diff) |
+| Suite executable source SHA256 | `37189f5052aba444d93cdb9aa5a205dd96a49de93c555795baa560de5dca86aa` |
+
+[Full generated report](reports/2026-09-07-committed/report.md), [all raw samples](reports/2026-09-07-committed/raw.json), [exact-ref reproduction instructions](reports/2026-09-07-committed/README.md).
+
+Selected milliseconds (`p50 / p95 / p99`):
+
+| Documents | Workers | Ancestry | Metadata fork (n=100) | Sandbox + capture ready (n=20) | First native query (n=20) | Ack → WAL observed (n=20) |
+|---:|---:|---:|---|---|---|---|
+| 1000 | 1 | 1 | 17.94 / 19.96 / 20.10 | 153.37 / 223.65 / 225.54 | 10.05 / 18.09 / 19.11 | 512.62 / 516.72 / 570.35 |
+| 1000 | 1 | 4 | 19.03 / 31.17 / 32.25 | 152.43 / 173.65 / 259.78 | 9.97 / 12.66 / 28.52 | 512.42 / 516.76 / 516.80 |
+| 1000 | 4 | 1 | 24.83 / 28.04 / 29.27 | 216.73 / 356.62 / 406.53 | 10.60 / 15.11 / 16.19 | 510.42 / 512.60 / 520.35 |
+| 1000 | 4 | 4 | 22.98 / 26.07 / 31.28 | 210.78 / 362.46 / 431.65 | 10.93 / 18.03 / 55.00 | 508.47 / 514.43 / 534.28 |
+| 10000 | 1 | 1 | 16.91 / 19.98 / 21.10 | 290.32 / 299.11 / 304.46 | 7.45 / 10.62 / 12.01 | 512.45 / 514.83 / 516.63 |
+| 10000 | 1 | 4 | 16.15 / 21.05 / 23.10 | 295.69 / 429.14 / 437.89 | 10.58 / 22.94 / 23.99 | 512.50 / 514.69 / 516.66 |
+| 10000 | 4 | 1 | 31.19 / 60.43 / 67.11 | 447.40 / 904.73 / 1150.88 | 14.37 / 22.20 / 23.23 | 514.40 / 522.25 / 522.33 |
+| 10000 | 4 | 4 | 28.07 / 33.04 / 34.06 | 371.45 / 753.81 / 977.85 | 10.65 / 16.29 / 21.40 | 510.41 / 516.30 / 524.35 |
+
+These small-sample tails describe this run only. Readiness includes full physical checkout and capture startup; first query separately includes connection establishment. Ack-to-WAL visibility includes a 2 ms polling interval and query overhead. Full raw output also reports import, inherited/historical materialization, explicit snapshots, all physical checkout copies and divergence storage milestones. Allocated dbStats values can lag checkpoints; compare logical data and allocated storage/index observations separately.
+
+---
+
 ## 2026-09-07 · local hardening diagnostic (unpublished source)
 
 The 8-scenario matrix completed in **134.7 seconds**, with 800 metadata forks, 160 sandbox/capture workflows and verified divergent capture counts. It used 1k/10k documents × 1/4 workers × 1/4 ancestry edges. Each cell has 100 metadata samples, 20 workflow samples and 20 reads per phase. Divergence used 100 changed documents per branch over three update rounds.
