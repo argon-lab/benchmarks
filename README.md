@@ -61,6 +61,12 @@ export ARGON_ENGINE_SOURCE=/absolute/path/to/argon
 
 This runs 1k/50k/1m documents × 1/4/16 workers × 1/4/16 ancestry depth, with 1,000 fork, 200 workflow and 100 read samples per phase, 1,000 changed documents and 10 divergence rounds. It is resource intensive and has a 24-hour deadline. It is a runnable experiment plan, **not a claim that this matrix has been measured**. Override flags at the end to scope a run. For a quick smoke test use one size, one worker and two samples.
 
+## Pull-request CI
+
+The PR workflow checks out companion engine commit `ba6e06a9a3b31124d6c37475b5667dd70ab42379` beside the suite, builds the Go 1.26.6 Docker recipe, and starts the Compose MongoDB replica set. It runs the runner's Go unit tests followed by one 100-document / one-worker / one-level smoke cell, with two workflow samples and six required captured divergence updates. `--ref` is explicit; CI verifies the engine/suite refs and actual Go version in the generated provenance. Raw samples, reports, both source archives and logs are retained as a workflow artifact for 14 days, including available diagnostics on failure.
+
+This job checks correctness and reproducibility of the container workflow. Its tiny sample counts and shared CI runner are unsuitable for performance SLAs or comparisons with the recorded local matrix. The historical reports and their measured suite refs remain unchanged.
+
 ## Published results
 
 See [RESULTS.md](RESULTS.md). Historical numbers retain their original date and exact scope. New results include raw samples and source hashes; no dirty working tree is identified as a released engine version. Benchmark failure exits nonzero and does not publish a complete report.
