@@ -2,7 +2,7 @@
 
 This suite measures an explicit Argon engine checkout. It distinguishes a metadata-only fork from a sandbox with a physical MongoDB copy and capture ready, then measures the first native query, captured-write visibility and storage after divergence. Every successful run writes all timing samples, nearest-rank p50/p95/p99, configuration, environment and source provenance.
 
-The workflow runner requires the engine's `StartCapture`, `SyncBranch` and `WaitAuto` APIs. The dependency in `go.mod` is the historical published baseline, **not** the code measured by this runner. Until these APIs are released, an explicit checkout containing the hardening changes is required. `scripts/run.py` uses a temporary module replacement, freezes the exact engine source, and records its Git ref, dirty status, tracked diff SHA256, complete source manifest/hash and build module information. It also archives the frozen engine and executable suite source, including untracked files; unpublished code is labelled accordingly. The suite's executable source hash identifies runner changes before a suite commit exists.
+The current runner targets Argon **v2.1.2+** and its `/v2` Go module. `scripts/run.py` uses a temporary module replacement, freezes the explicitly selected engine source, and records its Git ref, matching release tag when present, dirty status, tracked diff SHA256, complete source manifest/hash and build module information. It also archives the frozen engine and executable suite source, including untracked files; unpublished code is labelled accordingly. The suite's executable source hash identifies runner changes before a suite commit exists. Reproduce pre-v2.1.2 reports with their recorded historical suite commit; their imports and import contract differ from the current runner.
 
 ## Run locally
 
@@ -12,7 +12,7 @@ Requires Go 1.26.6+, Python 3.12+, Git and MongoDB 7+ configured as a replica se
 export MONGODB_URI='mongodb://localhost:27017/?replicaSet=rs0'
 export GOCACHE=/tmp/argon-benchmark-go-cache
 export GOTOOLCHAIN=go1.26.6
-python3 scripts/run.py --engine /absolute/path/to/argon -- \
+python3 scripts/run.py --engine /absolute/path/to/argon --ref v2.1.2 -- \
   -sizes 1000,10000 -concurrency 1,4 -depths 1,4 \
   -metadata-samples 100 -workflow-samples 20 -read-samples 20
 ```
@@ -29,7 +29,7 @@ docker compose up --build --abort-on-container-exit --exit-code-from bench
 docker compose down
 ```
 
-The Compose configuration pins MongoDB 7.0.14 and configures replica set `rs0`. Host-local and container measurements are separate environments and must not be compared as equivalent runs. The current local report was run on the host; the container recipe has not yet been exercised on this machine.
+The Compose configuration pins MongoDB 7.0.43 and configures replica set `rs0`. Host-local and container measurements are separate environments and must not be compared as equivalent runs. CI exercises the container recipe; recorded local reports state their own MongoDB version and environment. Fixture writes finish before import and the runner explicitly acknowledges the engine's quiesced-source requirement.
 
 ## Measurements and definitions
 
@@ -63,10 +63,30 @@ This runs 1k/50k/1m documents × 1/4/16 workers × 1/4/16 ancestry depth, with 1
 
 ## Pull-request CI
 
-The PR workflow checks out companion engine commit `ba6e06a9a3b31124d6c37475b5667dd70ab42379` beside the suite, builds the Go 1.26.6 Docker recipe, and starts the Compose MongoDB replica set. It runs the runner's Go unit tests followed by one 100-document / one-worker / one-level smoke cell, with two workflow samples and six required captured divergence updates. `--ref` is explicit; CI verifies the engine/suite refs and actual Go version in the generated provenance. Raw samples, reports, both source archives and logs are retained as a workflow artifact for 14 days, including available diagnostics on failure.
+The PR and main-branch workflow checks out companion engine release `v2.1.2` beside the suite, resolves its exact commit, builds the Go 1.26.6 Docker recipe, and starts the Compose MongoDB replica set. It runs the runner's Go unit tests followed by one 100-document / one-worker / one-level smoke cell, with two workflow samples and six required captured divergence updates. `--ref` is the resolved commit; CI verifies the engine/suite refs and actual Go version in the generated provenance. The job attempts to retain raw samples, reports, source archives and logs for 14 days. Optional artifact uploads can fail when account storage is full; test and provenance failures still fail CI. Published measurement bundles remain in this repository.
 
 This job checks correctness and reproducibility of the container workflow. Its tiny sample counts and shared CI runner are unsuitable for performance SLAs or comparisons with the recorded local matrix. The historical reports and their measured suite refs remain unchanged.
 
 ## Published results
 
-See [RESULTS.md](RESULTS.md). Historical numbers retain their original date and exact scope. New results include raw samples and source hashes; no dirty working tree is identified as a released engine version. Benchmark failure exits nonzero and does not publish a complete report.
+The [v2.1.2 release matrix](reports/2026-09-24-v2.1.2/README.md) covers 1k/10k/50k documents with 1/4 workers and 1/4 ancestry levels. See [RESULTS.md](RESULTS.md). Historical numbers retain their original date and exact scope. New results include raw samples and source hashes; no dirty working tree is identified as a released engine version. Benchmark failure exits nonzero and does not publish a complete report.
+
+## Sustained capture and process recovery
+
+Use a SHA256-verified release CLI with a disposable replica set. Install
+`pymongo` in an isolated Python environment, then run:
+
+```sh
+python3 scripts/capture_recovery.py --binary /absolute/path/to/argon \
+  --version 2.1.2 --duration-seconds 600 --output /new/recovery-results
+```
+
+The script creates unique metadata and sandbox databases, acknowledges native
+writes with majority write concern, and repeatedly verifies complete WAL counts
+and reconstructed values. Halfway through, it kills only its own API process,
+writes while capture is stopped, restarts, and checks catch-up without lost or
+duplicate writes. It also checks graceful shutdown after health-check cycles and
+removes only its fixture databases. The output records the release binary hash,
+MongoDB version, elapsed time, write counts and recovery duration. This tests API
+process recovery, not MongoDB failover, storage loss or a production availability
+SLA. Run it independently of timing matrices to avoid self-induced contention.

@@ -1,0 +1,17 @@
+{
+  "version": "2.1.2",
+  "binary_sha256": "5688d99ea51e7bb57983cf5f44a94dded6ad79379007cea9caa7eabb2a8703c6",
+  "mongodb_version": "7.0.43",
+  "host": "macOS-27.0-arm64-arm-64bit",
+  "python_version": "3.12.14",
+  "duration_requested_seconds": 600,
+  "complete": true,
+  "scope": "one native writer; local API crash/restart; no MongoDB failover or disk-loss simulation",
+  "restart_to_verified_seconds": 0.3290307080023922,
+  "native_writes": 1865,
+  "verified_barriers": 1866,
+  "elapsed_seconds": 600.2518935840017,
+  "crash_recovery_verified": true,
+  "graceful_shutdown_seconds": 0.039346708999801194,
+  "graceful_shutdown_exit_code": 0
+}

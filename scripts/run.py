@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Freeze an explicit engine checkout; build without editing its go.mod or the suite's."""
-import argparse, datetime, hashlib, io, json, os, pathlib, shutil, subprocess, sys, tarfile, tempfile
+import argparse, datetime, hashlib, io, json, os, pathlib, re, shutil, subprocess, sys, tarfile, tempfile
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
@@ -62,10 +62,23 @@ def main():
         check_suite_hash, _ = snapshot(ROOT, suite_paths, frozen_suite)
         if check_suite_hash != suite_hash:
             raise RuntimeError('suite changed while freezing; retry after edits settle')
+        module = re.search(r'^module\s+(\S+)', (frozen / 'go.mod').read_text(), re.MULTILINE)
+        if not module or module.group(1) != 'github.com/argon-lab/argon/v2':
+            raise RuntimeError('This suite requires the v2 Go module (engine v2.1.2+). Use the historical suite ref to reproduce older reports.')
+        release_tag = None
+        if args.ref:
+            version = (frozen / 'VERSION').read_text().strip()
+            tag = 'v' + version
+            try:
+                tagged = command(['git', 'rev-parse', '--verify', 'refs/tags/' + tag + '^{commit}'], engine).decode().strip()
+                if tagged == engine_head:
+                    release_tag = tag
+            except subprocess.CalledProcessError:
+                pass
         provenance = {
             'kind': 'committed-engine-source' if args.ref else 'unpublished-source-snapshot',
             'captured_at': datetime.datetime.now(datetime.timezone.utc).isoformat(),
-            'engine': {'original_path': str(engine), 'git_head': engine_head, 'git_branch': '' if args.ref else command(['git','branch','--show-current'],engine).decode().strip(), 'dirty': False if args.ref else bool(command(['git','status','--porcelain'],engine)), 'tracked_diff_sha256': hashlib.sha256(patch).hexdigest(), 'source_sha256': engine_hash, 'manifest': engine_manifest},
+            'engine': {'original_path': str(engine), 'git_head': engine_head, 'release_tag': release_tag, 'git_branch': '' if args.ref else command(['git','branch','--show-current'],engine).decode().strip(), 'dirty': False if args.ref else bool(command(['git','status','--porcelain'],engine)), 'tracked_diff_sha256': hashlib.sha256(patch).hexdigest(), 'source_sha256': engine_hash, 'manifest': engine_manifest},
             'suite': {'git_head': command(['git','rev-parse','HEAD'],ROOT).decode().strip(), 'dirty': bool(command(['git','status','--porcelain'],ROOT)), 'executable_source_sha256': suite_hash, 'manifest': suite_manifest},
             'build': {'method': 'Go module replace to frozen exact engine source; no source changes during measurement', 'go_version': command(['go','version'],ROOT).decode().strip()},
             'command': [sys.executable, str(pathlib.Path(__file__).resolve()), '--engine', str(engine), '--results', str(out)] + (['--ref', engine_head] if args.ref else []) + ['--'] + flags,
@@ -75,7 +88,7 @@ def main():
         shutil.make_archive(str(out / 'engine-source'), 'gztar', frozen)
         shutil.make_archive(str(out / 'suite-source'), 'gztar', frozen_suite)
         modfile = tmp / 'bench.mod'; shutil.copy2(frozen_suite/'go.mod',modfile); shutil.copy2(frozen_suite/'go.sum',tmp/'bench.sum')
-        subprocess.run(['go','mod','edit','-modfile',str(modfile),'-replace','github.com/argon-lab/argon='+str(frozen)],cwd=frozen_suite,check=True)
+        subprocess.run(['go','mod','edit','-modfile',str(modfile),'-replace','github.com/argon-lab/argon/v2='+str(frozen)],cwd=frozen_suite,check=True)
         common = ['-mod=mod','-modfile',str(modfile)]
         subprocess.run(['go','test',*common,'.'],cwd=frozen_suite,check=True)
         binary = tmp / 'argonbench'
