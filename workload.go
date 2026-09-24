@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/argon-lab/argon/pkg/walcli"
+	"github.com/argon-lab/argon/v2/pkg/walcli"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"

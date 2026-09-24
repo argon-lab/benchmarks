@@ -14,7 +14,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/argon-lab/argon/pkg/walcli"
+	"github.com/argon-lab/argon/v2/pkg/walcli"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -312,7 +312,9 @@ func runScenario(ctx context.Context, uri string, client *mongo.Client, c config
 	if err = seed(ctx, client, source, n); err != nil {
 		return sc, err
 	}
-	ms, err := measure(func() error { _, e := svcs.ImportDatabase(ctx, uri, source, project, false, 1000); return e })
+	// The fixture's seed writes have completed and no writer uses the source
+	// database during import; this satisfies the engine's quiesced-source contract.
+	ms, err := measure(func() error { _, e := svcs.ImportDatabase(ctx, uri, source, project, false, 1000, true); return e })
 	if err != nil {
 		return sc, err
 	}

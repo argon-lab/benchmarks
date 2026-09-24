@@ -2,6 +2,8 @@ name: Benchmark CI
 
 on:
   pull_request:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -12,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  ARGON_ENGINE_REF: ba6e06a9a3b31124d6c37475b5667dd70ab42379
+  ARGON_ENGINE_REF: v2.1.2
   ARGON_SUITE_REF: ${{ github.event.pull_request.head.sha || github.sha }}
 
 jobs:
@@ -47,6 +49,7 @@ jobs:
       - name: Configure isolated Compose fixture
         run: |
           echo "ARGON_ENGINE_SOURCE=$GITHUB_WORKSPACE/engine" >> "$GITHUB_ENV"
+          echo "ARGON_ENGINE_SHA=$(git -C ../engine rev-parse HEAD)" >> "$GITHUB_ENV"
           mkdir -p results
 
       - name: Validate and build the Go 1.26.6 container recipe
@@ -62,7 +65,7 @@ jobs:
       - name: Run unit tests and one-cell correctness smoke
         run: |
           docker compose run --rm --no-deps bench \
-            --ref "$ARGON_ENGINE_REF" --results /suite/results/ci-smoke -- \
+            --ref "$ARGON_ENGINE_SHA" --results /suite/results/ci-smoke -- \
             -sizes 100 -concurrency 1 -depths 1 \
             -metadata-samples 2 -workflow-samples 2 -read-samples 2 \
             -divergence-docs 3 -divergence-rounds 2 -timeout 3m \
@@ -75,7 +78,7 @@ jobs:
           from pathlib import Path
           report = json.loads(Path('results/ci-smoke/raw.json').read_text())
           assert report['complete']
-          assert report['provenance']['engine']['git_head'] == os.environ['ARGON_ENGINE_REF']
+          assert report['provenance']['engine']['git_head'] == os.environ['ARGON_ENGINE_SHA']
           assert report['provenance']['suite']['git_head'] == os.environ['ARGON_SUITE_REF']
           assert not report['provenance']['engine']['dirty']
           assert not report['provenance']['suite']['dirty']
@@ -97,6 +100,7 @@ jobs:
 
       - name: Retain raw smoke samples, provenance, source archives and logs
         if: always()
+        continue-on-error: true # Optional evidence upload; smoke/provenance gates remain required.
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: benchmark-smoke-${{ github.run_id }}-${{ github.run_attempt }}
