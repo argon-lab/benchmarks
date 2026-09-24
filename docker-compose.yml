@@ -1,6 +1,6 @@
 services:
   mongo:
-    image: mongo:7.0.14
+    image: mongo:7.0.43
     command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
     healthcheck:
       test: ["CMD-SHELL", "mongosh --quiet --eval 'try { rs.status() } catch (e) { rs.initiate({_id: \"rs0\", members: [{_id: 0, host: \"mongo:27017\"}]}) }; if (!db.hello().isWritablePrimary) quit(1)' "]

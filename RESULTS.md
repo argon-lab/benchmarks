@@ -2,6 +2,31 @@
 
 Every number below is scoped to its recorded engine, suite and environment. Historical measurements are retained as history; current hardening measurements are separately labelled. A dirty source snapshot is not a released engine version. See [README.md](README.md) for methodology and reproducible commands.
 
+## 2026-09-24 · released v2.1.2 source, 12-cell matrix
+
+Engine [`v2.1.2`](https://github.com/argon-lab/argon/releases/tag/v2.1.2), commit `03559026972457ea663fdbc77d252e20ffb65b63`; suite `1e9fa82b30593beea851e2ff624eaf7d6cda0434`. Both measured trees were clean and frozen. All 12 cells completed: 1k/10k/50k documents × 1/4 workers × 1/4 ancestry levels, with 1,200 metadata forks, 240 sandbox/capture workflows and 15,000 verified captured divergence updates.
+
+Environment: shared Apple M6 / 24 GiB host, macOS 27.0 arm64, Go 1.26.6, native MongoDB 7.0.43 one-member replica set, WiredTiger 0.5 GiB cache and majority acknowledgment. Window: `2026-09-24T07:46:20.711026Z` → `2026-09-24T07:50:05.174369Z`. Background host activity was uncontrolled; no heavy Argon test suite or timing matrix ran concurrently. This environment differs from earlier reports, so the numbers are not a controlled comparison.
+
+Selected depth 4 observations, milliseconds (`p50 / p95 / p99`):
+
+| Documents | Workers | Metadata fork (n=100) | Sandbox + capture ready (n=20) | First native query (n=20) | Ack → WAL observed (n=20) |
+|---:|---:|---|---|---|---|
+| 1000 | 1 | 15.77 / 18.16 / 18.76 | 136.75 / 154.69 / 157.05 | 11.59 / 16.21 / 18.61 | 514.47 / 518.71 / 552.94 |
+| 1000 | 4 | 23.99 / 33.65 / 37.81 | 186.90 / 271.21 / 317.32 | 12.86 / 27.07 / 34.99 | 512.25 / 522.56 / 534.36 |
+| 10000 | 1 | 11.01 / 17.12 / 19.26 | 231.53 / 249.21 / 255.47 | 8.77 / 10.03 / 13.08 | 510.53 / 518.88 / 522.59 |
+| 10000 | 4 | 20.83 / 23.96 / 24.13 | 351.07 / 520.30 / 647.30 | 7.00 / 11.24 / 21.46 | 510.34 / 522.28 / 534.43 |
+| 50000 | 1 | 16.06 / 18.94 / 18.98 | 599.11 / 646.29 / 761.98 | 5.80 / 8.15 / 9.46 | 518.62 / 522.88 / 524.57 |
+| 50000 | 4 | 17.87 / 28.93 / 35.88 | 1425.89 / 1599.13 / 2122.08 | 8.46 / 20.00 / 22.29 | 510.28 / 518.61 / 524.15 |
+
+[Full generated report](reports/2026-09-24-v2.1.2/report.md), [all raw samples](reports/2026-09-24-v2.1.2/raw.json), and [provenance/reproduction instructions](reports/2026-09-24-v2.1.2/README.md). All summary quantiles were independently recomputed from raw samples. Twenty workflows per cell make p99 the observed maximum. Sandbox readiness includes a full physical copy; metadata latency does not describe total readiness. Ack-to-observed latency includes batching and polling, and is separate from native write acknowledgment. Storage data distinguishes logical document bytes from immediate allocated collection/index bytes.
+
+The separate published-binary recovery experiment completed 600.25 seconds with 1,865 acknowledged native writes and 1,866 exact history/state checks. Killing and restarting the API midway, with an additional write while it was stopped, recovered in 0.329 seconds; final graceful shutdown took 0.039 seconds (exit 0). [Summary](reports/2026-09-24-v2.1.2/recovery.json) and [all samples](reports/2026-09-24-v2.1.2/recovery-samples.json) are retained. This is a single-writer local correctness/soak result, not a production uptime or database failover claim.
+
+The 1m/16-worker/16-depth expansion remains an experiment plan; production tail latency and multi-node availability are not established by this run.
+
+---
+
 ## 2026-09-07 · committed hardening engine, Go 1.26.6
 
 This final local matrix uses exact engine commit `ba6e06a9a3b31124d6c37475b5667dd70ab42379` and suite commit `a05950938a8eae5ba8cd089a02d9b7207a641945`. Both were frozen from clean committed sources. **This identifies a local commit build, not a tag release.** The previous dirty-source diagnostic below remains a separate historical record.

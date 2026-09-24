@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"math"
 	"os"
@@ -35,7 +36,18 @@ func writeFile(path string, data []byte) error {
 }
 func markdown(r report) string {
 	var b strings.Builder
-	fmt.Fprintf(&b, "# Argon workflow benchmark\n\nCompleted %s; duration %.1f seconds. This is an explicitly sourced local diagnostic build, not a released-version claim. Raw samples, build hashes, environment and configuration: `%s`.\n\n", r.FinishedAt.Format("2006-01-02 15:04:05 UTC"), r.FinishedAt.Sub(r.StartedAt).Seconds(), filepath.Base(r.Config.JSON))
+	var source struct {
+		Engine struct {
+			ReleaseTag string `json:"release_tag"`
+			GitHead    string `json:"git_head"`
+			Dirty      bool   `json:"dirty"`
+		} `json:"engine"`
+	}
+	description := "This is an explicitly sourced local diagnostic build, not a released-version claim."
+	if json.Unmarshal(r.Provenance, &source) == nil && source.Engine.ReleaseTag != "" && source.Engine.GitHead != "" && !source.Engine.Dirty {
+		description = fmt.Sprintf("Measured engine source tag `%s`, commit `%s`. These local measurements are not production latency guarantees.", source.Engine.ReleaseTag, source.Engine.GitHead)
+	}
+	fmt.Fprintf(&b, "# Argon workflow benchmark\n\nCompleted %s; duration %.1f seconds. %s Raw samples, build hashes, environment and configuration: `%s`.\n\n", r.FinishedAt.Format("2006-01-02 15:04:05 UTC"), r.FinishedAt.Sub(r.StartedAt).Seconds(), description, filepath.Base(r.Config.JSON))
 	fmt.Fprint(&b, "Percentiles use nearest rank. With fewer than 100 samples, p99 is usually the observed maximum; these are descriptive observations, not a stable tail-latency estimate. All samples, including first execution, are retained. Scenarios run sequentially; workers run closed-loop within a phase.\n\n")
 	fmt.Fprint(&b, "Sandbox readiness includes metadata fork, full physical checkout, and acknowledged capture startup. First native query includes a new client connection/handshake and one verified indexed read, after readiness. Capture lag is measured from majority write acknowledgement until a committed WAL record is observed; polling and query latency are included.\n\n")
 	fmt.Fprint(&b, "Metadata forks reference inherited history. Checked-out sandboxes materialize full physical copies. dbStats logical data bytes, allocated collection bytes, and allocated index bytes are reported separately. Allocations are quantized and can remain after deletion; before/after differences are observations, not a universal per-branch disk price.\n\n")

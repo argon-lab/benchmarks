@@ -1,6 +1,26 @@
 package main
 
-import "testing"
+import (
+	"encoding/json"
+	"strings"
+	"testing"
+)
+
+func TestReleaseProvenanceLabel(t *testing.T) {
+	for _, tc := range []struct {
+		provenance string
+		released   bool
+	}{
+		{`{"engine":{"release_tag":"v2.1.2","git_head":"abc","dirty":false}}`, true},
+		{`{"engine":{"release_tag":"v2.1.2","git_head":"abc","dirty":true}}`, false},
+		{`{"engine":{"git_head":"abc","dirty":false}}`, false},
+	} {
+		got := markdown(report{Provenance: json.RawMessage(tc.provenance)})
+		if strings.Contains(got, "Measured engine source tag") != tc.released {
+			t.Fatalf("incorrect release claim for %s: %s", tc.provenance, got)
+		}
+	}
+}
 
 func TestNearestRank(t *testing.T) {
 	values := []float64{4, 1, 3, 2}
