@@ -63,13 +63,13 @@ This runs 1k/50k/1m documents × 1/4/16 workers × 1/4/16 ancestry depth, with 1
 
 ## Pull-request CI
 
-The PR and main-branch workflow checks out companion engine release `v2.1.2` beside the suite, resolves its exact commit, builds the Go 1.26.6 Docker recipe, and starts the Compose MongoDB replica set. It runs the runner's Go unit tests followed by one 100-document / one-worker / one-level smoke cell, with two workflow samples and six required captured divergence updates. `--ref` is the resolved commit; CI verifies the engine/suite refs and actual Go version in the generated provenance. Raw samples, reports, both source archives and logs are retained as a workflow artifact for 14 days, including available diagnostics on failure.
+The PR and main-branch workflow checks out companion engine release `v2.1.2` beside the suite, resolves its exact commit, builds the Go 1.26.6 Docker recipe, and starts the Compose MongoDB replica set. It runs the runner's Go unit tests followed by one 100-document / one-worker / one-level smoke cell, with two workflow samples and six required captured divergence updates. `--ref` is the resolved commit; CI verifies the engine/suite refs and actual Go version in the generated provenance. The job attempts to retain raw samples, reports, source archives and logs for 14 days. Optional artifact uploads can fail when account storage is full; test and provenance failures still fail CI. Published measurement bundles remain in this repository.
 
 This job checks correctness and reproducibility of the container workflow. Its tiny sample counts and shared CI runner are unsuitable for performance SLAs or comparisons with the recorded local matrix. The historical reports and their measured suite refs remain unchanged.
 
 ## Published results
 
-See [RESULTS.md](RESULTS.md). Historical numbers retain their original date and exact scope. New results include raw samples and source hashes; no dirty working tree is identified as a released engine version. Benchmark failure exits nonzero and does not publish a complete report.
+The [v2.1.2 release matrix](reports/2026-09-24-v2.1.2/README.md) covers 1k/10k/50k documents with 1/4 workers and 1/4 ancestry levels. See [RESULTS.md](RESULTS.md). Historical numbers retain their original date and exact scope. New results include raw samples and source hashes; no dirty working tree is identified as a released engine version. Benchmark failure exits nonzero and does not publish a complete report.
 
 ## Sustained capture and process recovery
 
