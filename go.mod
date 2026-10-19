@@ -1,9 +1,9 @@
 module github.com/argon-lab/benchmarks
 
-go 1.26.6
+go 1.26.9
 
 require (
-	github.com/argon-lab/argon/v2 v2.1.2
+	github.com/argon-lab/argon/v2 v2.1.3
 	go.mongodb.org/mongo-driver v1.17.7
 )
 
