@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  ARGON_ENGINE_REF: v2.1.2
+  ARGON_ENGINE_REF: v2.1.3
   ARGON_SUITE_REF: ${{ github.event.pull_request.head.sha || github.sha }}
 
 jobs:
@@ -52,7 +52,7 @@ jobs:
           echo "ARGON_ENGINE_SHA=$(git -C ../engine rev-parse HEAD)" >> "$GITHUB_ENV"
           mkdir -p results
 
-      - name: Validate and build the Go 1.26.6 container recipe
+      - name: Validate and build the Go 1.26.9 container recipe
         run: |
           docker compose config --quiet
           docker compose build bench
@@ -82,7 +82,7 @@ jobs:
           assert report['provenance']['suite']['git_head'] == os.environ['ARGON_SUITE_REF']
           assert not report['provenance']['engine']['dirty']
           assert not report['provenance']['suite']['dirty']
-          assert report['environment']['go'] == 'go1.26.6'
+          assert report['environment']['go'] == 'go1.26.9'
           assert len(report['scenarios']) == 1
           scenario = report['scenarios'][0]
           assert (scenario['documents'], scenario['concurrency'], scenario['ancestry_depth']) == (100, 1, 1)
