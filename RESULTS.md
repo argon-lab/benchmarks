@@ -2,6 +2,27 @@
 
 Every number below is scoped to its recorded engine, suite and environment. Historical measurements are retained as history; current hardening measurements are separately labelled. A dirty source snapshot is not a released engine version. See [README.md](README.md) for methodology and reproducible commands.
 
+## 2026-11-11 · released v2.2.0 source, 12-cell matrix, containerized MongoDB
+
+Engine [`v2.2.0`](https://github.com/argon-lab/argon/releases/tag/v2.2.0), commit `48bd05a262d404277edefb0855ea3043d3563644`; suite `5daa5d74c147975268e1110a0b8e264fe7f9ef33`. The engine was frozen from the tag. All 12 cells completed: 1k/10k/50k documents × 1/4 workers × 1/4 ancestry levels, with 1,200 metadata forks, 240 sandbox/capture workflows and 15,000 captured divergence records.
+
+Environment: shared Apple M6 / 24 GiB host, macOS 27.0.1 arm64, Go 1.26.11; MongoDB 7.0.45 in a Docker Desktop container (Docker Engine 29.9.3, linux/arm64 VM with 12 CPUs and about 7.7 GiB), one-member replica set `rs0`, WiredTiger 0.5 GiB cache, majority acknowledgment. Window: `2026-11-11T11:10:12.809322Z` → `2026-11-11T11:13:18.481790Z`. Background host activity was uncontrolled. **MongoDB ran in a container, unlike the native deployment of the 2026-09-24 record below, so the two records must not be compared.**
+
+Selected depth 4 observations, milliseconds (`p50 / p95 / p99`):
+
+| Documents | Workers | Metadata fork (n=100) | Sandbox + capture ready (n=20) | First native query (n=20) | Ack → WAL observed (n=20) |
+|---:|---:|---|---|---|---|
+| 1000 | 1 | 1.99 / 3.98 / 4.50 | 41.66 / 47.17 / 50.31 | 1.85 / 2.21 / 2.51 | 504.53 / 506.58 / 506.91 |
+| 1000 | 4 | 3.82 / 5.24 / 5.92 | 48.50 / 93.89 / 112.77 | 1.80 / 2.66 / 3.02 | 504.45 / 508.32 / 510.69 |
+| 10000 | 1 | 3.46 / 4.62 / 4.96 | 138.21 / 155.10 / 161.82 | 1.74 / 2.77 / 3.47 | 504.74 / 508.42 / 510.32 |
+| 10000 | 4 | 3.69 / 4.97 / 5.71 | 220.13 / 303.06 / 393.03 | 1.95 / 3.86 / 4.53 | 504.51 / 508.57 / 511.56 |
+| 50000 | 1 | 3.52 / 6.05 / 7.54 | 515.07 / 601.54 / 608.08 | 1.79 / 2.29 / 4.01 | 506.42 / 508.83 / 522.67 |
+| 50000 | 4 | 3.61 / 4.71 / 4.98 | 1277.38 / 1364.07 / 1778.08 | 2.14 / 2.68 / 7.60 | 506.50 / 508.90 / 509.59 |
+
+A [v2.1.5 baseline](reports/2026-11-11-v2.2.0/baseline-v2.1.5/report.md) ran immediately afterwards in the same environment. One run per version shows no evidence of a timing regression or improvement between 2.1.5 and 2.2.0 at these sizes; the suite does not measure memory. [Full generated report](reports/2026-11-11-v2.2.0/report.md), [all raw samples](reports/2026-11-11-v2.2.0/raw.json), and [comparison, provenance and reproduction](reports/2026-11-11-v2.2.0/README.md). Twenty workflows per cell make p99 the observed maximum. The recovery experiment was not repeated.
+
+---
+
 ## 2026-09-24 · released v2.1.2 source, 12-cell matrix
 
 Engine [`v2.1.2`](https://github.com/argon-lab/argon/releases/tag/v2.1.2), commit `03559026972457ea663fdbc77d252e20ffb65b63`; suite `1e9fa82b30593beea851e2ff624eaf7d6cda0434`. Both measured trees were clean and frozen. All 12 cells completed: 1k/10k/50k documents × 1/4 workers × 1/4 ancestry levels, with 1,200 metadata forks, 240 sandbox/capture workflows and 15,000 verified captured divergence updates.
