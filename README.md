@@ -69,7 +69,7 @@ This job checks correctness and reproducibility of the container workflow. Its t
 
 ## Published results
 
-The [v2.1.2 release matrix](reports/2026-09-24-v2.1.2/README.md) covers 1k/10k/50k documents with 1/4 workers and 1/4 ancestry levels. See [RESULTS.md](RESULTS.md). Historical numbers retain their original date and exact scope. New results include raw samples and source hashes; no dirty working tree is identified as a released engine version. Benchmark failure exits nonzero and does not publish a complete report.
+The [v2.2.0 matrix](reports/2026-11-11-v2.2.0/README.md) repeats the 12 cells against containerized MongoDB, with a v2.1.5 baseline from the same environment. The [v2.1.2 release matrix](reports/2026-09-24-v2.1.2/README.md) covers 1k/10k/50k documents with 1/4 workers and 1/4 ancestry levels. See [RESULTS.md](RESULTS.md). Historical numbers retain their original date and exact scope. New results include raw samples and source hashes; no dirty working tree is identified as a released engine version. Benchmark failure exits nonzero and does not publish a complete report.
 
 ## Sustained capture and process recovery
 
