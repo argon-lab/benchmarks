@@ -6,13 +6,13 @@ The current runner targets Argon **v2.1.2+** and its `/v2` Go module. `scripts/r
 
 ## Run locally
 
-Requires Go 1.26.10 or Go 1.27.3+, Python 3.12+, Git and MongoDB 7+ configured as a replica set. The examples and CI use Argon v2.1.5, Go 1.26.10 and MongoDB 7.0.45. Earlier Go 1.27 releases also need the `crypto/x509` security update. Use an isolated database deployment. The suite creates unique `argonbench_meta_*` and `argonbench_src_*` databases plus physical sandbox databases, and removes its databases after each scenario. It never uses the normal `argon_wal` metadata database. Abrupt process termination can leave these fixture databases behind.
+Requires Go 1.26.11 or Go 1.27.4+, Python 3.12+, Git and MongoDB 7+ configured as a replica set. The examples and CI use Argon v2.1.6, Go 1.26.11 and MongoDB 7.0.45. Earlier Go 1.27 releases also need the `crypto/x509` security update. Use an isolated database deployment. The suite creates unique `argonbench_meta_*` and `argonbench_src_*` databases plus physical sandbox databases, and removes its databases after each scenario. It never uses the normal `argon_wal` metadata database. Abrupt process termination can leave these fixture databases behind.
 
 ```sh
 export MONGODB_URI='mongodb://localhost:27017/?replicaSet=rs0'
 export GOCACHE=/tmp/argon-benchmark-go-cache
-export GOTOOLCHAIN=go1.26.10
-python3 scripts/run.py --engine /absolute/path/to/argon --ref v2.1.5 -- \
+export GOTOOLCHAIN=go1.26.11
+python3 scripts/run.py --engine /absolute/path/to/argon --ref v2.1.6 -- \
   -sizes 1000,10000 -concurrency 1,4 -depths 1,4 \
   -metadata-samples 100 -workflow-samples 20 -read-samples 20
 ```
@@ -63,7 +63,7 @@ This runs 1k/50k/1m documents × 1/4/16 workers × 1/4/16 ancestry depth, with 1
 
 ## Pull-request CI
 
-The PR and main-branch workflow checks out companion engine release `v2.1.5` beside the suite, resolves its exact commit, builds the Go 1.26.10 Docker recipe, and starts the Compose MongoDB replica set. It runs the runner's Go unit tests followed by one 100-document / one-worker / one-level smoke cell, with two workflow samples and six required captured divergence updates. `--ref` is the resolved commit; CI verifies the engine/suite refs and actual Go version in the generated provenance. The job attempts to retain raw samples, reports, source archives and logs for 14 days. Optional artifact uploads can fail when account storage is full; test and provenance failures still fail CI. Published measurement bundles remain in this repository.
+The PR and main-branch workflow checks out companion engine release `v2.1.6` beside the suite, resolves its exact commit, builds the Go 1.26.11 Docker recipe, and starts the Compose MongoDB replica set. It runs the runner's Go unit tests followed by one 100-document / one-worker / one-level smoke cell, with two workflow samples and six required captured divergence updates. `--ref` is the resolved commit; CI verifies the engine/suite refs and actual Go version in the generated provenance. The job attempts to retain raw samples, reports, source archives and logs for 14 days. Optional artifact uploads can fail when account storage is full; test and provenance failures still fail CI. Published measurement bundles remain in this repository.
 
 This job checks correctness and reproducibility of the container workflow. Its tiny sample counts and shared CI runner are unsuitable for performance SLAs or comparisons with the recorded local matrix. The historical reports and their measured suite refs remain unchanged.
 
@@ -78,7 +78,7 @@ Use a SHA256-verified release CLI with a disposable replica set. Install
 
 ```sh
 python3 scripts/capture_recovery.py --binary /absolute/path/to/argon \
-  --version 2.1.5 --duration-seconds 600 --output /new/recovery-results
+  --version 2.1.6 --duration-seconds 600 --output /new/recovery-results
 ```
 
 The script creates unique metadata and sandbox databases, acknowledges native
