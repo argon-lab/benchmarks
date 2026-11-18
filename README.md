@@ -69,7 +69,7 @@ This job checks correctness and reproducibility of the container workflow. Its t
 
 ## Published results
 
-The [v2.5.0 CLI workflow report](reports/2026-11-18-v2.5.0-cli-scale/README.md) repeats the measurement below on 2.5.0, with 2.4.0 run again beside it. The [v2.4.0 CLI workflow report](reports/2026-11-18-v2.4.0-cli-scale/README.md) times whole commands of the published CLI at 10k, 100k and 1m documents; it is a separate measurement from the matrices. The [v2.2.0 matrix](reports/2026-11-11-v2.2.0/README.md) repeats the 12 cells against containerized MongoDB, with a v2.1.5 baseline from the same environment. The [v2.1.2 release matrix](reports/2026-09-24-v2.1.2/README.md) covers 1k/10k/50k documents with 1/4 workers and 1/4 ancestry levels. See [RESULTS.md](RESULTS.md). Historical numbers retain their original date and exact scope. New results include raw samples and source hashes; no dirty working tree is identified as a released engine version. Benchmark failure exits nonzero and does not publish a complete report.
+The [v2.6.0 report](reports/2026-11-18-v2.6.0-cli-scale/README.md) alternates 2.6.0 and 2.5.0 on one project to measure the first diff after a checkout. The [v2.5.0 CLI workflow report](reports/2026-11-18-v2.5.0-cli-scale/README.md) repeats the measurement below on 2.5.0, with 2.4.0 run again beside it. The [v2.4.0 CLI workflow report](reports/2026-11-18-v2.4.0-cli-scale/README.md) times whole commands of the published CLI at 10k, 100k and 1m documents; it is a separate measurement from the matrices. The [v2.2.0 matrix](reports/2026-11-11-v2.2.0/README.md) repeats the 12 cells against containerized MongoDB, with a v2.1.5 baseline from the same environment. The [v2.1.2 release matrix](reports/2026-09-24-v2.1.2/README.md) covers 1k/10k/50k documents with 1/4 workers and 1/4 ancestry levels. See [RESULTS.md](RESULTS.md). Historical numbers retain their original date and exact scope. New results include raw samples and source hashes; no dirty working tree is identified as a released engine version. Benchmark failure exits nonzero and does not publish a complete report.
 
 ## CLI workflow as the database grows
 
@@ -115,6 +115,8 @@ memory per command is sampled from `/proc/<pid>/status` (`VmHWM`) every 20 ms;
 a spike in a command's last 20 ms can be missed. Storage rows are `dbStats`
 taken right after the writes, before WiredTiger has necessarily flushed them,
 so read the logical bytes and treat allocated bytes as a lower bound.
+
+`scripts/interleaved_release_docker.sh <version A> <version B> <output file> <documents> <rounds> [changed]` alternates two npm releases on one project, round by round, so that both see the same background load; `scripts/mongod_log_window.py` sums MongoDB's logged operations inside time windows of such a run.
 
 `scripts/gc_case_docker.sh <version> <sizes> <output file>` times `argon diff` before and after `argon gc` has deleted the parent's entries, the case in which 2.5.0 and later read the parent's snapshot.
 

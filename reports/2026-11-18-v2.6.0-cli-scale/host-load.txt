@@ -1,0 +1,40 @@
+== before 2.6.0 2026-11-18T09:30:55Z
+lf-mac-ci-37c96ab42f97	2026-11-18 04:29:06 -0500 EST
+elated_varahamihira	2026-11-18 04:26:34 -0500 EST
+lf-mac-ops-539a8e368939	2026-11-18 04:18:51 -0500 EST
+lf-mac-merge-c3604ba5d44e	2026-11-18 04:09:22 -0500 EST
+argon-follow-mongo2	2026-11-18 03:09:43 -0500 EST
+argon-follow-mongo	2026-11-18 03:09:42 -0500 EST
+lf-mac-ci-37c96ab42f97	48.50%	344MiB / 6GiB
+elated_varahamihira	5.12%	88.05MiB / 13.63GiB
+lf-mac-ops-539a8e368939	451.91%	2.639GiB / 6GiB
+lf-mac-merge-c3604ba5d44e	363.22%	1.717GiB / 3GiB
+argon-follow-mongo2	1.88%	400.8MiB / 13.63GiB
+argon-follow-mongo	26.70%	1.446GiB / 13.63GiB
+ 4:30  up 34 days,  6:57, 1 user, load averages: 16.13 15.95 14.89
+== before 2.5.0 2026-11-18T09:56:19Z
+nifty_snyder	2026-11-18 04:55:53 -0500 EST
+lf-mac-merge-fc853d59c136	2026-11-18 04:55:14 -0500 EST
+lf-mac-ops-e5ecd8a2e9c5	2026-11-18 04:53:39 -0500 EST
+lf-mac-ci-6b1110011a38	2026-11-18 04:53:31 -0500 EST
+argon-follow-mongo2	2026-11-18 03:09:43 -0500 EST
+argon-follow-mongo	2026-11-18 03:09:42 -0500 EST
+nifty_snyder	10.75%	58.98MiB / 13.63GiB
+lf-mac-merge-fc853d59c136	2.06%	40.4MiB / 3GiB
+lf-mac-ops-e5ecd8a2e9c5	436.46%	1.905GiB / 6GiB
+lf-mac-ci-6b1110011a38	503.20%	1.304GiB / 6GiB
+argon-follow-mongo2	0.95%	278.8MiB / 13.63GiB
+argon-follow-mongo	6.08%	1.177GiB / 13.63GiB
+ 4:56  up 34 days,  7:22, 1 user, load averages: 12.17 13.59 14.64
+== after 2.5.0 2026-11-18T10:12:21Z
+lf-mac-ops-4a51b87e9150	2026-11-18 05:07:09 -0500 EST
+lf-mac-merge-1e35b122975b	2026-11-18 05:05:44 -0500 EST
+lf-mac-ci-0571c4138714	2026-11-18 05:02:46 -0500 EST
+argon-follow-mongo2	2026-11-18 03:09:43 -0500 EST
+argon-follow-mongo	2026-11-18 03:09:42 -0500 EST
+lf-mac-ops-4a51b87e9150	369.29%	5.006GiB / 6GiB
+lf-mac-merge-1e35b122975b	0.00%	41.56MiB / 3GiB
+lf-mac-ci-0571c4138714	183.80%	581.2MiB / 6GiB
+argon-follow-mongo2	1.56%	373.6MiB / 13.63GiB
+argon-follow-mongo	2.96%	1.692GiB / 13.63GiB
+ 5:12  up 34 days,  7:38, 1 user, load averages: 13.38 13.02 13.57
