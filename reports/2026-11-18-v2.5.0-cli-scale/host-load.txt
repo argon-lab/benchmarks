@@ -1,0 +1,42 @@
+== before 2.5.0 2026-11-18T04:33:04Z
+argon-resync-mongo2	2026-11-17 23:29:51 -0500 EST
+argon-resync-mongo	2026-11-17 23:29:50 -0500 EST
+lf-mac-ops-b5ace124b056	2026-11-17 18:07:20 -0500 EST
+lf-mac-ci-bf452a9c3e64	2026-11-17 15:07:28 -0500 EST
+lf-mac-merge-c6f79de8a460	2026-11-17 12:29:25 -0500 EST
+argon-resync-mongo2	0.74%	120.2MiB / 13.63GiB
+argon-resync-mongo	0.77%	157.4MiB / 13.63GiB
+lf-mac-ops-b5ace124b056	0.01%	59.09MiB / 6GiB
+lf-mac-ci-bf452a9c3e64	0.00%	61.46MiB / 6GiB
+lf-mac-merge-c6f79de8a460	0.00%	63.37MiB / 3GiB
+23:33  up 34 days,  1:59, 1 user, load averages: 3.93 3.51 3.29
+== between runs 2026-11-18T04:39:14Z
+unruffled_brahmagupta	2026-11-17 23:39:08 -0500 EST
+argon-rev-source	2026-11-17 23:33:37 -0500 EST
+argon-rev-mongo	2026-11-17 23:33:36 -0500 EST
+argon-resync-mongo2	2026-11-17 23:29:51 -0500 EST
+argon-resync-mongo	2026-11-17 23:29:50 -0500 EST
+lf-mac-ops-b5ace124b056	2026-11-17 18:07:20 -0500 EST
+lf-mac-ci-bf452a9c3e64	2026-11-17 15:07:28 -0500 EST
+lf-mac-merge-c6f79de8a460	2026-11-17 12:29:25 -0500 EST
+unruffled_brahmagupta	0.48%	56.8MiB / 13.63GiB
+argon-rev-source	1.02%	113.3MiB / 13.63GiB
+argon-rev-mongo	1.58%	134.5MiB / 13.63GiB
+argon-resync-mongo2	0.78%	148.4MiB / 13.63GiB
+argon-resync-mongo	0.67%	299.9MiB / 13.63GiB
+lf-mac-ops-b5ace124b056	0.00%	59.09MiB / 6GiB
+lf-mac-ci-bf452a9c3e64	0.00%	60.7MiB / 6GiB
+lf-mac-merge-c6f79de8a460	0.00%	63.37MiB / 3GiB
+23:39  up 34 days,  2:05, 1 user, load averages: 6.36 6.11 4.76
+== after 2.4.0 baseline 2026-11-18T04:52:54Z
+argon-rev-source	2026-11-17 23:33:37 -0500 EST
+argon-rev-mongo	2026-11-17 23:33:36 -0500 EST
+lf-mac-ops-b5ace124b056	2026-11-17 18:07:20 -0500 EST
+lf-mac-ci-bf452a9c3e64	2026-11-17 15:07:28 -0500 EST
+lf-mac-merge-c6f79de8a460	2026-11-17 12:29:25 -0500 EST
+argon-rev-source	0.90%	241.1MiB / 13.63GiB
+argon-rev-mongo	0.78%	1.029GiB / 13.63GiB
+lf-mac-ops-b5ace124b056	0.00%	62.63MiB / 6GiB
+lf-mac-ci-bf452a9c3e64	0.00%	61.12MiB / 6GiB
+lf-mac-merge-c6f79de8a460	0.00%	67.96MiB / 3GiB
+23:52  up 34 days,  2:19, 1 user, load averages: 7.76 9.72 8.15
