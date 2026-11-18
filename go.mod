@@ -3,7 +3,7 @@ module github.com/argon-lab/benchmarks
 go 1.26.11
 
 require (
-	github.com/argon-lab/argon/v2 v2.6.0
+	github.com/argon-lab/argon/v2 v2.7.0
 	go.mongodb.org/mongo-driver v1.17.7
 )
 
