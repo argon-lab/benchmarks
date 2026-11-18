@@ -69,7 +69,55 @@ This job checks correctness and reproducibility of the container workflow. Its t
 
 ## Published results
 
-The [v2.2.0 matrix](reports/2026-11-11-v2.2.0/README.md) repeats the 12 cells against containerized MongoDB, with a v2.1.5 baseline from the same environment. The [v2.1.2 release matrix](reports/2026-09-24-v2.1.2/README.md) covers 1k/10k/50k documents with 1/4 workers and 1/4 ancestry levels. See [RESULTS.md](RESULTS.md). Historical numbers retain their original date and exact scope. New results include raw samples and source hashes; no dirty working tree is identified as a released engine version. Benchmark failure exits nonzero and does not publish a complete report.
+The [v2.4.0 CLI workflow report](reports/2026-11-18-v2.4.0-cli-scale/README.md) times whole commands of the published CLI at 10k, 100k and 1m documents; it is a separate measurement from the matrices. The [v2.2.0 matrix](reports/2026-11-11-v2.2.0/README.md) repeats the 12 cells against containerized MongoDB, with a v2.1.5 baseline from the same environment. The [v2.1.2 release matrix](reports/2026-09-24-v2.1.2/README.md) covers 1k/10k/50k documents with 1/4 workers and 1/4 ancestry levels. See [RESULTS.md](RESULTS.md). Historical numbers retain their original date and exact scope. New results include raw samples and source hashes; no dirty working tree is identified as a released engine version. Benchmark failure exits nonzero and does not publish a complete report.
+
+## CLI workflow as the database grows
+
+`scripts/cli_scale.py` times the published CLI itself, one whole command at a
+time, as a user waits for it in a terminal. For each document count it seeds a
+source database, imports it, checks out `main`, then repeats a branch workflow:
+create a branch, check it out, read from it, update documents through the driver
+while `argon watch` captures them, diff, preview a merge and apply it. It also
+times `argon sandbox create` to a first read and point reads by `_id`.
+
+```sh
+scripts/cli_scale_docker.sh 2.4.0 results/cli-scale --sizes 10000,100000,1000000
+```
+
+The wrapper needs only Docker. It installs that `argonctl` version from npm
+into a container that shares the MongoDB container's network namespace, checks
+the binary against the package's own checksum, publishes no ports, and removes
+both containers when it finishes. `WIREDTIGER_CACHE_GB` (default 2) sets
+mongod's cache. To use your own replica set and binary instead, run
+`scripts/cli_scale.py --binary /path/to/argon --version 2.4.0 --output /new/dir`
+with `MONGODB_URI` set; it needs Python 3.11+, `pymongo`, and Linux for the
+memory samples.
+
+| Metric | Boundary |
+|---|---|
+| `seed_native_insert_ms` | Driver `insert_many` of every document into the source database, 1,000 per batch, majority acknowledgment |
+| `import_ms` | `argon import database` of that source |
+| `new_branch_to_first_read_ms` | `argon branches create` + `argon checkout` + a new client's first `find_one`; the three parts are also recorded separately |
+| `sandbox_create_to_first_read_ms` | `argon sandbox create` + a new client's first `find_one` |
+| `point_read_by_id_us` | `find_one` by `_id` on a checked-out branch over a warm connection, microseconds |
+| `bulk_update_<n>_ms` | One unordered `bulk_write` of `n` single-document `$inc` updates on the branch, majority acknowledgment, with `argon watch` running |
+| `capture_after_ack_<n>_ms` | That acknowledgment → all `n` updates present in Argon's history; includes 20 ms polling |
+| `diff_<n>_changed_ms` | `argon diff` with `n` documents changed and capture complete |
+| `merge_preview_<n>_changed_ms`, `merge_apply_<n>_changed_ms` | `argon merge preview`, then `argon merge apply` of that plan into a checked-out `main` |
+
+Every timing is wall clock around the whole process, so it includes process
+start-up and connecting. The wrapper runs the binary the npm launcher starts,
+not the launcher, so Node start-up is excluded. Workflows run one at a time
+against an otherwise idle database. The run fails unless every diff and merge
+plan lists exactly the updated documents, every merge lands in `main`, and
+`main` ends with the expected document count and update total. Peak resident
+memory per command is sampled from `/proc/<pid>/status` (`VmHWM`) every 20 ms;
+a spike in a command's last 20 ms can be missed. Storage rows are `dbStats`
+taken right after the writes, before WiredTiger has necessarily flushed them,
+so read the logical bytes and treat allocated bytes as a lower bound.
+
+This script and the Go matrix above measure different boundaries and must not
+be compared: the Go runner calls the engine as a library inside one process.
 
 ## Sustained capture and process recovery
 
