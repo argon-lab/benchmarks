@@ -1,0 +1,29 @@
+A = argonctl@2.5.0, B = argonctl@2.6.0, the executables the npm packages install; MongoDB 7.0.45 one-node replica set, WiredTiger cache 2 GiB
+c1d5729895765f6131a2e83548ebe768af5b60374f1b24072251eb277482c880  /opt/a/lib/node_modules/argonctl/bin/argon-bin
+edba0c2ecf6be346896ac0e3cc0b199515c0420a68c12a35cf2f19de12a7b113  /opt/b/lib/node_modules/argonctl/bin/argon-bin
+== 2026-11-18T10:33:30Z 1000000 documents, 2 rounds, 10000 changed; host: load averages: 9.84 11.65 12.55
+argon260-il-runner 0.00% 14MiB / 13.63GiB
+argon260-il-mongo 0.41% 112.1MiB / 13.63GiB
+lf-mac-merge-46bf2ec5fc0d 0.00% 40.54MiB / 3GiB
+zealous_lederberg 2.30% 276.8MiB / 13.63GiB
+lf-mac-ops-c12f2b655fbd 464.59% 1.815GiB / 6GiB
+lf-mac-ci-08fbb259ea62 0.00% 47.8MiB / 6GiB
+argon-follow-mongo2 0.35% 361.8MiB / 13.63GiB
+argon-follow-mongo 2.59% 1.486GiB / 13.63GiB
+binary A: argon version 2.5.0
+binary B: argon version 2.6.0
+1000000 documents imported, main checked out, nothing watching main; 10000 documents changed per branch
+  second diff of A starts 10:34:59.091Z
+  second diff of A ended 10:35:00.144Z
+round 0 binary A: checkout 28419 ms, first diff 7760 ms, second diff 1054 ms, merge preview 724 ms, branch create to first diff done 40485 ms
+  second diff of B starts 10:35:30.249Z
+  second diff of B ended 10:35:31.863Z
+round 0 binary B: checkout 23280 ms, first diff 1923 ms, second diff 1613 ms, merge preview 1861 ms, branch create to first diff done 28750 ms
+  second diff of B starts 10:36:07.671Z
+  second diff of B ended 10:36:09.435Z
+round 1 binary B: checkout 26901 ms, first diff 2565 ms, second diff 1764 ms, merge preview 1756 ms, branch create to first diff done 32675 ms
+  second diff of A starts 10:36:49.519Z
+  second diff of A ended 10:36:50.483Z
+round 1 binary A: checkout 24481 ms, first diff 7403 ms, second diff 964 ms, merge preview 633 ms, branch create to first diff done 36506 ms
+RESULTS {"A": {"checkout": [28419, 24481], "first_diff": [7760, 7403], "second_diff": [1054, 964], "merge_preview": [724, 633], "create_to_first_diff_done": [40485, 36506]}, "B": {"checkout": [23280, 26901], "first_diff": [1923, 2565], "second_diff": [1613, 1764], "merge_preview": [1861, 1756], "create_to_first_diff_done": [28750, 32675]}}
+== ended 2026-11-18T10:36:52Z exit 0; host: load averages: 13.00 12.04 12.50

@@ -1,0 +1,63 @@
+A = argonctl@2.5.0, B = argonctl@2.6.0, the executables the npm packages install; MongoDB 7.0.45 one-node replica set, WiredTiger cache 2 GiB
+c1d5729895765f6131a2e83548ebe768af5b60374f1b24072251eb277482c880  /opt/a/lib/node_modules/argonctl/bin/argon-bin
+edba0c2ecf6be346896ac0e3cc0b199515c0420a68c12a35cf2f19de12a7b113  /opt/b/lib/node_modules/argonctl/bin/argon-bin
+== 2026-11-18T10:29:55Z 100000 documents, 8 rounds, 10000 changed; host: load averages: 10.40 12.03 12.85
+argon260-il-runner 0.00% 137.8MiB / 13.63GiB
+argon260-il-mongo 0.95% 305MiB / 13.63GiB
+lf-mac-ops-c12f2b655fbd 325.38% 2.675GiB / 6GiB
+eager_poincare 4.07% 374.3MiB / 13.63GiB
+lf-mac-merge-5eba190090f9 114.11% 485.6MiB / 3GiB
+lf-mac-ci-08fbb259ea62 0.00% 43.43MiB / 6GiB
+argon-follow-mongo2 0.78% 363.3MiB / 13.63GiB
+argon-follow-mongo 1.68% 1.491GiB / 13.63GiB
+binary A: argon version 2.5.0
+binary B: argon version 2.6.0
+100000 documents imported, main checked out, nothing watching main; 10000 documents changed per branch
+round 0 binary A: checkout 1468 ms, first diff 1137 ms, second diff 730 ms, merge preview 886 ms, branch create to first diff done 4117 ms
+round 0 binary B: checkout 2101 ms, first diff 932 ms, second diff 672 ms, merge preview 710 ms, branch create to first diff done 4772 ms
+round 1 binary B: checkout 1507 ms, first diff 814 ms, second diff 661 ms, merge preview 670 ms, branch create to first diff done 3629 ms
+round 1 binary A: checkout 1836 ms, first diff 1047 ms, second diff 709 ms, merge preview 750 ms, branch create to first diff done 4397 ms
+round 2 binary A: checkout 1143 ms, first diff 760 ms, second diff 422 ms, merge preview 507 ms, branch create to first diff done 2969 ms
+round 2 binary B: checkout 1219 ms, first diff 741 ms, second diff 665 ms, merge preview 591 ms, branch create to first diff done 3098 ms
+round 3 binary B: checkout 1738 ms, first diff 768 ms, second diff 720 ms, merge preview 823 ms, branch create to first diff done 4067 ms
+round 3 binary A: checkout 3055 ms, first diff 1883 ms, second diff 885 ms, merge preview 684 ms, branch create to first diff done 6918 ms
+round 4 binary A: checkout 1829 ms, first diff 1815 ms, second diff 860 ms, merge preview 823 ms, branch create to first diff done 5341 ms
+round 4 binary B: checkout 2342 ms, first diff 1186 ms, second diff 739 ms, merge preview 780 ms, branch create to first diff done 5823 ms
+round 5 binary B: checkout 2190 ms, first diff 1219 ms, second diff 837 ms, merge preview 1369 ms, branch create to first diff done 5679 ms
+round 5 binary A: checkout 2553 ms, first diff 1257 ms, second diff 695 ms, merge preview 720 ms, branch create to first diff done 5715 ms
+round 6 binary A: checkout 2325 ms, first diff 1505 ms, second diff 875 ms, merge preview 735 ms, branch create to first diff done 5649 ms
+round 6 binary B: checkout 1957 ms, first diff 1046 ms, second diff 679 ms, merge preview 791 ms, branch create to first diff done 4750 ms
+round 7 binary B: checkout 2282 ms, first diff 1243 ms, second diff 937 ms, merge preview 1102 ms, branch create to first diff done 5859 ms
+round 7 binary A: checkout 2208 ms, first diff 1246 ms, second diff 640 ms, merge preview 746 ms, branch create to first diff done 5037 ms
+RESULTS {"A": {"checkout": [1468, 1836, 1143, 3055, 1829, 2553, 2325, 2208], "first_diff": [1137, 1047, 760, 1883, 1815, 1257, 1505, 1246], "second_diff": [730, 709, 422, 885, 860, 695, 875, 640], "merge_preview": [886, 750, 507, 684, 823, 720, 735, 746], "create_to_first_diff_done": [4117, 4397, 2969, 6918, 5341, 5715, 5649, 5037]}, "B": {"checkout": [2101, 1507, 1219, 1738, 2342, 2190, 1957, 2282], "first_diff": [932, 814, 741, 768, 1186, 1219, 1046, 1243], "second_diff": [672, 661, 665, 720, 739, 837, 679, 937], "merge_preview": [710, 670, 591, 823, 780, 1369, 791, 1102], "create_to_first_diff_done": [4772, 3629, 3098, 4067, 5823, 5679, 4750, 5859]}}
+== ended 2026-11-18T10:31:55Z exit 0; host: load averages: 12.71 12.33 12.86
+== 2026-11-18T10:31:55Z 10000 documents, 8 rounds, 10000 changed; host: load averages: 12.71 12.33 12.86
+zealous_lederberg 3.18% 211.8MiB / 13.63GiB
+argon260-il-runner 0.00% 18.21MiB / 13.63GiB
+argon260-il-mongo 2.32% 1.894GiB / 13.63GiB
+lf-mac-ops-c12f2b655fbd 567.45% 2.861GiB / 6GiB
+lf-mac-merge-5eba190090f9 120.68% 444.1MiB / 3GiB
+lf-mac-ci-08fbb259ea62 0.00% 43.47MiB / 6GiB
+argon-follow-mongo2 1.14% 361.9MiB / 13.63GiB
+argon-follow-mongo 8.91% 1.488GiB / 13.63GiB
+binary A: argon version 2.5.0
+binary B: argon version 2.6.0
+10000 documents imported, main checked out, nothing watching main; 10000 documents changed per branch
+round 0 binary A: checkout 298 ms, first diff 639 ms, second diff 498 ms, merge preview 595 ms, branch create to first diff done 2074 ms
+round 0 binary B: checkout 260 ms, first diff 688 ms, second diff 645 ms, merge preview 792 ms, branch create to first diff done 2672 ms
+round 1 binary B: checkout 213 ms, first diff 962 ms, second diff 761 ms, merge preview 718 ms, branch create to first diff done 2791 ms
+round 1 binary A: checkout 220 ms, first diff 735 ms, second diff 585 ms, merge preview 429 ms, branch create to first diff done 2318 ms
+round 2 binary A: checkout 120 ms, first diff 499 ms, second diff 412 ms, merge preview 460 ms, branch create to first diff done 1451 ms
+round 2 binary B: checkout 150 ms, first diff 665 ms, second diff 521 ms, merge preview 570 ms, branch create to first diff done 1643 ms
+round 3 binary B: checkout 166 ms, first diff 464 ms, second diff 424 ms, merge preview 482 ms, branch create to first diff done 1558 ms
+round 3 binary A: checkout 139 ms, first diff 568 ms, second diff 465 ms, merge preview 507 ms, branch create to first diff done 1627 ms
+round 4 binary A: checkout 200 ms, first diff 679 ms, second diff 702 ms, merge preview 743 ms, branch create to first diff done 1989 ms
+round 4 binary B: checkout 194 ms, first diff 688 ms, second diff 554 ms, merge preview 471 ms, branch create to first diff done 1947 ms
+round 5 binary B: checkout 161 ms, first diff 479 ms, second diff 467 ms, merge preview 565 ms, branch create to first diff done 1799 ms
+round 5 binary A: checkout 187 ms, first diff 573 ms, second diff 453 ms, merge preview 535 ms, branch create to first diff done 1856 ms
+round 6 binary A: checkout 126 ms, first diff 551 ms, second diff 369 ms, merge preview 401 ms, branch create to first diff done 1648 ms
+round 6 binary B: checkout 244 ms, first diff 613 ms, second diff 474 ms, merge preview 635 ms, branch create to first diff done 1976 ms
+round 7 binary B: checkout 242 ms, first diff 469 ms, second diff 361 ms, merge preview 643 ms, branch create to first diff done 1508 ms
+round 7 binary A: checkout 137 ms, first diff 459 ms, second diff 356 ms, merge preview 399 ms, branch create to first diff done 1493 ms
+RESULTS {"A": {"checkout": [298, 220, 120, 139, 200, 187, 126, 137], "first_diff": [639, 735, 499, 568, 679, 573, 551, 459], "second_diff": [498, 585, 412, 465, 702, 453, 369, 356], "merge_preview": [595, 429, 460, 507, 743, 535, 401, 399], "create_to_first_diff_done": [2074, 2318, 1451, 1627, 1989, 1856, 1648, 1493]}, "B": {"checkout": [260, 213, 150, 166, 194, 161, 244, 242], "first_diff": [688, 962, 665, 464, 688, 479, 613, 469], "second_diff": [645, 761, 521, 424, 554, 467, 474, 361], "merge_preview": [792, 718, 570, 482, 471, 565, 635, 643], "create_to_first_diff_done": [2672, 2791, 1643, 1558, 1947, 1799, 1976, 1508]}}
+== ended 2026-11-18T10:32:53Z exit 0; host: load averages: 11.76 12.17 12.77

@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "suite": {
+    "git_head": "ba305fcff9f9bf2f0cf9596e200468bc670185d2",
+    "dirty": false,
+    "scripts_sha256": {
+      "cli_scale.py": "edecc18d17f0a81286972fb41623b1e27e8ec18f7af107afff059b4af6061c66",
+      "cli_scale_docker.sh": "0f59fc75dfa4974a89e3cbbb39e7aa7c39c79865c2a8674d81d3bd0cb4dec1df"
+    }
+  },
+  "argon": {
+    "npm_package": "argonctl@2.6.0",
+    "npm_dist_integrity": "sha512-tOlyx60dvUwGagPu2fpiGQnb8Ig1fGGROJ0x4wGFb09nP2rfO8ofWz9xNc1l/lrkFfUS62kuuAocqrJbtZRnug==",
+    "reported_version": "argon version 2.6.0",
+    "binary": "bin/argon-bin, the executable the npm launcher starts",
+    "binary_sha256": "edba0c2ecf6be346896ac0e3cc0b199515c0420a68c12a35cf2f19de12a7b113",
+    "package_checksums": {
+      "argon-darwin-amd64": "0219fa25c09d200dbef8d0929e7af9a6fb63804b3c92b77bc432e799af9f4389",
+      "argon-darwin-arm64": "75d00755e84d7ac22bcf3fe3e58c613dc36e02cd3d4c92b75936af5e44bf839c",
+      "argon-linux-amd64": "869a0167f9fb9d7d19307434bb77733e3c9dec1b5feec613e3118eeb09b0e8b5",
+      "argon-linux-arm64": "edba0c2ecf6be346896ac0e3cc0b199515c0420a68c12a35cf2f19de12a7b113",
+      "argon-windows-amd64.exe": "4ab35c8c39e04ec0a1cdf07ba57f8187ed3b7a31d1084360d1d1fcb03a56c0bb"
+    }
+  },
+  "runner": {
+    "image": "node:24-bookworm",
+    "image_digest": "node@sha256:9d266751ca3d7fdbe651c878ffd5ad0a42fed49a18c283509267c97f025b7496",
+    "node": "v24.22.3",
+    "npm": "11.19.1",
+    "python": "Python 3.11.2",
+    "pymongo": "4.20.0",
+    "network": "shares the MongoDB container's network namespace; MongoDB is reached at localhost:27017"
+  },
+  "mongodb": {
+    "image": "mongo:7.0.45@sha256:c53852c00c23ca9f23fc39690350ffa9a80e3642fe8f96879726d8da0abe80a7",
+    "command": "mongod --replSet rs0 --bind_ip_all --wiredTigerCacheSizeGB 2",
+    "published_ports": "none"
+  },
+  "host": {
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "machdep.cpu.brand_string": "Apple M6",
+    "hw.memsize": "25769803776",
+    "hw.ncpu": "12",
+    "kern.osproductversion": "27.0.1"
+  },
+  "docker": {
+    "ServerVersion": "29.9.3",
+    "OperatingSystem": "Docker Desktop",
+    "OSType": "linux",
+    "Architecture": "aarch64",
+    "NCPU": 12,
+    "MemTotal": 14635769856,
+    "KernelVersion": "7.0.14-linuxkit"
+  }
+}
