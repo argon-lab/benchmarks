@@ -2,6 +2,26 @@
 
 Every number below is scoped to its recorded engine, suite and environment. Historical measurements are retained as history; current hardening measurements are separately labelled. A dirty source snapshot is not a released engine version. See [README.md](README.md) for methodology and reproducible commands.
 
+## 2026-11-18 · published v2.5.0 CLI at 10k/100k/1m documents, with v2.4.0 before it
+
+Argon 2.5.0 computes diff and merge plans from the documents a branch changed ([argon-lab/argon#117](https://github.com/argon-lab/argon/pull/117)). Same script and environment as the v2.4.0 entry below: executable from `npm install -g argonctl@2.5.0` (SHA256 `c1d5729895765f6131a2e83548ebe768af5b60374f1b24072251eb277482c880`, release [`v2.5.0`](https://github.com/argon-lab/argon/releases/tag/v2.5.0), commit `c906ffc8cc1e37c72efa90c8f860c6342edad80f`); suite `082d02ef0ad7d4d2549991d97b7230b043caa586`; window `2026-11-18T04:33:22Z` → `2026-11-18T04:39:13Z`. 2.4.0 was run again straight afterwards. **The host was shared and not quiet during either run; each million-document tier has one run.** Whole-command timings, not comparable with the Go matrix.
+
+Milliseconds, p50, 2.4.0 (entry below) → 2.5.0:
+
+| Step | 10,000 documents | 100,000 documents | 1,000,000 documents |
+|---|---:|---:|---:|
+| `argon diff`, 100 documents changed | 101 → 35 | 348 → 44 | 7,088 → 30 |
+| `argon diff`, 10,000 documents changed | 179 → 393 | 617 → 450 | 8,491 → 412 |
+| `argon merge preview`, 100 changed | 99 → 27 | 351 → 39 | 6,045 → 26 |
+| `argon merge preview`, 10,000 changed | 225 → 386 | 516 → 415 | 6,180 → 385 |
+| Peak resident memory of one `argon diff`, MiB | 112 → 123 | 541 → 115 | 5,016 → 118 |
+| New branch → first read (unchanged code path) | 96 → 135 | 584 → 798 | 8,472 → 7,534 |
+| `argon merge apply`, 100 changes (unchanged code path) | 42 → 46 | 39 → 56 | 112 → 55 |
+
+Diff and merge preview now follow the size of the change. The p50 hides the first diff on each branch, which with `main` checked out and unwatched also catches up `main`'s capture: a median of 1,874 ms at 1m documents (8,269 ms in 2.4.0), against 28 ms for later diffs. Where a branch changed every document (10,000 of 10,000) 2.5.0 is slower than 2.4.0. A new branch or sandbox is still a full copy. After `argon gc` has deleted the parent's entries a diff reads the parent's snapshot: about 1.1 s and 1.5 to 1.8 GiB at 1m documents, measured separately. Three cases fall back to the previous algorithm and were not measured. [Tables with spreads and the same-session 2.4.0 run, the gc case, load on the host, what was not measured and reproduction](reports/2026-11-18-v2.5.0-cli-scale/README.md); [generated report](reports/2026-11-18-v2.5.0-cli-scale/report.md); [all raw samples](reports/2026-11-18-v2.5.0-cli-scale/raw.json).
+
+---
+
 ## 2026-11-18 · published v2.4.0 CLI, whole-command timings at 10k/100k/1m documents
 
 A different measurement from the matrices below: [`scripts/cli_scale.py`](scripts/cli_scale.py) times whole commands of the executable that `npm install -g argonctl@2.4.0` installs (SHA256 `7da8a5b960a9985bf8f4c71fa235cdc0212dc80ed9c51e1e6fea8b9350ff3cff`, release [`v2.4.0`](https://github.com/argon-lab/argon/releases/tag/v2.4.0), commit `1ad461a2ccd2dd8c7e01168f480e052f76a37f12`); suite `44cb19bde0629c8276080896a31f91448161bb44`. **Do not compare these figures with the Go matrix figures in the other entries.** Run after DoltHub published [figures for Argon at these sizes](https://www.dolthub.com/blog/2026-11-10-argon-spotlight/); Argon only, DumboDB was not run.
