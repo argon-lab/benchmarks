@@ -84,7 +84,7 @@ times `argon sandbox create` to a first read and point reads by `_id`.
 scripts/cli_scale_docker.sh 2.4.0 results/cli-scale --sizes 10000,100000,1000000
 ```
 
-The wrapper needs only Docker. It installs that `argonctl` version from npm
+The wrapper needs Docker and Python 3 on the host. It installs that `argonctl` version from npm
 into a container that shares the MongoDB container's network namespace, checks
 the binary against the package's own checksum, publishes no ports, and removes
 both containers when it finishes. `WIREDTIGER_CACHE_GB` (default 2) sets

@@ -19,7 +19,7 @@ The run fails unless every diff and merge plan lists exactly the updated documen
 - [Generated report](report.md), [raw samples](raw.json), [provenance](provenance.json), [every command and its output](commands.log) (outputs longer than 4,000 characters are shortened in the middle)
 - Repeat of the two smaller sizes: [report](repeat-10k-100k/report.md), [raw samples](repeat-10k-100k/raw.json), [provenance](repeat-10k-100k/provenance.json), [commands](repeat-10k-100k/commands.log)
 
-Nothing in these files was edited after the run.
+Nothing in these files was edited after the run. After it, the wrapper `cli_scale_docker.sh` was changed only so that a host without `git` or `npm` can run it; `cli_scale.py`, which does the measuring, is as recorded.
 
 ## Background load during the run
 

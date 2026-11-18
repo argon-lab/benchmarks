@@ -56,7 +56,10 @@ import hashlib, json, platform, subprocess, sys
 from pathlib import Path
 suite, version, mongo_image, runner_image, cache_gb = sys.argv[1:6]
 def sh(*command):
-    done = subprocess.run(command, capture_output=True, text=True)
+    try:
+        done = subprocess.run(command, capture_output=True, text=True)
+    except FileNotFoundError:  # git and npm on the host are optional
+        return None
     return done.stdout.strip() if done.returncode == 0 else None
 def runner(command):
     return sh("docker", "exec", "argonbench-cli-runner", "bash", "-c", command)
