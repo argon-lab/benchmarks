@@ -1,0 +1,693 @@
+date (UTC): 2026-11-18T04:53:31Z
+argon version 2.5.0
+
+===== 100000 documents =====
+$ argon import database --uri mongodb://localhost:27017/?replicaSet=rs0 --database argonbench_gc_src_640777b4c5 --project gc-100000 --source-quiesced --yes --output json
+{
+  "project_id": "6afd2f53fd2b193584cb319e",
+  "branch_id": "6afd2f53fd2b193584cb31a0",
+  "imported_documents": 100000,
+  "wal_entries_created": 100000,
+  "imported_collections": [
+    "items"
+  ],
+  "duration": 1505380168,
+  "start_lsn": 2,
+  "end_lsn": 100002
+}
+[stderr] 🚀 Starting import of database 'argonbench_gc_src_640777b4c5'...
+[exit 0, 1554.7 ms, sampled peak RSS 302120 kB]
+$ argon branches create work -p gc-100000 --from main --output json
+{
+  "branch": {
+    "id": "6afd2f545a5b5685867110ad",
+    "project_id": "6afd2f53fd2b193584cb319e",
+    "name": "work",
+    "parent_id": "6afd2f53fd2b193584cb31a0",
+    "head_lsn": 100002,
+    "base_lsn": 100002,
+    "created_at": "2026-11-18T04:53:40.969577461Z",
+    "created_lsn": 100003,
+    "is_deleted": false
+  }
+}
+[exit 0, 7.6 ms, sampled peak RSS 144 kB]
+$ argon checkout -p gc-100000 -b work --output json
+{
+  "branch_id": "6afd2f545a5b5685867110ad",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6afd2f545a5b5685867110ad?replicaSet=rs0",
+  "lsn": 100002,
+  "physical_db": "argon_br_6afd2f545a5b5685867110ad"
+}
+[exit 0, 507.7 ms, sampled peak RSS 211124 kB]
+100 updates captured on the branch
+$ argon diff -p gc-100000 -b work --output json
+{
+  "plan": {
+    "format_version": 2,
+    "source_version": 2,
+    "target_version": 100,
+    "id": "000000000000000000000000",
+    "project_id": "6afd2f53fd2b193584cb319e",
+    "source_branch_id": "6afd2f545a5b5685867110ad",
+    "source_branch": "work",
+    "target_branch_id": "6afd2f53fd2b193584cb31a0",
+    "target_branch": "main",
+    "source_head": 100103,
+    "target_head": 100002,
+    "base_lsn": 100002,
+    "changes": [
+      {
+        "collection": "items",
+        "document_id": "item-00000000",
+        "document": {
+          "_id": "item-00000000",
+          "category": "cat-0",
+          "name": "Item 0",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+… 76697 characters omitted …
+em 99000",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "price": 90,
+          "qty": 1
+        },
+        "document_key": "item-00099000",
+        "before": {
+          "_id": "item-00099000",
+          "category": "cat-0",
+          "name": "Item 99000",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "price": 90,
+          "qty": 0
+        }
+      }
+    ],
+    "conflicts": null,
+    "status": "pending",
+    "created_at": "2026-11-18T04:53:42.059038004Z"
+  }
+}
+[exit 0, 48.6 ms, sampled peak RSS 27580 kB]
+$ argon diff -p gc-100000 -b work --output json
+{
+  "plan": {
+    "format_version": 2,
+    "source_version": 2,
+    "target_version": 100,
+    "id": "000000000000000000000000",
+    "project_id": "6afd2f53fd2b193584cb319e",
+    "source_branch_id": "6afd2f545a5b5685867110ad",
+    "source_branch": "work",
+    "target_branch_id": "6afd2f53fd2b193584cb31a0",
+    "target_branch": "main",
+    "source_head": 100103,
+    "target_head": 100002,
+    "base_lsn": 100002,
+    "changes": [
+      {
+        "collection": "items",
+        "document_id": "item-00000000",
+        "document": {
+          "_id": "item-00000000",
+          "category": "cat-0",
+          "name": "Item 0",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+… 76696 characters omitted …
+tem 99000",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "price": 90,
+          "qty": 1
+        },
+        "document_key": "item-00099000",
+        "before": {
+          "_id": "item-00099000",
+          "category": "cat-0",
+          "name": "Item 99000",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "price": 90,
+          "qty": 0
+        }
+      }
+    ],
+    "conflicts": null,
+    "status": "pending",
+    "created_at": "2026-11-18T04:53:42.08928292Z"
+  }
+}
+[exit 0, 23.3 ms, sampled peak RSS 27584 kB]
+$ argon diff -p gc-100000 -b work --output json
+{
+  "plan": {
+    "format_version": 2,
+    "source_version": 2,
+    "target_version": 100,
+    "id": "000000000000000000000000",
+    "project_id": "6afd2f53fd2b193584cb319e",
+    "source_branch_id": "6afd2f545a5b5685867110ad",
+    "source_branch": "work",
+    "target_branch_id": "6afd2f53fd2b193584cb31a0",
+    "target_branch": "main",
+    "source_head": 100103,
+    "target_head": 100002,
+    "base_lsn": 100002,
+    "changes": [
+      {
+        "collection": "items",
+        "document_id": "item-00000000",
+        "document": {
+          "_id": "item-00000000",
+          "category": "cat-0",
+          "name": "Item 0",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+… 76697 characters omitted …
+em 99000",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "price": 90,
+          "qty": 1
+        },
+        "document_key": "item-00099000",
+        "before": {
+          "_id": "item-00099000",
+          "category": "cat-0",
+          "name": "Item 99000",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "price": 90,
+          "qty": 0
+        }
+      }
+    ],
+    "conflicts": null,
+    "status": "pending",
+    "created_at": "2026-11-18T04:53:42.107594837Z"
+  }
+}
+[exit 0, 17.4 ms, sampled peak RSS 3336 kB]
+RESULT 100000 documents, diff before gc: ms and peak kB per run: [(48.6, 27580), (23.3, 27584), (17.4, 3336)]
+$ argon snapshot list -p gc-100000 -b main
+LSN      COLLECTION                   DOCS      BYTES CREATED
+100002   items                      100000     501414 2026-11-18 04:53:40
+[exit 0, 5.0 ms, sampled peak RSS 3340 kB]
+$ argon gc -p gc-100000 --retention 0s --output json
+{
+  "branches": [
+    {
+      "branch": "main",
+      "cutoffs": {
+        "items": 100002
+      }
+    }
+  ],
+  "dry_run": false,
+  "entries_removed": 100000
+}
+[exit 0, 504.0 ms, sampled peak RSS 24736 kB]
+entries of main left in the log: 0
+$ argon diff -p gc-100000 -b work --output json
+{
+  "plan": {
+    "format_version": 2,
+    "source_version": 2,
+    "target_version": 100,
+    "id": "000000000000000000000000",
+    "project_id": "6afd2f53fd2b193584cb319e",
+    "source_branch_id": "6afd2f545a5b5685867110ad",
+    "source_branch": "work",
+    "target_branch_id": "6afd2f53fd2b193584cb31a0",
+    "target_branch": "main",
+    "source_head": 100103,
+    "target_head": 100002,
+    "base_lsn": 100002,
+    "changes": [
+      {
+        "collection": "items",
+        "document_id": "item-00000000",
+        "document": {
+          "_id": "item-00000000",
+          "category": "cat-0",
+          "name": "Item 0",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+… 76697 characters omitted …
+em 99000",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "price": 90,
+          "qty": 1
+        },
+        "document_key": "item-00099000",
+        "before": {
+          "_id": "item-00099000",
+          "category": "cat-0",
+          "name": "Item 99000",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "price": 90,
+          "qty": 0
+        }
+      }
+    ],
+    "conflicts": null,
+    "status": "pending",
+    "created_at": "2026-11-18T04:53:42.719622295Z"
+  }
+}
+[exit 0, 206.8 ms, sampled peak RSS 206060 kB]
+$ argon diff -p gc-100000 -b work --output json
+{
+  "plan": {
+    "format_version": 2,
+    "source_version": 2,
+    "target_version": 100,
+    "id": "000000000000000000000000",
+    "project_id": "6afd2f53fd2b193584cb319e",
+    "source_branch_id": "6afd2f545a5b5685867110ad",
+    "source_branch": "work",
+    "target_branch_id": "6afd2f53fd2b193584cb31a0",
+    "target_branch": "main",
+    "source_head": 100103,
+    "target_head": 100002,
+    "base_lsn": 100002,
+    "changes": [
+      {
+        "collection": "items",
+        "document_id": "item-00000000",
+        "document": {
+          "_id": "item-00000000",
+          "category": "cat-0",
+          "name": "Item 0",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+… 76697 characters omitted …
+em 99000",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "price": 90,
+          "qty": 1
+        },
+        "document_key": "item-00099000",
+        "before": {
+          "_id": "item-00099000",
+          "category": "cat-0",
+          "name": "Item 99000",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "price": 90,
+          "qty": 0
+        }
+      }
+    ],
+    "conflicts": null,
+    "status": "pending",
+    "created_at": "2026-11-18T04:53:42.844553587Z"
+  }
+}
+[exit 0, 117.5 ms, sampled peak RSS 208120 kB]
+$ argon diff -p gc-100000 -b work --output json
+{
+  "plan": {
+    "format_version": 2,
+    "source_version": 2,
+    "target_version": 100,
+    "id": "000000000000000000000000",
+    "project_id": "6afd2f53fd2b193584cb319e",
+    "source_branch_id": "6afd2f545a5b5685867110ad",
+    "source_branch": "work",
+    "target_branch_id": "6afd2f53fd2b193584cb31a0",
+    "target_branch": "main",
+    "source_head": 100103,
+    "target_head": 100002,
+    "base_lsn": 100002,
+    "changes": [
+      {
+        "collection": "items",
+        "document_id": "item-00000000",
+        "document": {
+          "_id": "item-00000000",
+          "category": "cat-0",
+          "name": "Item 0",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+… 76697 characters omitted …
+em 99000",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "price": 90,
+          "qty": 1
+        },
+        "document_key": "item-00099000",
+        "before": {
+          "_id": "item-00099000",
+          "category": "cat-0",
+          "name": "Item 99000",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "price": 90,
+          "qty": 0
+        }
+      }
+    ],
+    "conflicts": null,
+    "status": "pending",
+    "created_at": "2026-11-18T04:53:42.962266921Z"
+  }
+}
+[exit 0, 114.5 ms, sampled peak RSS 210140 kB]
+RESULT 100000 documents, diff after gc: ms and peak kB per run: [(206.8, 206060), (117.5, 208120), (114.5, 210140)]
+
+===== 1000000 documents =====
+$ argon import database --uri mongodb://localhost:27017/?replicaSet=rs0 --database argonbench_gc_src_c3f8586806 --project gc-1000000 --source-quiesced --yes --output json
+{
+  "project_id": "6afd2f5b856f2fd1e08ef888",
+  "branch_id": "6afd2f5b856f2fd1e08ef88a",
+  "imported_documents": 1000000,
+  "wal_entries_created": 1000000,
+  "imported_collections": [
+    "items"
+  ],
+  "duration": 15879672216,
+  "start_lsn": 2,
+  "end_lsn": 1000002
+}
+[stderr] 🚀 Starting import of database 'argonbench_gc_src_c3f8586806'...
+[exit 0, 15995.4 ms, sampled peak RSS 2784536 kB]
+$ argon branches create work -p gc-1000000 --from main --output json
+{
+  "branch": {
+    "id": "6afd2f6aa3dbe6b5eda0ffd3",
+    "project_id": "6afd2f5b856f2fd1e08ef888",
+    "name": "work",
+    "parent_id": "6afd2f5b856f2fd1e08ef88a",
+    "head_lsn": 1000002,
+    "base_lsn": 1000002,
+    "created_at": "2026-11-18T04:54:02.954014013Z",
+    "created_lsn": 1000003,
+    "is_deleted": false
+  }
+}
+[exit 0, 17.5 ms, sampled peak RSS 144 kB]
+$ argon checkout -p gc-1000000 -b work --output json
+{
+  "branch_id": "6afd2f6aa3dbe6b5eda0ffd3",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6afd2f6aa3dbe6b5eda0ffd3?replicaSet=rs0",
+  "lsn": 1000002,
+  "physical_db": "argon_br_6afd2f6aa3dbe6b5eda0ffd3"
+}
+[exit 0, 6325.3 ms, sampled peak RSS 1679112 kB]
+100 updates captured on the branch
+$ argon diff -p gc-1000000 -b work --output json
+{
+  "plan": {
+    "format_version": 2,
+    "source_version": 2,
+    "target_version": 1000,
+    "id": "000000000000000000000000",
+    "project_id": "6afd2f5b856f2fd1e08ef888",
+    "source_branch_id": "6afd2f6aa3dbe6b5eda0ffd3",
+    "source_branch": "work",
+    "target_branch_id": "6afd2f5b856f2fd1e08ef88a",
+    "target_branch": "main",
+    "source_head": 1000103,
+    "target_head": 1000002,
+    "base_lsn": 1000002,
+    "changes": [
+      {
+        "collection": "items",
+        "document_id": "item-00000000",
+        "document": {
+          "_id": "item-00000000",
+          "category": "cat-0",
+          "name": "Item 0",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+… 76719 characters omitted …
+em 990000",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "price": 0,
+          "qty": 1
+        },
+        "document_key": "item-00990000",
+        "before": {
+          "_id": "item-00990000",
+          "category": "cat-0",
+          "name": "Item 990000",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "price": 0,
+          "qty": 0
+        }
+      }
+    ],
+    "conflicts": null,
+    "status": "pending",
+    "created_at": "2026-11-18T04:54:09.956586419Z"
+  }
+}
+[exit 0, 29.3 ms, sampled peak RSS 27312 kB]
+$ argon diff -p gc-1000000 -b work --output json
+{
+  "plan": {
+    "format_version": 2,
+    "source_version": 2,
+    "target_version": 1000,
+    "id": "000000000000000000000000",
+    "project_id": "6afd2f5b856f2fd1e08ef888",
+    "source_branch_id": "6afd2f6aa3dbe6b5eda0ffd3",
+    "source_branch": "work",
+    "target_branch_id": "6afd2f5b856f2fd1e08ef88a",
+    "target_branch": "main",
+    "source_head": 1000103,
+    "target_head": 1000002,
+    "base_lsn": 1000002,
+    "changes": [
+      {
+        "collection": "items",
+        "document_id": "item-00000000",
+        "document": {
+          "_id": "item-00000000",
+          "category": "cat-0",
+          "name": "Item 0",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+… 76719 characters omitted …
+em 990000",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "price": 0,
+          "qty": 1
+        },
+        "document_key": "item-00990000",
+        "before": {
+          "_id": "item-00990000",
+          "category": "cat-0",
+          "name": "Item 990000",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "price": 0,
+          "qty": 0
+        }
+      }
+    ],
+    "conflicts": null,
+    "status": "pending",
+    "created_at": "2026-11-18T04:54:09.979762628Z"
+  }
+}
+[exit 0, 17.6 ms, sampled peak RSS 3336 kB]
+$ argon diff -p gc-1000000 -b work --output json
+{
+  "plan": {
+    "format_version": 2,
+    "source_version": 2,
+    "target_version": 1000,
+    "id": "000000000000000000000000",
+    "project_id": "6afd2f5b856f2fd1e08ef888",
+    "source_branch_id": "6afd2f6aa3dbe6b5eda0ffd3",
+    "source_branch": "work",
+    "target_branch_id": "6afd2f5b856f2fd1e08ef88a",
+    "target_branch": "main",
+    "source_head": 1000103,
+    "target_head": 1000002,
+    "base_lsn": 1000002,
+    "changes": [
+      {
+        "collection": "items",
+        "document_id": "item-00000000",
+        "document": {
+          "_id": "item-00000000",
+          "category": "cat-0",
+          "name": "Item 0",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+… 76719 characters omitted …
+em 990000",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "price": 0,
+          "qty": 1
+        },
+        "document_key": "item-00990000",
+        "before": {
+          "_id": "item-00990000",
+          "category": "cat-0",
+          "name": "Item 990000",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "price": 0,
+          "qty": 0
+        }
+      }
+    ],
+    "conflicts": null,
+    "status": "pending",
+    "created_at": "2026-11-18T04:54:09.997235169Z"
+  }
+}
+[exit 0, 17.9 ms, sampled peak RSS 3348 kB]
+RESULT 1000000 documents, diff before gc: ms and peak kB per run: [(29.3, 27312), (17.6, 3336), (17.9, 3348)]
+$ argon snapshot list -p gc-1000000 -b main
+LSN      COLLECTION                   DOCS      BYTES CREATED
+1000002  items                     1000000    4877860 2026-11-18 04:54:02
+[exit 0, 5.4 ms, sampled peak RSS 3336 kB]
+$ argon gc -p gc-1000000 --retention 0s --output json
+{
+  "branches": [
+    {
+      "branch": "main",
+      "cutoffs": {
+        "items": 1000002
+      }
+    }
+  ],
+  "dry_run": false,
+  "entries_removed": 1000000
+}
+[exit 0, 5863.7 ms, sampled peak RSS 26728 kB]
+entries of main left in the log: 0
+$ argon diff -p gc-1000000 -b work --output json
+{
+  "plan": {
+    "format_version": 2,
+    "source_version": 2,
+    "target_version": 1000,
+    "id": "000000000000000000000000",
+    "project_id": "6afd2f5b856f2fd1e08ef888",
+    "source_branch_id": "6afd2f6aa3dbe6b5eda0ffd3",
+    "source_branch": "work",
+    "target_branch_id": "6afd2f5b856f2fd1e08ef88a",
+    "target_branch": "main",
+    "source_head": 1000103,
+    "target_head": 1000002,
+    "base_lsn": 1000002,
+    "changes": [
+      {
+        "collection": "items",
+        "document_id": "item-00000000",
+        "document": {
+          "_id": "item-00000000",
+          "category": "cat-0",
+          "name": "Item 0",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+… 76719 characters omitted …
+em 990000",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "price": 0,
+          "qty": 1
+        },
+        "document_key": "item-00990000",
+        "before": {
+          "_id": "item-00990000",
+          "category": "cat-0",
+          "name": "Item 990000",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "price": 0,
+          "qty": 0
+        }
+      }
+    ],
+    "conflicts": null,
+    "status": "pending",
+    "created_at": "2026-11-18T04:54:15.962901839Z"
+  }
+}
+[exit 0, 1550.8 ms, sampled peak RSS 1861280 kB]
+$ argon diff -p gc-1000000 -b work --output json
+{
+  "plan": {
+    "format_version": 2,
+    "source_version": 2,
+    "target_version": 1000,
+    "id": "000000000000000000000000",
+    "project_id": "6afd2f5b856f2fd1e08ef888",
+    "source_branch_id": "6afd2f6aa3dbe6b5eda0ffd3",
+    "source_branch": "work",
+    "target_branch_id": "6afd2f5b856f2fd1e08ef88a",
+    "target_branch": "main",
+    "source_head": 1000103,
+    "target_head": 1000002,
+    "base_lsn": 1000002,
+    "changes": [
+      {
+        "collection": "items",
+        "document_id": "item-00000000",
+        "document": {
+          "_id": "item-00000000",
+          "category": "cat-0",
+          "name": "Item 0",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+… 76719 characters omitted …
+em 990000",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "price": 0,
+          "qty": 1
+        },
+        "document_key": "item-00990000",
+        "before": {
+          "_id": "item-00990000",
+          "category": "cat-0",
+          "name": "Item 990000",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "price": 0,
+          "qty": 0
+        }
+      }
+    ],
+    "conflicts": null,
+    "status": "pending",
+    "created_at": "2026-11-18T04:54:17.459327256Z"
+  }
+}
+[exit 0, 1101.5 ms, sampled peak RSS 1638428 kB]
+$ argon diff -p gc-1000000 -b work --output json
+{
+  "plan": {
+    "format_version": 2,
+    "source_version": 2,
+    "target_version": 1000,
+    "id": "000000000000000000000000",
+    "project_id": "6afd2f5b856f2fd1e08ef888",
+    "source_branch_id": "6afd2f6aa3dbe6b5eda0ffd3",
+    "source_branch": "work",
+    "target_branch_id": "6afd2f5b856f2fd1e08ef88a",
+    "target_branch": "main",
+    "source_head": 1000103,
+    "target_head": 1000002,
+    "base_lsn": 1000002,
+    "changes": [
+      {
+        "collection": "items",
+        "document_id": "item-00000000",
+        "document": {
+          "_id": "item-00000000",
+          "category": "cat-0",
+          "name": "Item 0",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+… 76719 characters omitted …
+em 990000",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "price": 0,
+          "qty": 1
+        },
+        "document_key": "item-00990000",
+        "before": {
+          "_id": "item-00990000",
+          "category": "cat-0",
+          "name": "Item 990000",
+          "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "price": 0,
+          "qty": 0
+        }
+      }
+    ],
+    "conflicts": null,
+    "status": "pending",
+    "created_at": "2026-11-18T04:54:18.555292048Z"
+  }
+}
+[exit 0, 1095.3 ms, sampled peak RSS 1615452 kB]
+RESULT 1000000 documents, diff after gc: ms and peak kB per run: [(1550.8, 1861280), (1101.5, 1638428), (1095.3, 1615452)]
+exit 0
