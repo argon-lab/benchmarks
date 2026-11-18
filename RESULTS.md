@@ -2,6 +2,23 @@
 
 Every number below is scoped to its recorded engine, suite and environment. Historical measurements are retained as history; current hardening measurements are separately labelled. A dirty source snapshot is not a released engine version. See [README.md](README.md) for methodology and reproducible commands.
 
+## 2026-11-18 · published v2.6.0 and v2.5.0 alternated: the first diff after a checkout
+
+Argon 2.6.0 has a checkout keep its parent's capture position current while it copies ([argon-lab/argon#122](https://github.com/argon-lab/argon/pull/122), closing [#120](https://github.com/argon-lab/argon/issues/120)). Executables from `npm install -g argonctl@2.6.0` (SHA256 `edba0c2ecf6be346896ac0e3cc0b199515c0420a68c12a35cf2f19de12a7b113`, release [`v2.6.0`](https://github.com/argon-lab/argon/releases/tag/v2.6.0), commit `86e53d5a46084e160b3c8dd8309481f6b73372eb`) and `argonctl@2.5.0`, alternated round by round on one project with `scripts/interleaved_release_docker.sh`; window `2026-11-18T10:14Z` → `10:45Z`. **The host's load average was 10 to 16 on 12 CPUs throughout, so every absolute figure is inflated; only the comparison within a run is meaningful.**
+
+Milliseconds, median (min–max) of six rounds, 100 documents changed, `main` checked out and unwatched:
+
+| Step | Version | 100,000 documents | 1,000,000 documents |
+|---|---|---:|---:|
+| First `argon diff` on a branch | 2.5.0 | 332 (242–898) | 5,476 (2,429–8,589) |
+| | 2.6.0 | 84 (43–1,313) | 173 (89–448) |
+| Second `argon diff` | 2.5.0 | 68 (33–1,095) | 93 (32–102) |
+| | 2.6.0 | 48 (30–115) | 110 (49–597) |
+| `argon checkout` of the new branch | 2.5.0 | 1,081 (791–1,973) | 28,320 (15,847–44,373) |
+| | 2.6.0 | 1,021 (803–1,337) | 38,726 (19,567–47,768) |
+
+The first diff on a branch now costs about what a later one does. The oplog of the checkout is read during the checkout instead: over sixteen alternated rounds at 1m documents 2.6.0's checkouts took 12% longer in total, within the spread of either release, so a cost to checkout is neither shown nor excluded. With 10,000 documents changed at 1m documents, 2.6.0's later diffs and merge previews ran about twice as slow as 2.5.0's because they start sooner after the copy; with a 10-second pause in both the difference is gone. Two full `cli_scale.py` runs were made one after the other under different load and are not comparable with each other. Experimental features of 2.6.0 were not measured. Details, limits and files: [report](reports/2026-11-18-v2.6.0-cli-scale/README.md).
+
 ## 2026-11-18 · published v2.5.0 CLI at 10k/100k/1m documents, with v2.4.0 before it
 
 Argon 2.5.0 computes diff and merge plans from the documents a branch changed ([argon-lab/argon#117](https://github.com/argon-lab/argon/pull/117)). Same script and environment as the v2.4.0 entry below: executable from `npm install -g argonctl@2.5.0` (SHA256 `c1d5729895765f6131a2e83548ebe768af5b60374f1b24072251eb277482c880`, release [`v2.5.0`](https://github.com/argon-lab/argon/releases/tag/v2.5.0), commit `c906ffc8cc1e37c72efa90c8f860c6342edad80f`); suite `082d02ef0ad7d4d2549991d97b7230b043caa586`; window `2026-11-18T04:33:22Z` → `2026-11-18T04:39:13Z`. 2.4.0 was run again straight afterwards. **The host was shared and not quiet during either run; each million-document tier has one run.** Whole-command timings, not comparable with the Go matrix.

@@ -1,0 +1,41 @@
+A = argonctl@2.5.0, B = argonctl@2.6.0, the executables the npm packages install; MongoDB 7.0.45 one-node replica set, WiredTiger cache 2 GiB
+c1d5729895765f6131a2e83548ebe768af5b60374f1b24072251eb277482c880  /opt/a/lib/node_modules/argonctl/bin/argon-bin
+edba0c2ecf6be346896ac0e3cc0b199515c0420a68c12a35cf2f19de12a7b113  /opt/b/lib/node_modules/argonctl/bin/argon-bin
+== 2026-11-18T10:37:38Z 1000000 documents, 4 rounds, 10000 changed; host: load averages: 12.98 12.17 12.53
+argon260-il-runner 0.00% 140.8MiB / 13.63GiB
+lf-mac-ops-c2c40114e517 105.81% 314.7MiB / 6GiB
+argon260-il-mongo 1.18% 364.3MiB / 13.63GiB
+lf-mac-merge-46bf2ec5fc0d 85.82% 395.9MiB / 3GiB
+zealous_lederberg 3.59% 230.2MiB / 13.63GiB
+lf-mac-ci-08fbb259ea62 222.98% 545.1MiB / 6GiB
+argon-follow-mongo2 0.91% 356.5MiB / 13.63GiB
+argon-follow-mongo 4.17% 1.456GiB / 13.63GiB
+binary A: argon version 2.5.0
+binary B: argon version 2.6.0
+1000000 documents imported, main checked out, nothing watching main; 10000 documents changed per branch
+  second diff of A starts 10:39:02.541Z
+  second diff of A ended 10:39:03.720Z
+round 0 binary A: checkout 11690 ms, first diff 4628 ms, second diff 1179 ms, merge preview 772 ms, branch create to first diff done 18657 ms
+  second diff of B starts 10:39:42.250Z
+  second diff of B ended 10:39:43.808Z
+round 0 binary B: checkout 21064 ms, first diff 2268 ms, second diff 1557 ms, merge preview 1155 ms, branch create to first diff done 26958 ms
+  second diff of B starts 10:40:44.596Z
+  second diff of B ended 10:40:46.024Z
+round 1 binary B: checkout 38834 ms, first diff 3133 ms, second diff 1427 ms, merge preview 1277 ms, branch create to first diff done 48701 ms
+  second diff of A starts 10:41:46.621Z
+  second diff of A ended 10:41:47.948Z
+round 1 binary A: checkout 36605 ms, first diff 7878 ms, second diff 1324 ms, merge preview 940 ms, branch create to first diff done 48578 ms
+  second diff of A starts 10:42:41.136Z
+  second diff of A ended 10:42:42.451Z
+round 2 binary A: checkout 28983 ms, first diff 8188 ms, second diff 1315 ms, merge preview 1220 ms, branch create to first diff done 41587 ms
+  second diff of B starts 10:43:29.958Z
+  second diff of B ended 10:43:31.075Z
+round 2 binary B: checkout 29528 ms, first diff 2031 ms, second diff 1117 ms, merge preview 549 ms, branch create to first diff done 35593 ms
+  second diff of B starts 10:44:02.921Z
+  second diff of B ended 10:44:04.079Z
+round 3 binary B: checkout 17256 ms, first diff 1227 ms, second diff 1158 ms, merge preview 832 ms, branch create to first diff done 20813 ms
+  second diff of A starts 10:44:56.863Z
+  second diff of A ended 10:44:57.986Z
+round 3 binary A: checkout 30028 ms, first diff 7133 ms, second diff 1122 ms, merge preview 654 ms, branch create to first diff done 41392 ms
+RESULTS {"A": {"checkout": [11690, 36605, 28983, 30028], "first_diff": [4628, 7878, 8188, 7133], "second_diff": [1179, 1324, 1315, 1122], "merge_preview": [772, 940, 1220, 654], "create_to_first_diff_done": [18657, 48578, 41587, 41392]}, "B": {"checkout": [21064, 38834, 29528, 17256], "first_diff": [2268, 3133, 2031, 1227], "second_diff": [1557, 1427, 1117, 1158], "merge_preview": [1155, 1277, 549, 832], "create_to_first_diff_done": [26958, 48701, 35593, 20813]}}
+== ended 2026-11-18T10:45:00Z exit 0; host: load averages: 9.96 10.92 11.79

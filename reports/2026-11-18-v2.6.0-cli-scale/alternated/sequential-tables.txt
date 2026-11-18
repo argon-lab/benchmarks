@@ -1,0 +1,59 @@
+sample keys: ['changed', 'iteration', 'ms', 'operation']
+
+### First diff on a branch: median (min–max) of 5 first diffs / median of 10 later diffs, ms
+
+| Changed | Version and run | 10,000 documents | 100,000 documents | 1,000,000 documents |
+|---|---|---:|---:|---:|
+| 100 | 2.5.0, report of 04:33Z | 68 (64–150) / 30 | 233 (226–463) / 32 | 1,874 (1,834–2,150) / 28 |
+| 100 | 2.5.0, this session | 199 (156–295) / 118 | 460 (426–585) / 73 | 5,778 (2,338–6,879) / 73 |
+| 100 | **2.6.0** | 113 (84–214) / 102 | 239 (145–525) / 184 | 519 (403–804) / 172 |
+| 10,000 | 2.5.0, report of 04:33Z | 450 (424–644) / 313 | 647 (486–797) / 403 | 2,819 (2,610–3,589) / 383 |
+| 10,000 | 2.5.0, this session | 1,033 (676–1,207) / 879 | 1,516 (1,361–2,588) / 770 | 5,700 (3,943–9,217) / 574 |
+| 10,000 | **2.6.0** | 1,290 (764–1,699) / 1,023 | 1,660 (1,522–1,916) / 1,340 | 4,316 (3,311–9,574) / 2,865 |
+
+### Whole-step medians, p50 (min–max), ms
+
+| Step | Version and run | 10,000 documents | 100,000 documents | 1,000,000 documents |
+|---|---|---:|---:|---:|
+| `argon checkout` of a new branch | 2.5.0, report of 04:33Z | 103 (75–147) | 738 (617–1,411) | 7,512 (6,231–10,833) |
+| `argon checkout` of a new branch | 2.5.0, this session | 288 (207–545) | 1,869 (1,272–3,325) | 14,387 (8,556–52,512) |
+| `argon checkout` of a new branch | **2.6.0** | 324 (247–723) | 3,305 (2,613–5,980) | 60,752 (41,864–85,558) |
+| New branch → first read | 2.5.0, report of 04:33Z | 135 (91–225) | 798 (632–1,448) | 7,534 (6,246–10,881) |
+| New branch → first read | 2.5.0, this session | 421 (290–745) | 1,918 (1,383–3,614) | 14,463 (8,608–52,588) |
+| New branch → first read | **2.6.0** | 412 (298–949) | 3,530 (2,765–6,133) | 60,845 (42,103–85,772) |
+| New sandbox → first read | 2.5.0, report of 04:33Z | 186 (150–206) | 989 (746–1,135) | 10,776 (7,700–12,771) |
+| New sandbox → first read | 2.5.0, this session | 344 (329–537) | 2,390 (2,090–3,221) | 40,274 (39,656–48,888) |
+| New sandbox → first read | **2.6.0** | 660 (615–847) | 2,204 (2,156–3,108) | 36,523 (20,156–49,398) |
+| `argon diff`, 100 changed | 2.5.0, report of 04:33Z | 35 (20–150) | 44 (26–463) | 30 (22–2,150) |
+| `argon diff`, 100 changed | 2.5.0, this session | 144 (80–295) | 89 (53–585) | 80 (34–6,879) |
+| `argon diff`, 100 changed | **2.6.0** | 111 (55–214) | 186 (110–545) | 256 (124–804) |
+| `argon diff`, 10,000 changed | 2.5.0, report of 04:33Z | 393 (246–778) | 450 (313–797) | 412 (315–3,589) |
+| `argon diff`, 10,000 changed | 2.5.0, this session | 885 (552–1,207) | 988 (587–2,588) | 672 (362–9,217) |
+| `argon diff`, 10,000 changed | **2.6.0** | 1,067 (727–1,790) | 1,437 (975–1,916) | 3,311 (1,615–9,574) |
+| `argon merge preview`, 100 changed | 2.5.0, report of 04:33Z | 27 (25–53) | 39 (24–82) | 26 (23–28) |
+| `argon merge preview`, 100 changed | 2.5.0, this session | 111 (87–131) | 78 (56–103) | 94 (30–162) |
+| `argon merge preview`, 100 changed | **2.6.0** | 97 (73–118) | 192 (122–488) | 169 (125–272) |
+| `argon merge preview`, 10,000 changed | 2.5.0, report of 04:33Z | 386 (326–491) | 415 (367–446) | 385 (366–418) |
+| `argon merge preview`, 10,000 changed | 2.5.0, this session | 951 (548–1,167) | 894 (816–930) | 474 (402–586) |
+| `argon merge preview`, 10,000 changed | **2.6.0** | 1,107 (690–1,437) | 1,428 (995–2,276) | 2,954 (1,552–3,203) |
+| `argon merge apply`, 100 changed | 2.5.0, report of 04:33Z | 46 (39–79) | 56 (45–573) | 55 (47–2,409) |
+| `argon merge apply`, 100 changed | 2.5.0, this session | 163 (144–289) | 128 (114–635) | 287 (220–4,037) |
+| `argon merge apply`, 100 changed | **2.6.0** | 185 (137–384) | 325 (184–1,294) | 640 (515–20,600) |
+| `argon merge apply`, 10,000 changed | 2.5.0, report of 04:33Z | 2,624 (2,315–3,234) | 2,595 (2,282–2,857) | 5,273 (5,181–5,755) |
+| `argon merge apply`, 10,000 changed | 2.5.0, this session | 5,008 (4,764–6,091) | 7,220 (6,472–8,915) | 7,581 (6,810–12,731) |
+| `argon merge apply`, 10,000 changed | **2.6.0** | 6,468 (6,108–7,367) | 8,798 (6,812–11,669) | 25,484 (17,811–34,241) |
+| `argon branches create` | 2.5.0, report of 04:33Z | 18 (14–68) | 31 (13–84) | 15 (12–47) |
+| `argon branches create` | 2.5.0, this session | 72 (46–236) | 85 (33–266) | 53 (16–169) |
+| `argon branches create` | **2.6.0** | 80 (46–173) | 99 (53–291) | 117 (70–221) |
+
+### Peak RSS of one `argon diff`, MiB
+
+2.5.0, report of 04:33Z [123, 115, 118]
+2.5.0, this session [122, 112, 117]
+**2.6.0** [121, 112, 113]
+
+### Individual first diffs at the largest size, 100 changed, ms
+
+2.5.0, report of 04:33Z [2016, 2150, 1874, 1834, 1862]
+2.5.0, this session [6879, 6259, 5778, 3886, 2338]
+**2.6.0** [519, 804, 748, 403, 424]
