@@ -2,6 +2,29 @@
 
 Every number below is scoped to its recorded engine, suite and environment. Historical measurements are retained as history; current hardening measurements are separately labelled. A dirty source snapshot is not a released engine version. See [README.md](README.md) for methodology and reproducible commands.
 
+## 2026-11-18 · published v2.4.0 CLI, whole-command timings at 10k/100k/1m documents
+
+A different measurement from the matrices below: [`scripts/cli_scale.py`](scripts/cli_scale.py) times whole commands of the executable that `npm install -g argonctl@2.4.0` installs (SHA256 `7da8a5b960a9985bf8f4c71fa235cdc0212dc80ed9c51e1e6fea8b9350ff3cff`, release [`v2.4.0`](https://github.com/argon-lab/argon/releases/tag/v2.4.0), commit `1ad461a2ccd2dd8c7e01168f480e052f76a37f12`); suite `44cb19bde0629c8276080896a31f91448161bb44`. **Do not compare these figures with the Go matrix figures in the other entries.** Run after DoltHub published [figures for Argon at these sizes](https://www.dolthub.com/blog/2026-11-10-argon-spotlight/); Argon only, DumboDB was not run.
+
+Environment: shared Apple M6 / 24 GiB host, macOS 27.0.1 arm64; CLI and MongoDB 7.0.45 in two containers sharing one network namespace on Docker Desktop (Engine 29.9.3, linux/arm64 VM with 12 CPUs and about 13.6 GiB), one-member replica set `rs0`, WiredTiger 2 GiB cache, majority acknowledgment. One collection of about 236-byte documents with the `_id` index only. Window: `2026-11-18T02:17:52Z` → `2026-11-18T02:28:16Z`. **Three unrelated MongoDB containers started on the same VM during the window; the whole 1m tier ran alongside them, and it has one run.** The 10k and 100k tiers were repeated.
+
+Milliseconds, `p50 (min–max)`:
+
+| Step | n | 10,000 documents | 100,000 documents | 1,000,000 documents |
+|---|---:|---:|---:|---:|
+| New branch → first read | 10 | 96 (88–133) | 584 (535–649) | 8,472 (6,795–10,960) |
+| New sandbox → first read | 5 | 114 (102–154) | 852 (820–987) | 7,776 (6,993–8,415) |
+| `argon diff`, 100 documents changed | 15 | 101 (85–157) | 348 (327–676) | 7,088 (4,816–14,907) |
+| `argon diff`, 10,000 documents changed | 15 | 179 (146–229) | 617 (421–1,203) | 8,491 (5,011–20,607) |
+| `argon merge preview`, 100 changed | 5 | 99 (84–104) | 351 (335–362) | 6,045 (5,141–8,425) |
+| `argon merge apply`, 100 changes | 5 | 42 (34–74) | 39 (38–240) | 112 (79–3,101) |
+| `argon merge apply`, 10,000 changes | 5 | 1,952 (1,875–2,383) | 2,164 (2,062–2,795) | 6,421 (5,499–7,814) |
+| `argon import database` | 1 | 201 | 1,884 | 28,377 |
+
+A new branch or sandbox, a diff and a merge preview grow with the number of documents in the database; diff and preview cost about the same for 100 changed documents as for 10,000. One `argon diff` process peaked near 5 GiB of resident memory at 1m documents (225 MiB of BSON). Point reads by `_id` on a checked-out branch had a p50 of 78, 81 and 129 µs. [Comparison with DoltHub's published figures, memory, storage, the repeat, what was not measured and reproduction](reports/2026-11-18-v2.4.0-cli-scale/README.md); [generated report](reports/2026-11-18-v2.4.0-cli-scale/report.md); [all raw samples](reports/2026-11-18-v2.4.0-cli-scale/raw.json); [every command and its output](reports/2026-11-18-v2.4.0-cli-scale/commands.log). Five workflows per cell make the maximum the observed maximum. The Go matrix was not repeated for 2.4.0.
+
+---
+
 ## 2026-11-11 · released v2.2.0 source, 12-cell matrix, containerized MongoDB
 
 Engine [`v2.2.0`](https://github.com/argon-lab/argon/releases/tag/v2.2.0), commit `48bd05a262d404277edefb0855ea3043d3563644`; suite `5daa5d74c147975268e1110a0b8e264fe7f9ef33`. The engine was frozen from the tag. All 12 cells completed: 1k/10k/50k documents × 1/4 workers × 1/4 ancestry levels, with 1,200 metadata forks, 240 sandbox/capture workflows and 15,000 captured divergence records.
