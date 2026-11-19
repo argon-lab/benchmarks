@@ -6,7 +6,7 @@
 set -uo pipefail
 S="$(cd "$(dirname "$0")" && pwd)"
 VERSION="$1"; SIZES="$2"; OUT="$3"
-cleanup() { docker rm -f argongc-runner argongc-mongo >/dev/null 2>&1; }
+cleanup() { docker rm -fv argongc-runner argongc-mongo >/dev/null 2>&1; }
 trap cleanup EXIT
 {
   echo "date (UTC): $(date -u +%Y-%m-%dT%H:%M:%SZ)"

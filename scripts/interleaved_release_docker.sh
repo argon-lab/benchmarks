@@ -11,7 +11,7 @@ set -uo pipefail
 A="$1"; B="$2"; OUT="$3"; shift 3
 HERE="$(cd "$(dirname "$0")" && pwd)"
 M=argon260-il-mongo; R=argon260-il-runner
-cleanup() { docker rm -f argon260-il-runner argon260-il-mongo >/dev/null 2>&1; }
+cleanup() { docker rm -fv argon260-il-runner argon260-il-mongo >/dev/null 2>&1; }
 trap cleanup EXIT
 docker run -d --name "$M" 'mongo:7.0.45@sha256:c53852c00c23ca9f23fc39690350ffa9a80e3642fe8f96879726d8da0abe80a7' mongod --replSet rs0 --bind_ip_all --wiredTigerCacheSizeGB 2 >/dev/null
 for _ in $(seq 1 120); do

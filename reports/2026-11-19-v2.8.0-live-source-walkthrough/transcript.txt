@@ -1,0 +1,438 @@
+== 2026-11-19T13:06:40Z
+argon version 2.8.0
+source: 7.0.45, replica set src0; Argon metadata: rs0 (a separate deployment)
+seeded shop.orders with 50000 documents and shop.customers with 200
+the application thread is writing to the source (one write, then 5 ms of sleep, for the whole run)
+
+##### 1. Import while the source is being written
+
+$ argon import preview --database shop --online
+📋 Import Preview for Database 'shop'
+
+📊 Summary:
+   Collections: 2
+   Documents: 50.3K
+   Estimated Size: 7.7 MB
+   Estimated WAL Entries: 50.3K
+
+📁 Collections:
+   • orders
+     Documents: 50.1K
+     Size: 7.7 MB
+     Indexes: 1
+
+   • customers
+     Documents: 200
+     Size: 12.6 KB
+     Indexes: 1
+
+💡 Next steps:
+   Replica set, still being written: argon import database --uri <uri> --database shop --project <project-name> --online
+   Writers stopped:                  argon import database --uri <uri> --database shop --project <project-name> --source-quiesced
+[exit 0, 54 ms]
+
+$ argon import database --database shop --project shop --online --yes
+✅ Import Complete
+
+📊 Import Results:
+   Project ID: 6afef4617aaf32302781f046
+   Branch ID: 6afef4617aaf32302781f048
+   Documents Imported: 50.3K
+   WAL Entries Created: 50.3K
+   Collections: 2
+   Duration: 868.050209ms
+   LSN Range: 2 - 50348
+   Consistent: LSN 50348 is the source at cluster time Timestamp(1795093601, 130)
+   LSNs below 50348 are the copy in progress, not states the source was in.
+   main follows database 'shop'; keep it current with: argon source follow -p <project>
+
+📁 Imported Collections:
+   • customers
+   • orders
+
+🚀 Your data now has time travel capabilities!
+   Create branches: argon branches create <name> -p 6afef4617aaf32302781f046
+   Time travel: argon time-travel info -p 6afef4617aaf32302781f046 -b main
+[stderr] 2026/11/19 13:06:41 WAL Monitor: Started health monitoring
+[stderr] 🚀 Starting import of database 'shop'...
+[stderr] 2026/11/19 13:06:42 WAL Monitor: Stopped health monitoring
+[exit 0, 942 ms]
+[the application made 144 writes to the source while this command ran (0.9 s)]
+
+##### 2. Follow
+
+$ argon source follow -p shop    (left running; its output is in follow.log)
+
+$ argon source status -p shop
+Project shop: main follows database "shop"
+  Source:      mongodb://argon-wbpost-source:27017/shop (replica set src0)
+  Identity:    replica-set ID
+  State:       running (last report 2026-11-19T13:06:42Z)
+  Health:      healthy (exact)
+  Checkpoint:  The branch head is a verified exact source checkpoint.
+  Next:        No repair is needed.
+  Owner:       follow on ce964e74ada6 (PID 307, last heartbeat 2026-11-19T13:06:50Z)
+  Head:        LSN 51545
+  Position:    source cluster time Timestamp(1795093610, 45)
+  Consistent:  LSN 51545 is the source at Timestamp(1795093610, 45)
+  Last change: 2026-11-19T13:06:50Z (stored 8 ms after it happened)
+  History:     exact outside the ranges below
+    inexact LSN 3-50348: online import: the source was written while it was copied (exact again at LSN 50348)
+[stderr] 2026/11/19 13:06:50 WAL Monitor: Started health monitoring
+[stderr] 2026/11/19 13:06:50 WAL Monitor: Stopped health monitoring
+[exit 0, 32 ms]
+
+##### 3. Is main the source? (the application is paused for this comparison only)
+[application paused; following stored the source's newest write 12.6 s after it was made, on an otherwise idle source]
+
+$ argon source status -p shop
+Project shop: main follows database "shop"
+  Source:      mongodb://argon-wbpost-source:27017/shop (replica set src0)
+  Identity:    replica-set ID
+  State:       running (last report 2026-11-19T13:06:42Z)
+  Health:      healthy (exact)
+  Checkpoint:  The branch head is a verified exact source checkpoint.
+  Next:        No repair is needed.
+  Owner:       follow on ce964e74ada6 (PID 307, last heartbeat 2026-11-19T13:07:02Z)
+  Head:        LSN 51546
+  Position:    source cluster time Timestamp(1795093622, 1)
+  Consistent:  LSN 51546 is the source at Timestamp(1795093622, 1)
+  Last change: 2026-11-19T13:06:50Z (stored 12574 ms after it happened)
+  History:     exact outside the ranges below
+    inexact LSN 3-50348: online import: the source was written while it was copied (exact again at LSN 50348)
+[stderr] 2026/11/19 13:07:02 WAL Monitor: Started health monitoring
+[stderr] 2026/11/19 13:07:02 WAL Monitor: Stopped health monitoring
+[exit 0, 24 ms]
+
+$ argon sandbox create -p shop --name check --watch --actor check    (left running)
+2026/11/19 13:07:02 WAL Monitor: Started health monitoring
+Sandbox "check" forked from main at LSN 51546.
+Expires: 2026-11-19T14:07:02Z
+Connection string:
+  mongodb://argon-wbpost-meta:27017/argon_br_6afef47627321bd76c296690?replicaSet=rs0
+Capturing writes (Ctrl-C to stop)...
+[orders: source 50608 documents, sandbox forked from main 50608 documents; values IDENTICAL (sha256 77aee764468878c8 / 77aee764468878c8); exact BSON bytes DIFFERENT (sha256 24eaf38e4bf81ae6 / 0c369cffac4eb5b2)]
+[50547 documents differ in bytes; the first: source fields ['_id', 'status', 'customer', 'total_cents', 'items', 'placed_at', 'touches'], sandbox forked from main fields ['_id', 'customer', 'items', 'placed_at', 'status', 'total_cents', 'touches']]
+[  source: {"_id": "order-000001", "status": "paid", "customer": "cust-001", "total_cents": 537, "items": [{"sku": "sku-01", "qty": 2}], "placed_at": {"$date": "2026-11-01T00:01:00Z"}, "touches": 0}]
+[  sandbox forked from main: {"_id": "order-000001", "customer": "cust-001", "items": [{"qty": 2, "sku": "sku-01"}], "placed_at": {"$date": "2026-11-01T00:01:00Z"}, "status": "paid", "total_cents": 537, "touches": 0}]
+[customers: source 200 documents, sandbox forked from main 200 documents; values IDENTICAL (sha256 4596f17c23748169 / 4596f17c23748169); exact BSON bytes DIFFERENT (sha256 cbd620837406d59f / 6fc1d8779effd3a2)]
+[26 documents differ in bytes; the first: source fields ['_id', 'name', 'tier'], sandbox forked from main fields ['_id', 'tier', 'name']]
+[  source: {"_id": "cust-006", "name": "Customer 6", "tier": "standard"}]
+[  sandbox forked from main: {"_id": "cust-006", "tier": "standard", "name": "Customer 6"}]
+
+$ argon sandbox discard -p shop -b check
+Discarded; storage reclaimed.
+[stderr] 2026/11/19 13:07:04 WAL Monitor: Started health monitoring
+[stderr] 2026/11/19 13:07:04 WAL Monitor: Stopped health monitoring
+[exit 0, 45 ms]
+[application resumed]
+
+##### 4. An agent works in a sandbox
+
+$ argon sandbox create -p shop --name agent-1 --watch --actor agent-1    (left running)
+2026/11/19 13:07:04 WAL Monitor: Started health monitoring
+Sandbox "agent-1" forked from main at LSN 51550.
+Expires: 2026-11-19T14:07:04Z
+Connection string:
+  mongodb://argon-wbpost-meta:27017/argon_br_6afef4784065642e523e46b5?replicaSet=rs0
+Capturing writes (Ctrl-C to stop)...
+[field order of order-000042 on the source before: _id, status, customer, total_cents, items, placed_at, touches]
+[the agent, through the sandbox's connection string: set order-000042 to refunded, inserted order-000042-refund, deleted order-000017]
+
+$ argon diff -p shop -b agent-1
+Merging agent-1 → main
+  delete orders/order-000017
+  put    orders/order-000042
+  put    orders/order-000042-refund
+3 change(s), 0 conflict(s)
+[stderr] 2026/11/19 13:07:04 WAL Monitor: Started health monitoring
+[stderr] 2026/11/19 13:07:04 WAL Monitor: Stopped health monitoring
+[exit 0, 26 ms]
+
+##### 5. Review
+
+$ argon merge preview -p shop -b agent-1 -o json
+{
+  "plan": {
+    "format_version": 3,
+    "source_version": 2,
+    "target_version": 1272,
+    "id": "6afef478f3411167fd812ec4",
+    "project_id": "6afef4617aaf32302781f046",
+    "source_branch_id": "6afef4784065642e523e46b5",
+    "source_branch": "agent-1",
+    "target_branch_id": "6afef4617aaf32302781f048",
+    "target_branch": "main",
+    "source_head": 51618,
+    "target_head": 51631,
+    "base_lsn": 51550,
+    "status": "pending",
+    "created_at": "2026-11-19T13:07:04.838792418Z",
+    "provenance_version": 1,
+    "followed_database": "shop",
+    "followed_replica_set_id": "6afef4589d52eaec4013e268",
+    "changes": [
+      {
+        "delete": true,
+        "collection": "orders",
+        "document_id": "order-000017",
+        "document_key": "order-000017",
+        "before": {
+          "_id": "order-000017",
+          "status": "paid",
+          "customer": "cust-017",
+          "total_cents": {
+            "$numberInt": "1129"
+          },
+          "items": [
+            {
+              "sku": "sku-17",
+              "qty": {
+                "$numberInt": "3"
+              }
+            }
+          ],
+          "placed_at": {
+            "$date": {
+              "$numberLong": "1793492220000"
+            }
+          },
+          "touches": {
+            "$numberInt": "0"
+          }
+        }
+      },
+      {
+        "collection": "orders",
+        "document_id": "order-000042",
+        "document_key": "order-000042",
+        "document": {
+          "_id": "order-000042",
+          "touches": {
+            "$numberInt": "0"
+          },
+          "customer": "cust-042",
+          "items": [
+            {
+              "qty": {
+                "$numberInt": "1"
+              },
+              "sku": "sku-42"
+            }
+          ],
+          "placed_at": {
+            "$date": {
+              "$numberLong": "1793493720000"
+            }
+          },
+          "status": "refunded",
+          "total_cents": {
+            "$numberInt": "2054"
+          },
+          "refund_cents": {
+            "$numberInt": "2054"
+          }
+        },
+        "before": {
+          "_id": "order-000042",
+          "status": "paid",
+          "customer": "cust-042",
+          "total_cents": {
+            "$numberInt": "2054"
+          },
+          "items": [
+            {
+              "sku": "sku-42",
+              "qty": {
+                "$numberInt": "1"
+              }
+            }
+          ],
+          "placed_at": {
+            "$date": {
+              "$numberLong": "1793493720000"
+            }
+          },
+          "touches": {
+            "$numberInt": "0"
+          }
+        }
+      },
+      {
+        "collection": "orders",
+        "document_id": "order-000042-refund",
+        "document_key": "order-000042-refund",
+        "document": {
+          "_id": "order-000042-refund",
+          "status": "refund",
+          "customer": "cust-042",
+          "total_cents": {
+            "$numberInt": "-2054"
+          },
+          "refunds": "order-000042"
+        }
+      }
+    ],
+    "conflicts": null,
+    "approval_digest": "3bcc31356109437f4a4f02ad1826aa05882e087f8ce2afe3accaf2f4294a3da8"
+  }
+}
+[stderr] 2026/11/19 13:07:04 WAL Monitor: Started health monitoring
+[stderr] 2026/11/19 13:07:04 WAL Monitor: Stopped health monitoring
+[exit 0, 27 ms]
+
+##### 6. What is refused
+
+$ argon merge apply 6afef478f3411167fd812ec4 --write-back
+[stderr] Error: --write-back requires --approve with a 64-character lowercase hex digest; run argon merge list -p <project> --output json and pass that plan's approval_digest with --approve. For an older plan, preview again with this version
+[exit 1, 14 ms]
+
+$ argon merge apply 6afef478f3411167fd812ec4 --write-back --approve 0000000000000000000000000000000000000000000000000000000000000000
+[stderr] 2026/11/19 13:07:04 WAL Monitor: Started health monitoring
+[stderr] Error: approval digest does not match the saved plan; run argon merge list -p <project> --output json and pass that plan's approval_digest with --approve. For an older plan, preview again with this version
+[stderr] 2026/11/19 13:07:04 WAL Monitor: Stopped health monitoring
+[exit 1, 20 ms]
+
+$ argon merge apply 6afef478f3411167fd812ec4 --write-back --approve 3bcc31356109437f4a4f02ad1826aa05882e087f8ce2afe3accaf2f4294a3da8 --uri mongodb://argon-wbpost-meta:27017/?replicaSet=rs0
+[stderr] 2026/11/19 13:07:04 WAL Monitor: Started health monitoring
+[stderr] Error: write-back failed: the connection leads to a different deployment than the one this project follows (mongodb://argon-wbpost-source:27017/shop)
+[stderr] 2026/11/19 13:07:04 WAL Monitor: Stopped health monitoring
+[exit 1, 30 ms]
+
+$ argon merge apply 6afef478f3411167fd812ec4
+[stderr] 2026/11/19 13:07:04 WAL Monitor: Started health monitoring
+[stderr] Error: apply failed: merge apply refused: branch main follows the external database "shop" and only changes when that database does; write to a sandbox forked from it, inspect the lossless images with `argon merge list -p <project> --output json` and write the plan to the source with `argon merge apply <plan> --write-back --approve <digest>`, or stop following with `argon source detach`
+[stderr] 2026/11/19 13:07:04 WAL Monitor: Stopped health monitoring
+[exit 1, 26 ms]
+[after the four refusals the three documents on the source are as they were]
+
+##### 7. Write back
+
+$ argon merge apply 6afef478f3411167fd812ec4 --write-back --approve 3bcc31356109437f4a4f02ad1826aa05882e087f8ce2afe3accaf2f4294a3da8
+Written to the source database: 3 change(s) in one transaction.
+main shows them once following has read them from the source (argon source status).
+[stderr] 2026/11/19 13:07:04 WAL Monitor: Started health monitoring
+[stderr] 2026/11/19 13:07:04 WAL Monitor: Stopped health monitoring
+[exit 0, 30 ms]
+[on the source now]
+  order-000042: {"_id": "order-000042", "touches": 0, "customer": "cust-042", "items": [{"qty": 1, "sku": "sku-42"}], "placed_at": "2026-11-01 00:42:00", "status": "refunded", "total_cents": 2054, "refund_cents": 2054}
+  order-000042-refund: {"_id": "order-000042-refund", "status": "refund", "customer": "cust-042", "total_cents": -2054, "refunds": "order-000042"}
+  order-000017: null
+[field order of order-000042 on the source after: _id, touches, customer, items, placed_at, status, total_cents, refund_cents]
+
+$ argon merge apply 6afef478f3411167fd812ec4 --write-back --approve 3bcc31356109437f4a4f02ad1826aa05882e087f8ce2afe3accaf2f4294a3da8
+[stderr] 2026/11/19 13:07:04 WAL Monitor: Started health monitoring
+[stderr] Error: merge plan is applied, not pending
+[stderr] 2026/11/19 13:07:04 WAL Monitor: Stopped health monitoring
+[exit 1, 19 ms]
+
+$ argon merge list -p shop
+PLAN                       STATUS     SOURCE→TARGET     CHANGES  CONFLICTS CREATED
+6afef478f3411167fd812ec4   applied    agent-1→main            3          0 2026-11-19 13:07:04
+For write-back, inspect every image with argon merge list -p shop --output json and use the approval_digest for this plan.
+[stderr] 2026/11/19 13:07:11 WAL Monitor: Started health monitoring
+[stderr] 2026/11/19 13:07:11 WAL Monitor: Stopped health monitoring
+[exit 0, 23 ms]
+
+$ argon source status -p shop
+Project shop: main follows database "shop"
+  Source:      mongodb://argon-wbpost-source:27017/shop (replica set src0)
+  Identity:    replica-set ID
+  State:       running (last report 2026-11-19T13:06:42Z)
+  Health:      healthy (exact)
+  Checkpoint:  The branch head is a verified exact source checkpoint.
+  Next:        No repair is needed.
+  Owner:       follow on ce964e74ada6 (PID 307, last heartbeat 2026-11-19T13:07:11Z)
+  Head:        LSN 52532
+  Position:    source cluster time Timestamp(1795093631, 4)
+  Consistent:  LSN 52532 is the source at Timestamp(1795093631, 4)
+  Last change: 2026-11-19T13:07:11Z (stored 6 ms after it happened)
+  History:     exact outside the ranges below
+    inexact LSN 3-50348: online import: the source was written while it was copied (exact again at LSN 50348)
+[stderr] 2026/11/19 13:07:11 WAL Monitor: Started health monitoring
+[stderr] 2026/11/19 13:07:11 WAL Monitor: Stopped health monitoring
+[exit 0, 17 ms]
+
+##### 8. Someone changes a reviewed document before the write-back
+
+$ argon sandbox create -p shop --name agent-2 --watch --actor agent-2    (left running)
+2026/11/19 13:07:11 WAL Monitor: Started health monitoring
+Sandbox "agent-2" forked from main at LSN 52535.
+Expires: 2026-11-19T14:07:11Z
+Connection string:
+  mongodb://argon-wbpost-meta:27017/argon_br_6afef47fd232e4af4ece9b96?replicaSet=rs0
+Capturing writes (Ctrl-C to stop)...
+[the agent set order-000050 and order-000051 to cancelled in its sandbox]
+
+$ argon merge preview -p shop -b agent-2 -o json    (plan 6afef47f0eb8b7692fab55d0, 2 changes, approval_digest b17d674d572c6ae5a0b20086a8f635e858ed4ee455a195549e2205364b6c8041)
+[after the review, directly on the source: order-000051 set to shipped with a tracking number]
+
+$ argon merge apply 6afef47f0eb8b7692fab55d0 --write-back --approve b17d674d572c6ae5a0b20086a8f635e858ed4ee455a195549e2205364b6c8041
+[stderr] 2026/11/19 13:07:11 WAL Monitor: Started health monitoring
+[stderr] Error: write-back failed: write-back aborted, nothing was written: document orders/order-000051 in the source database differs from the state this plan was reviewed against. Let following catch up and run preview again
+[stderr] 2026/11/19 13:07:11 WAL Monitor: Stopped health monitoring
+[exit 1, 33 ms]
+  order-000050 on the source: {"_id": "order-000050", "status": "paid", "customer": "cust-050", "total_cents": 2350, "items": [{"sku": "sku-00", "qty": 3}], "placed_at": "2026-11-01 00:50:00", "touches": 0}
+  order-000051 on the source: {"_id": "order-000051", "status": "shipped", "customer": "cust-051", "total_cents": 2387, "items": [{"sku": "sku-01", "qty": 1}], "placed_at": "2026-11-01 00:51:00", "touches": 0, "tracking": "ZX-51"}
+
+$ argon merge list -p shop
+PLAN                       STATUS     SOURCE→TARGET     CHANGES  CONFLICTS CREATED
+6afef47f0eb8b7692fab55d0   pending    agent-2→main            2          0 2026-11-19 13:07:11
+For write-back, inspect every image with argon merge list -p shop --output json and use the approval_digest for this plan.
+6afef478f3411167fd812ec4   applied    agent-1→main            3          0 2026-11-19 13:07:04
+For write-back, inspect every image with argon merge list -p shop --output json and use the approval_digest for this plan.
+[stderr] 2026/11/19 13:07:11 WAL Monitor: Started health monitoring
+[stderr] 2026/11/19 13:07:11 WAL Monitor: Stopped health monitoring
+[exit 0, 20 ms]
+[following has stored the concurrent edit; preview again]
+
+$ argon merge preview -p shop -b agent-2
+Merging agent-2 → main
+  put    orders/order-000050
+  CONFLICT orders/order-000051 (both sides changed since the fork)
+1 change(s), 1 conflict(s)
+
+Plan 6afef47f0ea95ff5d7d147cf saved (pending).
+For write-back, inspect every image with argon merge list -p shop --output json and use the approval_digest for this plan.
+Write-back requires the source URI in ARGON_SOURCE_URI or --uri.
+Then run argon merge apply 6afef47f0ea95ff5d7d147cf --write-back --approve <digest from that output> with --strategy theirs or --strategy ours.
+[stderr] 2026/11/19 13:07:11 WAL Monitor: Started health monitoring
+[stderr] 2026/11/19 13:07:11 WAL Monitor: Stopped health monitoring
+[exit 0, 29 ms]
+
+##### 9. Totals
+[application stopped after 1060 inserts and 1438 updates in all; 1003 of them after the review of the first plan]
+[shop.orders on the source: 51060 documents; expected 50000 seeded + 1060 inserted by the application + 1 inserted by the plan - 1 deleted by the plan = 51060]
+
+$ argon sandbox create -p shop --name final-check --watch --actor final-check    (left running)
+2026/11/19 13:07:23 WAL Monitor: Started health monitoring
+Sandbox "final-check" forked from main at LSN 52648.
+Expires: 2026-11-19T14:07:23Z
+Connection string:
+  mongodb://argon-wbpost-meta:27017/argon_br_6afef48b30e7298fddf08ba1?replicaSet=rs0
+Capturing writes (Ctrl-C to stop)...
+[orders: source 51060 documents, a new sandbox forked from main 51060 documents; values IDENTICAL (sha256 642a3b45a9fbf95f / 642a3b45a9fbf95f); exact BSON bytes DIFFERENT (sha256 dfb7f20fee5a3259 / 033cf4d61f3e4ee0)]
+[50983 documents differ in bytes; the first: source fields ['_id', 'status', 'customer', 'total_cents', 'items', 'placed_at', 'touches'], a new sandbox forked from main fields ['_id', 'placed_at', 'status', 'total_cents', 'touches', 'customer', 'items']]
+[  source: {"_id": "order-000001", "status": "paid", "customer": "cust-001", "total_cents": 537, "items": [{"sku": "sku-01", "qty": 2}], "placed_at": {"$date": "2026-11-01T00:01:00Z"}, "touches": 0}]
+[  a new sandbox forked from main: {"_id": "order-000001", "placed_at": {"$date": "2026-11-01T00:01:00Z"}, "status": "paid", "total_cents": 537, "touches": 0, "customer": "cust-001", "items": [{"qty": 2, "sku": "sku-01"}]}]
+
+$ argon source status -p shop
+Project shop: main follows database "shop"
+  Source:      mongodb://argon-wbpost-source:27017/shop (replica set src0)
+  Identity:    replica-set ID
+  State:       running (last report 2026-11-19T13:06:42Z)
+  Health:      healthy (exact)
+  Checkpoint:  The branch head is a verified exact source checkpoint.
+  Next:        No repair is needed.
+  Owner:       follow on ce964e74ada6 (PID 307, last heartbeat 2026-11-19T13:07:22Z)
+  Head:        LSN 52648
+  Position:    source cluster time Timestamp(1795093642, 1)
+  Consistent:  LSN 52648 is the source at Timestamp(1795093642, 1)
+  Last change: 2026-11-19T13:07:11Z (stored 11070 ms after it happened)
+  History:     exact outside the ranges below
+    inexact LSN 3-50348: online import: the source was written while it was copied (exact again at LSN 50348)
+[stderr] 2026/11/19 13:07:24 WAL Monitor: Started health monitoring
+[stderr] 2026/11/19 13:07:24 WAL Monitor: Stopped health monitoring
+[exit 0, 30 ms]
+
+== finished 2026-11-19T13:07:24Z
