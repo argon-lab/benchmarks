@@ -2,6 +2,10 @@
 
 Every number below is scoped to its recorded engine, suite and environment. Historical measurements are retained as history; current hardening measurements are separately labelled. A dirty source snapshot is not a released engine version. See [README.md](README.md) for methodology and reproducible commands.
 
+## 2026-11-19 · published v2.8.0: walkthrough of a followed source, from online import to write-back
+
+Not a benchmark: a transcript of the published 2.8.0 CLI (`argonctl@2.8.0`, SHA256 `58ad3b5d4b2bc35fc8086480fddc9e89ec126c2e725fbde2b03926cebd9dbbd7`) importing a 50,200-document database online while an application thread writes to it, following it, forking sandboxes, previewing a plan and writing it back to the source with `--approve`, with the refusals and an aborted write-back. Two MongoDB 7.0.45 one-member replica sets without access control. Sandboxes held the source's values with fields in a different order, and a written-back replacement carried that order to the source. [Report and transcript](reports/2026-11-19-v2.8.0-live-source-walkthrough/README.md).
+
 ## 2026-11-18 · published v2.6.0 and v2.5.0 alternated: the first diff after a checkout
 
 Argon 2.6.0 has a checkout keep its parent's capture position current while it copies ([argon-lab/argon#122](https://github.com/argon-lab/argon/pull/122), closing [#120](https://github.com/argon-lab/argon/issues/120)). Executables from `npm install -g argonctl@2.6.0` (SHA256 `edba0c2ecf6be346896ac0e3cc0b199515c0420a68c12a35cf2f19de12a7b113`, release [`v2.6.0`](https://github.com/argon-lab/argon/releases/tag/v2.6.0), commit `86e53d5a46084e160b3c8dd8309481f6b73372eb`) and `argonctl@2.5.0`, alternated round by round on one project with `scripts/interleaved_release_docker.sh`; window `2026-11-18T10:14Z` → `10:45Z`. **The host's load average was 10 to 16 on 12 CPUs throughout, so every absolute figure is inflated; only the comparison within a run is meaningful.**

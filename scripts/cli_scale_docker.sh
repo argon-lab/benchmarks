@@ -24,7 +24,7 @@ if docker ps -a --format '{{.Names}}' | grep -q -E '^argonbench-cli-(mongo|runne
 fi
 mkdir -p "$RESULTS"
 RESULTS="$(cd "$RESULTS" && pwd)"
-cleanup() { docker rm -f argonbench-cli-runner argonbench-cli-mongo >/dev/null 2>&1 || true; }
+cleanup() { docker rm -fv argonbench-cli-runner argonbench-cli-mongo >/dev/null 2>&1 || true; }
 trap cleanup EXIT
 
 docker run -d --name argonbench-cli-mongo "$MONGO_IMAGE" \
