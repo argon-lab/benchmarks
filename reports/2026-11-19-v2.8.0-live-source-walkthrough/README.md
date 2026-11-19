@@ -13,7 +13,7 @@ Files: [transcript](transcript.txt), [output of `argon source follow`](follow.lo
 
 ## What the transcript shows
 
-1. `argon import database --online` imported 50,200 documents in 0.9 s while the application made 144 writes to the source, and reported the cluster time at which the import equals the source.
+1. `argon import database --online` imported the database in 0.9 s (reported as 50.3K documents: 50,200 seeded and the application's inserts) while the application made 144 writes to the source, and reported the cluster time at which the import equals the source.
 2. `argon source follow` kept `main` current: with the application writing, `argon source status` reported the last change stored 8 ms after it happened; with the application paused, the newest write was stored 12.6 s after it was made (the wait for MongoDB's next idle oplog entry, documented as ten to twenty seconds).
 3. A sandbox forked from `main` held the same documents with the same values as the source in both collections (50,608 and 200). **The bytes were not the same: 50,547 of the 50,608 orders had their fields in a different order in the sandbox.**
 4. An agent changed one order, inserted one and deleted one in a sandbox. `argon merge preview -o json` gave three changes with their images and an `approval_digest`.
