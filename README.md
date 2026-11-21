@@ -120,6 +120,8 @@ so read the logical bytes and treat allocated bytes as a lower bound.
 
 `scripts/live_source_walkthrough_docker.sh <version> <output directory> [orders]` runs the path from an online import of a database that is being written to a reviewed write-back, on two private MongoDB replica sets, and writes a transcript.
 
+`scripts/sandbox_ready_docker.sh <version> <output directory> [sandbox_ready.py flags]` times what an agent waits for with a published release: `argon sandbox create --watch` until its reply, then a first majority-acknowledged write on the returned connection string. It also times `branches create` and `checkout` separately, starts 1, 4 and 16 sandboxes together, and samples the host's load every 30 seconds into `host-load.log`. `--fixtures`, `--rounds`, `--concurrency` and `--concurrency-fixture` change the matrix.
+
 `scripts/gc_case_docker.sh <version> <sizes> <output file>` times `argon diff` before and after `argon gc` has deleted the parent's entries, the case in which 2.5.0 and later read the parent's snapshot.
 
 This script and the Go matrix above measure different boundaries and must not

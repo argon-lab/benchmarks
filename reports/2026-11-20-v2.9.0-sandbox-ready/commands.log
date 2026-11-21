@@ -1,0 +1,3585 @@
+
+===== 10000 documents, layout one: metadata argonbench_ready_meta_fa9afc7bf674, source argonbench_ready_src_fa9afc7bf674 =====
+$ argon import database --uri mongodb://localhost:27017/?replicaSet=rs0 --database argonbench_ready_src_fa9afc7bf674 --project ready-one-10000 --source-quiesced --yes --output json
+{
+  "project_id": "6b010ef4ae76b7b36a92c954",
+  "branch_id": "6b010ef4ae76b7b36a92c956",
+  "imported_documents": 10000,
+  "wal_entries_created": 10000,
+  "imported_collections": [
+    "items"
+  ],
+  "duration": 506664833,
+  "start_lsn": 2,
+  "end_lsn": 10002
+}
+[stderr] 2026/11/21 03:24:36 WAL Monitor: Started health monitoring
+[stderr] 🚀 Starting import of database 'argonbench_ready_src_fa9afc7bf674'...
+[stderr] 2026/11/21 03:24:36 WAL Monitor: Stopped health monitoring
+[exit 0, 605.2 ms, sampled peak RSS 131968 kB]
+$ argon sandbox create -p ready-one-10000 --name r0 --watch --output json
+[stderr] 2026/11/21 03:24:36 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:24:37 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-one-10000 -b r0 --output json
+{
+  "branch_id": "6b010ef4e640dda32ed791ef",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:24:37 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:37 WAL Monitor: Stopped health monitoring
+[exit 0, 121.9 ms, sampled peak RSS 20860 kB]
+$ argon branches create p0 -p ready-one-10000 --from main --output json
+{
+  "branch": {
+    "id": "6b010ef5cdc4478ce178ed48",
+    "project_id": "6b010ef4ae76b7b36a92c954",
+    "name": "p0",
+    "parent_id": "6b010ef4ae76b7b36a92c956",
+    "head_lsn": 10002,
+    "base_lsn": 10002,
+    "created_at": "2026-11-21T03:24:37.573352715Z",
+    "created_lsn": 10006,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:24:37 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:37 WAL Monitor: Stopped health monitoring
+[exit 0, 10.6 ms, sampled peak RSS 1400 kB]
+$ argon checkout -p ready-one-10000 -b p0 --output json
+{
+  "branch_id": "6b010ef5cdc4478ce178ed48",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b010ef5cdc4478ce178ed48?replicaSet=rs0",
+  "lsn": 10002,
+  "physical_db": "argon_br_6b010ef5cdc4478ce178ed48"
+}
+[stderr] 2026/11/21 03:24:37 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:37 WAL Monitor: Stopped health monitoring
+[exit 0, 196.6 ms, sampled peak RSS 77816 kB]
+$ argon sandbox discard -p ready-one-10000 -b p0 --output json
+{
+  "branch_id": "6b010ef5cdc4478ce178ed48",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:24:37 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:37 WAL Monitor: Stopped health monitoring
+[exit 0, 129.7 ms, sampled peak RSS 22196 kB]
+$ argon sandbox create -p ready-one-10000 --name r1 --watch --output json
+[stderr] 2026/11/21 03:24:37 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:24:38 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-one-10000 -b r1 --output json
+{
+  "branch_id": "6b010ef582776d5dc3650c04",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:24:38 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:38 WAL Monitor: Stopped health monitoring
+[exit 0, 119.9 ms, sampled peak RSS 23232 kB]
+$ argon branches create p1 -p ready-one-10000 --from main --output json
+{
+  "branch": {
+    "id": "6b010ef6affc4c45376ec16c",
+    "project_id": "6b010ef4ae76b7b36a92c954",
+    "name": "p1",
+    "parent_id": "6b010ef4ae76b7b36a92c956",
+    "head_lsn": 10002,
+    "base_lsn": 10002,
+    "created_at": "2026-11-21T03:24:38.761374382Z",
+    "created_lsn": 10011,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:24:38 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:38 WAL Monitor: Stopped health monitoring
+[exit 0, 9.0 ms, sampled peak RSS 1476 kB]
+$ argon checkout -p ready-one-10000 -b p1 --output json
+{
+  "branch_id": "6b010ef6affc4c45376ec16c",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b010ef6affc4c45376ec16c?replicaSet=rs0",
+  "lsn": 10002,
+  "physical_db": "argon_br_6b010ef6affc4c45376ec16c"
+}
+[stderr] 2026/11/21 03:24:38 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:38 WAL Monitor: Stopped health monitoring
+[exit 0, 215.6 ms, sampled peak RSS 79784 kB]
+$ argon sandbox discard -p ready-one-10000 -b p1 --output json
+{
+  "branch_id": "6b010ef6affc4c45376ec16c",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:24:38 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:39 WAL Monitor: Stopped health monitoring
+[exit 0, 120.5 ms, sampled peak RSS 20056 kB]
+$ argon sandbox create -p ready-one-10000 --name r2 --watch --output json
+[stderr] 2026/11/21 03:24:39 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:24:39 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-one-10000 -b r2 --output json
+{
+  "branch_id": "6b010ef7c8f5646b9188ab98",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:24:39 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:39 WAL Monitor: Stopped health monitoring
+[exit 0, 120.4 ms, sampled peak RSS 23612 kB]
+$ argon branches create p2 -p ready-one-10000 --from main --output json
+{
+  "branch": {
+    "id": "6b010ef76d1fb43d432b7ac2",
+    "project_id": "6b010ef4ae76b7b36a92c954",
+    "name": "p2",
+    "parent_id": "6b010ef4ae76b7b36a92c956",
+    "head_lsn": 10002,
+    "base_lsn": 10002,
+    "created_at": "2026-11-21T03:24:39.9763928Z",
+    "created_lsn": 10016,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:24:39 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:39 WAL Monitor: Stopped health monitoring
+[exit 0, 16.3 ms, sampled peak RSS 1440 kB]
+$ argon checkout -p ready-one-10000 -b p2 --output json
+{
+  "branch_id": "6b010ef76d1fb43d432b7ac2",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b010ef76d1fb43d432b7ac2?replicaSet=rs0",
+  "lsn": 10002,
+  "physical_db": "argon_br_6b010ef76d1fb43d432b7ac2"
+}
+[stderr] 2026/11/21 03:24:39 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:40 WAL Monitor: Stopped health monitoring
+[exit 0, 191.6 ms, sampled peak RSS 77488 kB]
+$ argon sandbox discard -p ready-one-10000 -b p2 --output json
+{
+  "branch_id": "6b010ef76d1fb43d432b7ac2",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:24:40 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:40 WAL Monitor: Stopped health monitoring
+[exit 0, 123.3 ms, sampled peak RSS 24164 kB]
+$ argon sandbox create -p ready-one-10000 --name r3 --watch --output json
+[stderr] 2026/11/21 03:24:40 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:24:41 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-one-10000 -b r3 --output json
+{
+  "branch_id": "6b010ef865bb4a3d9cfa3516",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:24:41 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:41 WAL Monitor: Stopped health monitoring
+[exit 0, 125.4 ms, sampled peak RSS 21460 kB]
+$ argon branches create p3 -p ready-one-10000 --from main --output json
+{
+  "branch": {
+    "id": "6b010ef9b3942665e600abcc",
+    "project_id": "6b010ef4ae76b7b36a92c954",
+    "name": "p3",
+    "parent_id": "6b010ef4ae76b7b36a92c956",
+    "head_lsn": 10002,
+    "base_lsn": 10002,
+    "created_at": "2026-11-21T03:24:41.1785733Z",
+    "created_lsn": 10021,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:24:41 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:41 WAL Monitor: Stopped health monitoring
+[exit 0, 15.2 ms, sampled peak RSS 1828 kB]
+$ argon checkout -p ready-one-10000 -b p3 --output json
+{
+  "branch_id": "6b010ef9b3942665e600abcc",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b010ef9b3942665e600abcc?replicaSet=rs0",
+  "lsn": 10002,
+  "physical_db": "argon_br_6b010ef9b3942665e600abcc"
+}
+[stderr] 2026/11/21 03:24:41 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:41 WAL Monitor: Stopped health monitoring
+[exit 0, 172.1 ms, sampled peak RSS 77484 kB]
+$ argon sandbox discard -p ready-one-10000 -b p3 --output json
+{
+  "branch_id": "6b010ef9b3942665e600abcc",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:24:41 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:41 WAL Monitor: Stopped health monitoring
+[exit 0, 122.2 ms, sampled peak RSS 24000 kB]
+$ argon sandbox create -p ready-one-10000 --name r4 --watch --output json
+[stderr] 2026/11/21 03:24:41 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:24:42 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-one-10000 -b r4 --output json
+{
+  "branch_id": "6b010ef98976bb4a60cd6a44",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:24:42 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:42 WAL Monitor: Stopped health monitoring
+[exit 0, 123.6 ms, sampled peak RSS 23220 kB]
+$ argon branches create p4 -p ready-one-10000 --from main --output json
+{
+  "branch": {
+    "id": "6b010efa5b4914199f0504e2",
+    "project_id": "6b010ef4ae76b7b36a92c954",
+    "name": "p4",
+    "parent_id": "6b010ef4ae76b7b36a92c956",
+    "head_lsn": 10002,
+    "base_lsn": 10002,
+    "created_at": "2026-11-21T03:24:42.348672676Z",
+    "created_lsn": 10026,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:24:42 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:42 WAL Monitor: Stopped health monitoring
+[exit 0, 13.0 ms, sampled peak RSS 1264 kB]
+$ argon checkout -p ready-one-10000 -b p4 --output json
+{
+  "branch_id": "6b010efa5b4914199f0504e2",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b010efa5b4914199f0504e2?replicaSet=rs0",
+  "lsn": 10002,
+  "physical_db": "argon_br_6b010efa5b4914199f0504e2"
+}
+[stderr] 2026/11/21 03:24:42 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:42 WAL Monitor: Stopped health monitoring
+[exit 0, 166.1 ms, sampled peak RSS 77964 kB]
+$ argon sandbox discard -p ready-one-10000 -b p4 --output json
+{
+  "branch_id": "6b010efa5b4914199f0504e2",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:24:42 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:42 WAL Monitor: Stopped health monitoring
+[exit 0, 116.6 ms, sampled peak RSS 25780 kB]
+$ argon sandbox create -p ready-one-10000 --name r5 --watch --output json
+[stderr] 2026/11/21 03:24:42 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:24:43 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-one-10000 -b r5 --output json
+{
+  "branch_id": "6b010efa7a6725988bcf68ea",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:24:43 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:43 WAL Monitor: Stopped health monitoring
+[exit 0, 129.3 ms, sampled peak RSS 22216 kB]
+$ argon branches create p5 -p ready-one-10000 --from main --output json
+{
+  "branch": {
+    "id": "6b010efb9d061b9ac57bd4e5",
+    "project_id": "6b010ef4ae76b7b36a92c954",
+    "name": "p5",
+    "parent_id": "6b010ef4ae76b7b36a92c956",
+    "head_lsn": 10002,
+    "base_lsn": 10002,
+    "created_at": "2026-11-21T03:24:43.508668385Z",
+    "created_lsn": 10031,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:24:43 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:43 WAL Monitor: Stopped health monitoring
+[exit 0, 17.9 ms, sampled peak RSS 1412 kB]
+$ argon checkout -p ready-one-10000 -b p5 --output json
+{
+  "branch_id": "6b010efb9d061b9ac57bd4e5",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b010efb9d061b9ac57bd4e5?replicaSet=rs0",
+  "lsn": 10002,
+  "physical_db": "argon_br_6b010efb9d061b9ac57bd4e5"
+}
+[stderr] 2026/11/21 03:24:43 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:43 WAL Monitor: Stopped health monitoring
+[exit 0, 171.9 ms, sampled peak RSS 75576 kB]
+$ argon sandbox discard -p ready-one-10000 -b p5 --output json
+{
+  "branch_id": "6b010efb9d061b9ac57bd4e5",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:24:43 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:43 WAL Monitor: Stopped health monitoring
+[exit 0, 121.4 ms, sampled peak RSS 22216 kB]
+$ argon sandbox create -p ready-one-10000 --name r6 --watch --output json
+[stderr] 2026/11/21 03:24:43 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:24:44 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-one-10000 -b r6 --output json
+{
+  "branch_id": "6b010efbafebf0ab9179d65c",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:24:44 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:44 WAL Monitor: Stopped health monitoring
+[exit 0, 124.2 ms, sampled peak RSS 23572 kB]
+$ argon branches create p6 -p ready-one-10000 --from main --output json
+{
+  "branch": {
+    "id": "6b010efce514699a46980ca1",
+    "project_id": "6b010ef4ae76b7b36a92c954",
+    "name": "p6",
+    "parent_id": "6b010ef4ae76b7b36a92c956",
+    "head_lsn": 10002,
+    "base_lsn": 10002,
+    "created_at": "2026-11-21T03:24:44.73197701Z",
+    "created_lsn": 10036,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:24:44 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:44 WAL Monitor: Stopped health monitoring
+[exit 0, 13.1 ms, sampled peak RSS 2992 kB]
+$ argon checkout -p ready-one-10000 -b p6 --output json
+{
+  "branch_id": "6b010efce514699a46980ca1",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b010efce514699a46980ca1?replicaSet=rs0",
+  "lsn": 10002,
+  "physical_db": "argon_br_6b010efce514699a46980ca1"
+}
+[stderr] 2026/11/21 03:24:44 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:44 WAL Monitor: Stopped health monitoring
+[exit 0, 173.8 ms, sampled peak RSS 75680 kB]
+$ argon sandbox discard -p ready-one-10000 -b p6 --output json
+{
+  "branch_id": "6b010efce514699a46980ca1",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:24:44 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:45 WAL Monitor: Stopped health monitoring
+[exit 0, 123.8 ms, sampled peak RSS 21632 kB]
+$ argon sandbox create -p ready-one-10000 --name r7 --watch --output json
+[stderr] 2026/11/21 03:24:45 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:24:45 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-one-10000 -b r7 --output json
+{
+  "branch_id": "6b010efd35efdccf5b190701",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:24:45 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:45 WAL Monitor: Stopped health monitoring
+[exit 0, 126.7 ms, sampled peak RSS 20588 kB]
+$ argon branches create p7 -p ready-one-10000 --from main --output json
+{
+  "branch": {
+    "id": "6b010efdfe60b91d4a45837b",
+    "project_id": "6b010ef4ae76b7b36a92c954",
+    "name": "p7",
+    "parent_id": "6b010ef4ae76b7b36a92c956",
+    "head_lsn": 10002,
+    "base_lsn": 10002,
+    "created_at": "2026-11-21T03:24:45.958390469Z",
+    "created_lsn": 10041,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:24:45 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:45 WAL Monitor: Stopped health monitoring
+[exit 0, 12.0 ms, sampled peak RSS 1472 kB]
+$ argon checkout -p ready-one-10000 -b p7 --output json
+{
+  "branch_id": "6b010efdfe60b91d4a45837b",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b010efdfe60b91d4a45837b?replicaSet=rs0",
+  "lsn": 10002,
+  "physical_db": "argon_br_6b010efdfe60b91d4a45837b"
+}
+[stderr] 2026/11/21 03:24:45 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:46 WAL Monitor: Stopped health monitoring
+[exit 0, 203.3 ms, sampled peak RSS 80436 kB]
+$ argon sandbox discard -p ready-one-10000 -b p7 --output json
+{
+  "branch_id": "6b010efdfe60b91d4a45837b",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:24:46 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:46 WAL Monitor: Stopped health monitoring
+[exit 0, 126.9 ms, sampled peak RSS 20612 kB]
+
+===== 100000 documents, layout one: metadata argonbench_ready_meta_3caba89f045d, source argonbench_ready_src_3caba89f045d =====
+$ argon import database --uri mongodb://localhost:27017/?replicaSet=rs0 --database argonbench_ready_src_3caba89f045d --project ready-one-100000 --source-quiesced --yes --output json
+{
+  "project_id": "6b010effdf62a0fc56725b27",
+  "branch_id": "6b010effdf62a0fc56725b29",
+  "imported_documents": 100000,
+  "wal_entries_created": 100000,
+  "imported_collections": [
+    "items"
+  ],
+  "duration": 3730967710,
+  "start_lsn": 2,
+  "end_lsn": 100002
+}
+[stderr] 2026/11/21 03:24:47 WAL Monitor: Started health monitoring
+[stderr] 🚀 Starting import of database 'argonbench_ready_src_3caba89f045d'...
+[stderr] 2026/11/21 03:24:50 WAL Monitor: Stopped health monitoring
+[exit 0, 3858.4 ms, sampled peak RSS 577112 kB]
+$ argon sandbox create -p ready-one-100000 --name r0 --watch --output json
+[stderr] 2026/11/21 03:24:51 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:24:54 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-one-100000 -b r0 --output json
+{
+  "branch_id": "6b010f03638340a5a80454b4",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:24:54 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:54 WAL Monitor: Stopped health monitoring
+[exit 0, 149.7 ms, sampled peak RSS 25536 kB]
+$ argon branches create p0 -p ready-one-100000 --from main --output json
+{
+  "branch": {
+    "id": "6b010f06dd7f84b7ccaebeae",
+    "project_id": "6b010effdf62a0fc56725b27",
+    "name": "p0",
+    "parent_id": "6b010effdf62a0fc56725b29",
+    "head_lsn": 100002,
+    "base_lsn": 100002,
+    "created_at": "2026-11-21T03:24:54.759667126Z",
+    "created_lsn": 100006,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:24:54 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:54 WAL Monitor: Stopped health monitoring
+[exit 0, 28.2 ms, sampled peak RSS 21212 kB]
+$ argon checkout -p ready-one-100000 -b p0 --output json
+{
+  "branch_id": "6b010f06dd7f84b7ccaebeae",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b010f06dd7f84b7ccaebeae?replicaSet=rs0",
+  "lsn": 100002,
+  "physical_db": "argon_br_6b010f06dd7f84b7ccaebeae"
+}
+[stderr] 2026/11/21 03:24:54 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:58 WAL Monitor: Stopped health monitoring
+[exit 0, 3699.0 ms, sampled peak RSS 384352 kB]
+$ argon sandbox discard -p ready-one-100000 -b p0 --output json
+{
+  "branch_id": "6b010f06dd7f84b7ccaebeae",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:24:58 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:24:58 WAL Monitor: Stopped health monitoring
+[exit 0, 134.6 ms, sampled peak RSS 21756 kB]
+$ argon sandbox create -p ready-one-100000 --name r1 --watch --output json
+[stderr] 2026/11/21 03:24:58 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:25:01 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-one-100000 -b r1 --output json
+{
+  "branch_id": "6b010f0ad0d3dfb2b9fb8070",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:25:01 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:01 WAL Monitor: Stopped health monitoring
+[exit 0, 129.7 ms, sampled peak RSS 23920 kB]
+$ argon branches create p1 -p ready-one-100000 --from main --output json
+{
+  "branch": {
+    "id": "6b010f0d7bdce26ccd3fa26a",
+    "project_id": "6b010effdf62a0fc56725b27",
+    "name": "p1",
+    "parent_id": "6b010effdf62a0fc56725b29",
+    "head_lsn": 100002,
+    "base_lsn": 100002,
+    "created_at": "2026-11-21T03:25:01.598449712Z",
+    "created_lsn": 100011,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:25:01 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:01 WAL Monitor: Stopped health monitoring
+[exit 0, 21.7 ms, sampled peak RSS 19656 kB]
+$ argon checkout -p ready-one-100000 -b p1 --output json
+{
+  "branch_id": "6b010f0d7bdce26ccd3fa26a",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b010f0d7bdce26ccd3fa26a?replicaSet=rs0",
+  "lsn": 100002,
+  "physical_db": "argon_br_6b010f0d7bdce26ccd3fa26a"
+}
+[stderr] 2026/11/21 03:25:01 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:03 WAL Monitor: Stopped health monitoring
+[exit 0, 2114.4 ms, sampled peak RSS 384040 kB]
+$ argon sandbox discard -p ready-one-100000 -b p1 --output json
+{
+  "branch_id": "6b010f0d7bdce26ccd3fa26a",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:25:03 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:03 WAL Monitor: Stopped health monitoring
+[exit 0, 139.8 ms, sampled peak RSS 23460 kB]
+$ argon sandbox create -p ready-one-100000 --name r2 --watch --output json
+[stderr] 2026/11/21 03:25:03 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:25:06 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-one-100000 -b r2 --output json
+{
+  "branch_id": "6b010f0fa0e4357417c2b195",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:25:06 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:07 WAL Monitor: Stopped health monitoring
+[exit 0, 140.9 ms, sampled peak RSS 21040 kB]
+$ argon branches create p2 -p ready-one-100000 --from main --output json
+{
+  "branch": {
+    "id": "6b010f13a64da7fdf015273f",
+    "project_id": "6b010effdf62a0fc56725b27",
+    "name": "p2",
+    "parent_id": "6b010effdf62a0fc56725b29",
+    "head_lsn": 100002,
+    "base_lsn": 100002,
+    "created_at": "2026-11-21T03:25:07.036786382Z",
+    "created_lsn": 100016,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:25:07 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:07 WAL Monitor: Stopped health monitoring
+[exit 0, 23.4 ms, sampled peak RSS 21248 kB]
+$ argon checkout -p ready-one-100000 -b p2 --output json
+{
+  "branch_id": "6b010f13a64da7fdf015273f",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b010f13a64da7fdf015273f?replicaSet=rs0",
+  "lsn": 100002,
+  "physical_db": "argon_br_6b010f13a64da7fdf015273f"
+}
+[stderr] 2026/11/21 03:25:07 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:09 WAL Monitor: Stopped health monitoring
+[exit 0, 2525.9 ms, sampled peak RSS 386824 kB]
+$ argon sandbox discard -p ready-one-100000 -b p2 --output json
+{
+  "branch_id": "6b010f13a64da7fdf015273f",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:25:09 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:09 WAL Monitor: Stopped health monitoring
+[exit 0, 151.0 ms, sampled peak RSS 23296 kB]
+$ argon sandbox create -p ready-one-100000 --name r3 --watch --output json
+[stderr] 2026/11/21 03:25:09 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:25:12 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-one-100000 -b r3 --output json
+{
+  "branch_id": "6b010f15d1b93410c4597ae4",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:25:13 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:13 WAL Monitor: Stopped health monitoring
+[exit 0, 157.4 ms, sampled peak RSS 22192 kB]
+$ argon branches create p3 -p ready-one-100000 --from main --output json
+{
+  "branch": {
+    "id": "6b010f19e22d4297b159fc9d",
+    "project_id": "6b010effdf62a0fc56725b27",
+    "name": "p3",
+    "parent_id": "6b010effdf62a0fc56725b29",
+    "head_lsn": 100002,
+    "base_lsn": 100002,
+    "created_at": "2026-11-21T03:25:13.229698468Z",
+    "created_lsn": 100021,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:25:13 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:13 WAL Monitor: Stopped health monitoring
+[exit 0, 20.9 ms, sampled peak RSS 5464 kB]
+$ argon checkout -p ready-one-100000 -b p3 --output json
+{
+  "branch_id": "6b010f19e22d4297b159fc9d",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b010f19e22d4297b159fc9d?replicaSet=rs0",
+  "lsn": 100002,
+  "physical_db": "argon_br_6b010f19e22d4297b159fc9d"
+}
+[stderr] 2026/11/21 03:25:13 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:15 WAL Monitor: Stopped health monitoring
+[exit 0, 2713.6 ms, sampled peak RSS 383324 kB]
+$ argon sandbox discard -p ready-one-100000 -b p3 --output json
+{
+  "branch_id": "6b010f19e22d4297b159fc9d",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:25:15 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:16 WAL Monitor: Stopped health monitoring
+[exit 0, 151.6 ms, sampled peak RSS 22596 kB]
+$ argon sandbox create -p ready-one-100000 --name r4 --watch --output json
+[stderr] 2026/11/21 03:25:16 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:25:19 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-one-100000 -b r4 --output json
+{
+  "branch_id": "6b010f1c964574c533812923",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:25:19 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:19 WAL Monitor: Stopped health monitoring
+[exit 0, 209.9 ms, sampled peak RSS 21184 kB]
+$ argon branches create p4 -p ready-one-100000 --from main --output json
+{
+  "branch": {
+    "id": "6b010f1ff7afd5ccfeb0bb10",
+    "project_id": "6b010effdf62a0fc56725b27",
+    "name": "p4",
+    "parent_id": "6b010effdf62a0fc56725b29",
+    "head_lsn": 100002,
+    "base_lsn": 100002,
+    "created_at": "2026-11-21T03:25:19.805812013Z",
+    "created_lsn": 100026,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:25:19 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:19 WAL Monitor: Stopped health monitoring
+[exit 0, 34.3 ms, sampled peak RSS 24036 kB]
+$ argon checkout -p ready-one-100000 -b p4 --output json
+{
+  "branch_id": "6b010f1ff7afd5ccfeb0bb10",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b010f1ff7afd5ccfeb0bb10?replicaSet=rs0",
+  "lsn": 100002,
+  "physical_db": "argon_br_6b010f1ff7afd5ccfeb0bb10"
+}
+[stderr] 2026/11/21 03:25:19 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:22 WAL Monitor: Stopped health monitoring
+[exit 0, 2239.8 ms, sampled peak RSS 382964 kB]
+$ argon sandbox discard -p ready-one-100000 -b p4 --output json
+{
+  "branch_id": "6b010f1ff7afd5ccfeb0bb10",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:25:22 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:22 WAL Monitor: Stopped health monitoring
+[exit 0, 129.5 ms, sampled peak RSS 23272 kB]
+$ argon sandbox create -p ready-one-100000 --name r5 --watch --output json
+[stderr] 2026/11/21 03:25:22 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:25:24 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-one-100000 -b r5 --output json
+{
+  "branch_id": "6b010f228f539a09e53d676f",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:25:25 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:25 WAL Monitor: Stopped health monitoring
+[exit 0, 136.5 ms, sampled peak RSS 21484 kB]
+$ argon branches create p5 -p ready-one-100000 --from main --output json
+{
+  "branch": {
+    "id": "6b010f25081177da8e6feb3e",
+    "project_id": "6b010effdf62a0fc56725b27",
+    "name": "p5",
+    "parent_id": "6b010effdf62a0fc56725b29",
+    "head_lsn": 100002,
+    "base_lsn": 100002,
+    "created_at": "2026-11-21T03:25:25.186675918Z",
+    "created_lsn": 100031,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:25:25 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:25 WAL Monitor: Stopped health monitoring
+[exit 0, 18.7 ms, sampled peak RSS 3916 kB]
+$ argon checkout -p ready-one-100000 -b p5 --output json
+{
+  "branch_id": "6b010f25081177da8e6feb3e",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b010f25081177da8e6feb3e?replicaSet=rs0",
+  "lsn": 100002,
+  "physical_db": "argon_br_6b010f25081177da8e6feb3e"
+}
+[stderr] 2026/11/21 03:25:25 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:27 WAL Monitor: Stopped health monitoring
+[exit 0, 2265.7 ms, sampled peak RSS 386860 kB]
+$ argon sandbox discard -p ready-one-100000 -b p5 --output json
+{
+  "branch_id": "6b010f25081177da8e6feb3e",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:25:27 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:27 WAL Monitor: Stopped health monitoring
+[exit 0, 127.7 ms, sampled peak RSS 22316 kB]
+$ argon sandbox create -p ready-one-100000 --name r6 --watch --output json
+[stderr] 2026/11/21 03:25:27 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:25:30 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-one-100000 -b r6 --output json
+{
+  "branch_id": "6b010f27d6197c12605cbafa",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:25:30 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:30 WAL Monitor: Stopped health monitoring
+[exit 0, 115.2 ms, sampled peak RSS 20368 kB]
+$ argon branches create p6 -p ready-one-100000 --from main --output json
+{
+  "branch": {
+    "id": "6b010f2a266a57d7bd80048f",
+    "project_id": "6b010effdf62a0fc56725b27",
+    "name": "p6",
+    "parent_id": "6b010effdf62a0fc56725b29",
+    "head_lsn": 100002,
+    "base_lsn": 100002,
+    "created_at": "2026-11-21T03:25:30.277554753Z",
+    "created_lsn": 100036,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:25:30 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:30 WAL Monitor: Stopped health monitoring
+[exit 0, 16.1 ms, sampled peak RSS 1544 kB]
+$ argon checkout -p ready-one-100000 -b p6 --output json
+{
+  "branch_id": "6b010f2a266a57d7bd80048f",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b010f2a266a57d7bd80048f?replicaSet=rs0",
+  "lsn": 100002,
+  "physical_db": "argon_br_6b010f2a266a57d7bd80048f"
+}
+[stderr] 2026/11/21 03:25:30 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:32 WAL Monitor: Stopped health monitoring
+[exit 0, 2024.3 ms, sampled peak RSS 385276 kB]
+$ argon sandbox discard -p ready-one-100000 -b p6 --output json
+{
+  "branch_id": "6b010f2a266a57d7bd80048f",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:25:32 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:32 WAL Monitor: Stopped health monitoring
+[exit 0, 132.0 ms, sampled peak RSS 21544 kB]
+$ argon sandbox create -p ready-one-100000 --name r7 --watch --output json
+[stderr] 2026/11/21 03:25:32 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:25:35 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-one-100000 -b r7 --output json
+{
+  "branch_id": "6b010f2cdf7c6d62f86bc80e",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:25:35 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:35 WAL Monitor: Stopped health monitoring
+[exit 0, 142.6 ms, sampled peak RSS 22936 kB]
+$ argon branches create p7 -p ready-one-100000 --from main --output json
+{
+  "branch": {
+    "id": "6b010f2f9e418f268f92106f",
+    "project_id": "6b010effdf62a0fc56725b27",
+    "name": "p7",
+    "parent_id": "6b010effdf62a0fc56725b29",
+    "head_lsn": 100002,
+    "base_lsn": 100002,
+    "created_at": "2026-11-21T03:25:35.496921673Z",
+    "created_lsn": 100041,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:25:35 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:35 WAL Monitor: Stopped health monitoring
+[exit 0, 25.2 ms, sampled peak RSS 22536 kB]
+$ argon checkout -p ready-one-100000 -b p7 --output json
+{
+  "branch_id": "6b010f2f9e418f268f92106f",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b010f2f9e418f268f92106f?replicaSet=rs0",
+  "lsn": 100002,
+  "physical_db": "argon_br_6b010f2f9e418f268f92106f"
+}
+[stderr] 2026/11/21 03:25:35 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:38 WAL Monitor: Stopped health monitoring
+[exit 0, 2537.3 ms, sampled peak RSS 379672 kB]
+$ argon sandbox discard -p ready-one-100000 -b p7 --output json
+{
+  "branch_id": "6b010f2f9e418f268f92106f",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:25:38 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:38 WAL Monitor: Stopped health monitoring
+[exit 0, 163.4 ms, sampled peak RSS 24228 kB]
+$ argon sandbox create -p ready-one-100000 --name c1-0-0 --watch --output json
+$ argon sandbox discard -p ready-one-100000 -b c1-0-0 --output json
+{
+  "branch_id": "6b010f32e7f56888ac6f30ae",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:25:40 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:40 WAL Monitor: Stopped health monitoring
+[exit 0, 142.9 ms, sampled peak RSS 25484 kB]
+$ argon sandbox create -p ready-one-100000 --name c1-1-0 --watch --output json
+$ argon sandbox discard -p ready-one-100000 -b c1-1-0 --output json
+{
+  "branch_id": "6b010f349ff26eb75abe46b3",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:25:44 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:44 WAL Monitor: Stopped health monitoring
+[exit 0, 158.2 ms, sampled peak RSS 22348 kB]
+$ argon sandbox create -p ready-one-100000 --name c1-2-0 --watch --output json
+$ argon sandbox discard -p ready-one-100000 -b c1-2-0 --output json
+{
+  "branch_id": "6b010f38d444b82948b661a3",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:25:46 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:47 WAL Monitor: Stopped health monitoring
+[exit 0, 149.1 ms, sampled peak RSS 19916 kB]
+$ argon sandbox create -p ready-one-100000 --name c1-3-0 --watch --output json
+$ argon sandbox discard -p ready-one-100000 -b c1-3-0 --output json
+{
+  "branch_id": "6b010f3beafbf04bde1ee072",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:25:49 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:49 WAL Monitor: Stopped health monitoring
+[exit 0, 125.9 ms, sampled peak RSS 22240 kB]
+$ argon sandbox create -p ready-one-100000 --name c1-4-0 --watch --output json
+$ argon sandbox discard -p ready-one-100000 -b c1-4-0 --output json
+{
+  "branch_id": "6b010f3db47c1209fbe4fe85",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:25:51 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:51 WAL Monitor: Stopped health monitoring
+[exit 0, 131.7 ms, sampled peak RSS 23632 kB]
+$ argon sandbox create -p ready-one-100000 --name c1-5-0 --watch --output json
+$ argon sandbox discard -p ready-one-100000 -b c1-5-0 --output json
+{
+  "branch_id": "6b010f3f6804a795e79c1a91",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:25:53 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:53 WAL Monitor: Stopped health monitoring
+[exit 0, 132.9 ms, sampled peak RSS 21204 kB]
+$ argon sandbox create -p ready-one-100000 --name c1-6-0 --watch --output json
+$ argon sandbox discard -p ready-one-100000 -b c1-6-0 --output json
+{
+  "branch_id": "6b010f417612520b1c8b7697",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:25:56 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:56 WAL Monitor: Stopped health monitoring
+[exit 0, 125.8 ms, sampled peak RSS 23236 kB]
+$ argon sandbox create -p ready-one-100000 --name c1-7-0 --watch --output json
+$ argon sandbox discard -p ready-one-100000 -b c1-7-0 --output json
+{
+  "branch_id": "6b010f4435af1a9785653f44",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:25:58 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:25:58 WAL Monitor: Stopped health monitoring
+[exit 0, 125.6 ms, sampled peak RSS 22212 kB]
+$ argon sandbox create -p ready-one-100000 --name c4-0-0 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c4-0-1 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c4-0-2 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c4-0-3 --watch --output json
+$ argon sandbox discard -p ready-one-100000 -b c4-0-0 --output json
+{
+  "branch_id": "6b010f465efefc6ea3550520",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:01 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:02 WAL Monitor: Stopped health monitoring
+[exit 0, 123.1 ms, sampled peak RSS 21532 kB]
+$ argon sandbox discard -p ready-one-100000 -b c4-0-1 --output json
+{
+  "branch_id": "6b010f464137f592bb97f05a",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:02 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:02 WAL Monitor: Stopped health monitoring
+[exit 0, 128.3 ms, sampled peak RSS 22016 kB]
+$ argon sandbox discard -p ready-one-100000 -b c4-0-2 --output json
+{
+  "branch_id": "6b010f4684b762f183b54273",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:02 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:02 WAL Monitor: Stopped health monitoring
+[exit 0, 126.4 ms, sampled peak RSS 21176 kB]
+$ argon sandbox discard -p ready-one-100000 -b c4-0-3 --output json
+{
+  "branch_id": "6b010f468b21e704f1e12e9a",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:02 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:02 WAL Monitor: Stopped health monitoring
+[exit 0, 123.0 ms, sampled peak RSS 22052 kB]
+$ argon sandbox create -p ready-one-100000 --name c4-1-0 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c4-1-1 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c4-1-2 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c4-1-3 --watch --output json
+$ argon sandbox discard -p ready-one-100000 -b c4-1-0 --output json
+{
+  "branch_id": "6b010f4a781c29e2cfda292a",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:05 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:05 WAL Monitor: Stopped health monitoring
+[exit 0, 137.2 ms, sampled peak RSS 22316 kB]
+$ argon sandbox discard -p ready-one-100000 -b c4-1-1 --output json
+{
+  "branch_id": "6b010f4a4b0143a4513c02cb",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:05 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:06 WAL Monitor: Stopped health monitoring
+[exit 0, 132.0 ms, sampled peak RSS 25272 kB]
+$ argon sandbox discard -p ready-one-100000 -b c4-1-2 --output json
+{
+  "branch_id": "6b010f4a7298cc5103b7b33b",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:06 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:06 WAL Monitor: Stopped health monitoring
+[exit 0, 124.7 ms, sampled peak RSS 21176 kB]
+$ argon sandbox discard -p ready-one-100000 -b c4-1-3 --output json
+{
+  "branch_id": "6b010f4a472c15890d7b0f70",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:06 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:06 WAL Monitor: Stopped health monitoring
+[exit 0, 127.3 ms, sampled peak RSS 22376 kB]
+$ argon sandbox create -p ready-one-100000 --name c4-2-0 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c4-2-1 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c4-2-2 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c4-2-3 --watch --output json
+$ argon sandbox discard -p ready-one-100000 -b c4-2-0 --output json
+{
+  "branch_id": "6b010f4ec531b03997afcdfc",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:10 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:10 WAL Monitor: Stopped health monitoring
+[exit 0, 118.9 ms, sampled peak RSS 22036 kB]
+$ argon sandbox discard -p ready-one-100000 -b c4-2-1 --output json
+{
+  "branch_id": "6b010f4e0561139ec94bbc33",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:10 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:10 WAL Monitor: Stopped health monitoring
+[exit 0, 121.5 ms, sampled peak RSS 21524 kB]
+$ argon sandbox discard -p ready-one-100000 -b c4-2-2 --output json
+{
+  "branch_id": "6b010f4ec79650ec4ba95492",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:10 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:10 WAL Monitor: Stopped health monitoring
+[exit 0, 118.1 ms, sampled peak RSS 21636 kB]
+$ argon sandbox discard -p ready-one-100000 -b c4-2-3 --output json
+{
+  "branch_id": "6b010f4ea6ea7d033bedf04e",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:10 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:10 WAL Monitor: Stopped health monitoring
+[exit 0, 113.9 ms, sampled peak RSS 23224 kB]
+$ argon sandbox create -p ready-one-100000 --name c4-3-0 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c4-3-1 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c4-3-2 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c4-3-3 --watch --output json
+$ argon sandbox discard -p ready-one-100000 -b c4-3-0 --output json
+{
+  "branch_id": "6b010f5221507b6ecba1ab50",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:13 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:13 WAL Monitor: Stopped health monitoring
+[exit 0, 120.4 ms, sampled peak RSS 23640 kB]
+$ argon sandbox discard -p ready-one-100000 -b c4-3-1 --output json
+{
+  "branch_id": "6b010f5284fd6a36979f0371",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:13 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:14 WAL Monitor: Stopped health monitoring
+[exit 0, 116.5 ms, sampled peak RSS 24268 kB]
+$ argon sandbox discard -p ready-one-100000 -b c4-3-2 --output json
+{
+  "branch_id": "6b010f5292964975aeb5f58f",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:14 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:14 WAL Monitor: Stopped health monitoring
+[exit 0, 118.8 ms, sampled peak RSS 21008 kB]
+$ argon sandbox discard -p ready-one-100000 -b c4-3-3 --output json
+{
+  "branch_id": "6b010f524008875925258ef9",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:14 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:14 WAL Monitor: Stopped health monitoring
+[exit 0, 114.2 ms, sampled peak RSS 23756 kB]
+$ argon sandbox create -p ready-one-100000 --name c4-4-0 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c4-4-1 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c4-4-2 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c4-4-3 --watch --output json
+$ argon sandbox discard -p ready-one-100000 -b c4-4-0 --output json
+{
+  "branch_id": "6b010f563e1c1420830c053a",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:16 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:16 WAL Monitor: Stopped health monitoring
+[exit 0, 118.5 ms, sampled peak RSS 25632 kB]
+$ argon sandbox discard -p ready-one-100000 -b c4-4-1 --output json
+{
+  "branch_id": "6b010f569e85930661af5b52",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:16 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:16 WAL Monitor: Stopped health monitoring
+[exit 0, 115.7 ms, sampled peak RSS 25512 kB]
+$ argon sandbox discard -p ready-one-100000 -b c4-4-2 --output json
+{
+  "branch_id": "6b010f5679e24e0740270931",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:16 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:16 WAL Monitor: Stopped health monitoring
+[exit 0, 119.4 ms, sampled peak RSS 25596 kB]
+$ argon sandbox discard -p ready-one-100000 -b c4-4-3 --output json
+{
+  "branch_id": "6b010f56aa618997e1f1d9dc",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:16 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:16 WAL Monitor: Stopped health monitoring
+[exit 0, 119.8 ms, sampled peak RSS 23428 kB]
+$ argon sandbox create -p ready-one-100000 --name c4-5-0 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c4-5-1 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c4-5-2 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c4-5-3 --watch --output json
+$ argon sandbox discard -p ready-one-100000 -b c4-5-0 --output json
+{
+  "branch_id": "6b010f587989eeaec229a48e",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:18 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:18 WAL Monitor: Stopped health monitoring
+[exit 0, 119.3 ms, sampled peak RSS 23292 kB]
+$ argon sandbox discard -p ready-one-100000 -b c4-5-1 --output json
+{
+  "branch_id": "6b010f58984cae7ce6170644",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:18 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:19 WAL Monitor: Stopped health monitoring
+[exit 0, 116.7 ms, sampled peak RSS 23460 kB]
+$ argon sandbox discard -p ready-one-100000 -b c4-5-2 --output json
+{
+  "branch_id": "6b010f5859a8d1216dbe4b75",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:19 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:19 WAL Monitor: Stopped health monitoring
+[exit 0, 114.8 ms, sampled peak RSS 24328 kB]
+$ argon sandbox discard -p ready-one-100000 -b c4-5-3 --output json
+{
+  "branch_id": "6b010f582067ad470e3b2eb8",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:19 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:19 WAL Monitor: Stopped health monitoring
+[exit 0, 118.9 ms, sampled peak RSS 25424 kB]
+$ argon sandbox create -p ready-one-100000 --name c4-6-0 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c4-6-1 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c4-6-2 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c4-6-3 --watch --output json
+$ argon sandbox discard -p ready-one-100000 -b c4-6-0 --output json
+{
+  "branch_id": "6b010f5b0d199230b1cc9e83",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:21 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:21 WAL Monitor: Stopped health monitoring
+[exit 0, 137.4 ms, sampled peak RSS 22700 kB]
+$ argon sandbox discard -p ready-one-100000 -b c4-6-1 --output json
+{
+  "branch_id": "6b010f5be88f641eb6b30e61",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:21 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:21 WAL Monitor: Stopped health monitoring
+[exit 0, 123.4 ms, sampled peak RSS 23332 kB]
+$ argon sandbox discard -p ready-one-100000 -b c4-6-2 --output json
+{
+  "branch_id": "6b010f5b7442f6bf7f505df8",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:21 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:21 WAL Monitor: Stopped health monitoring
+[exit 0, 113.1 ms, sampled peak RSS 24204 kB]
+$ argon sandbox discard -p ready-one-100000 -b c4-6-3 --output json
+{
+  "branch_id": "6b010f5b1c100eb0f102e968",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:21 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:22 WAL Monitor: Stopped health monitoring
+[exit 0, 119.0 ms, sampled peak RSS 23916 kB]
+$ argon sandbox create -p ready-one-100000 --name c4-7-0 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c4-7-1 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c4-7-2 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c4-7-3 --watch --output json
+$ argon sandbox discard -p ready-one-100000 -b c4-7-0 --output json
+{
+  "branch_id": "6b010f5eaa8fcf17a513185f",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:24 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:24 WAL Monitor: Stopped health monitoring
+[exit 0, 124.1 ms, sampled peak RSS 23648 kB]
+$ argon sandbox discard -p ready-one-100000 -b c4-7-1 --output json
+{
+  "branch_id": "6b010f5ec1e1bda7dd9d73b5",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:24 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:24 WAL Monitor: Stopped health monitoring
+[exit 0, 121.3 ms, sampled peak RSS 23524 kB]
+$ argon sandbox discard -p ready-one-100000 -b c4-7-2 --output json
+{
+  "branch_id": "6b010f5ee4a6bccbb22104d6",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:24 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:24 WAL Monitor: Stopped health monitoring
+[exit 0, 123.8 ms, sampled peak RSS 23556 kB]
+$ argon sandbox discard -p ready-one-100000 -b c4-7-3 --output json
+{
+  "branch_id": "6b010f5e877e5a8874ff2174",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:24 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:24 WAL Monitor: Stopped health monitoring
+[exit 0, 120.1 ms, sampled peak RSS 23452 kB]
+$ argon sandbox create -p ready-one-100000 --name c16-0-0 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-0-1 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-0-2 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-0-3 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-0-4 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-0-5 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-0-6 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-0-7 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-0-8 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-0-9 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-0-10 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-0-11 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-0-12 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-0-13 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-0-14 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-0-15 --watch --output json
+$ argon sandbox discard -p ready-one-100000 -b c16-0-0 --output json
+{
+  "branch_id": "6b010f60e5dc32fcb41a9bcc",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:34 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:34 WAL Monitor: Stopped health monitoring
+[exit 0, 129.8 ms, sampled peak RSS 23168 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-0-1 --output json
+{
+  "branch_id": "6b010f60dcd80bfd83c9ec5b",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:34 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:34 WAL Monitor: Stopped health monitoring
+[exit 0, 118.1 ms, sampled peak RSS 23576 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-0-2 --output json
+{
+  "branch_id": "6b010f6005e2396bd7b1d088",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:34 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:35 WAL Monitor: Stopped health monitoring
+[exit 0, 117.5 ms, sampled peak RSS 25492 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-0-3 --output json
+{
+  "branch_id": "6b010f60bf0194a68e00d2a1",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:35 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:35 WAL Monitor: Stopped health monitoring
+[exit 0, 118.3 ms, sampled peak RSS 22324 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-0-4 --output json
+{
+  "branch_id": "6b010f604f05f8657a78384d",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:35 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:35 WAL Monitor: Stopped health monitoring
+[exit 0, 118.1 ms, sampled peak RSS 23460 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-0-5 --output json
+{
+  "branch_id": "6b010f6000587dbcfb0b0b48",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:35 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:35 WAL Monitor: Stopped health monitoring
+[exit 0, 120.5 ms, sampled peak RSS 25428 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-0-6 --output json
+{
+  "branch_id": "6b010f60d120faabe1a6e78e",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:35 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:35 WAL Monitor: Stopped health monitoring
+[exit 0, 122.8 ms, sampled peak RSS 24360 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-0-7 --output json
+{
+  "branch_id": "6b010f609ec839c56bc3e582",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:35 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:35 WAL Monitor: Stopped health monitoring
+[exit 0, 128.7 ms, sampled peak RSS 23708 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-0-8 --output json
+{
+  "branch_id": "6b010f6078da9387b8e3d140",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:35 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:35 WAL Monitor: Stopped health monitoring
+[exit 0, 117.1 ms, sampled peak RSS 22196 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-0-9 --output json
+{
+  "branch_id": "6b010f6085106af5877fc7b0",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:35 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:35 WAL Monitor: Stopped health monitoring
+[exit 0, 118.6 ms, sampled peak RSS 23428 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-0-10 --output json
+{
+  "branch_id": "6b010f60a52bdb87a4843064",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:35 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:36 WAL Monitor: Stopped health monitoring
+[exit 0, 119.1 ms, sampled peak RSS 22516 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-0-11 --output json
+{
+  "branch_id": "6b010f6064731efb12f5de41",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:36 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:36 WAL Monitor: Stopped health monitoring
+[exit 0, 122.4 ms, sampled peak RSS 23252 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-0-12 --output json
+{
+  "branch_id": "6b010f60a684e686bd6eb0a4",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:36 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:36 WAL Monitor: Stopped health monitoring
+[exit 0, 121.7 ms, sampled peak RSS 24408 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-0-13 --output json
+{
+  "branch_id": "6b010f60198c471721c75c80",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:36 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:36 WAL Monitor: Stopped health monitoring
+[exit 0, 125.0 ms, sampled peak RSS 23388 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-0-14 --output json
+{
+  "branch_id": "6b010f603a6f96ed2ce2c10d",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:36 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:36 WAL Monitor: Stopped health monitoring
+[exit 0, 117.2 ms, sampled peak RSS 23248 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-0-15 --output json
+{
+  "branch_id": "6b010f60341256f39217d430",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:36 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:36 WAL Monitor: Stopped health monitoring
+[exit 0, 116.6 ms, sampled peak RSS 22224 kB]
+$ argon sandbox create -p ready-one-100000 --name c16-1-0 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-1-1 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-1-2 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-1-3 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-1-4 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-1-5 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-1-6 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-1-7 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-1-8 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-1-9 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-1-10 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-1-11 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-1-12 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-1-13 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-1-14 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-1-15 --watch --output json
+$ argon sandbox discard -p ready-one-100000 -b c16-1-0 --output json
+{
+  "branch_id": "6b010f6c2bfad6ae4bcdf356",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:47 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:47 WAL Monitor: Stopped health monitoring
+[exit 0, 121.8 ms, sampled peak RSS 20532 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-1-1 --output json
+{
+  "branch_id": "6b010f6c8672cb04a7320e3f",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:47 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:47 WAL Monitor: Stopped health monitoring
+[exit 0, 119.9 ms, sampled peak RSS 20912 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-1-2 --output json
+{
+  "branch_id": "6b010f6c2b0f52c6779a42b4",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:47 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:47 WAL Monitor: Stopped health monitoring
+[exit 0, 115.0 ms, sampled peak RSS 23544 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-1-3 --output json
+{
+  "branch_id": "6b010f6c20b26e46383e2c12",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:47 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:47 WAL Monitor: Stopped health monitoring
+[exit 0, 114.7 ms, sampled peak RSS 25588 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-1-4 --output json
+{
+  "branch_id": "6b010f6c116bfc638eeac46d",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:47 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:48 WAL Monitor: Stopped health monitoring
+[exit 0, 120.8 ms, sampled peak RSS 24188 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-1-5 --output json
+{
+  "branch_id": "6b010f6c8d060652b37f2195",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:48 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:48 WAL Monitor: Stopped health monitoring
+[exit 0, 125.5 ms, sampled peak RSS 22220 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-1-6 --output json
+{
+  "branch_id": "6b010f6c3b6e07b54b6f4d57",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:48 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:48 WAL Monitor: Stopped health monitoring
+[exit 0, 122.8 ms, sampled peak RSS 21556 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-1-7 --output json
+{
+  "branch_id": "6b010f6cbaf62ac294940644",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:48 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:48 WAL Monitor: Stopped health monitoring
+[exit 0, 125.5 ms, sampled peak RSS 21712 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-1-8 --output json
+{
+  "branch_id": "6b010f6c9e803f192f588c9a",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:48 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:48 WAL Monitor: Stopped health monitoring
+[exit 0, 121.5 ms, sampled peak RSS 22192 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-1-9 --output json
+{
+  "branch_id": "6b010f6cb2a74e3c8ff5461f",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:48 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:48 WAL Monitor: Stopped health monitoring
+[exit 0, 126.1 ms, sampled peak RSS 23184 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-1-10 --output json
+{
+  "branch_id": "6b010f6cf822a08251d75e05",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:48 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:48 WAL Monitor: Stopped health monitoring
+[exit 0, 122.0 ms, sampled peak RSS 20308 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-1-11 --output json
+{
+  "branch_id": "6b010f6c8620475e6021cebc",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:48 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:48 WAL Monitor: Stopped health monitoring
+[exit 0, 122.5 ms, sampled peak RSS 19976 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-1-12 --output json
+{
+  "branch_id": "6b010f6c2b57fbaa6767b0df",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:48 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:49 WAL Monitor: Stopped health monitoring
+[exit 0, 126.1 ms, sampled peak RSS 19960 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-1-13 --output json
+{
+  "branch_id": "6b010f6c4bc45746bf983f70",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:49 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:49 WAL Monitor: Stopped health monitoring
+[exit 0, 123.7 ms, sampled peak RSS 22416 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-1-14 --output json
+{
+  "branch_id": "6b010f6c90d1b5839950a220",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:49 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:49 WAL Monitor: Stopped health monitoring
+[exit 0, 121.3 ms, sampled peak RSS 25260 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-1-15 --output json
+{
+  "branch_id": "6b010f6cc736da154dc69e46",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:26:49 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:26:49 WAL Monitor: Stopped health monitoring
+[exit 0, 116.9 ms, sampled peak RSS 21576 kB]
+$ argon sandbox create -p ready-one-100000 --name c16-2-0 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-2-1 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-2-2 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-2-3 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-2-4 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-2-5 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-2-6 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-2-7 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-2-8 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-2-9 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-2-10 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-2-11 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-2-12 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-2-13 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-2-14 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-2-15 --watch --output json
+$ argon sandbox discard -p ready-one-100000 -b c16-2-0 --output json
+{
+  "branch_id": "6b010f795f11bdb69f3e5057",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:00 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:01 WAL Monitor: Stopped health monitoring
+[exit 0, 132.2 ms, sampled peak RSS 25412 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-2-1 --output json
+{
+  "branch_id": "6b010f7915ecbd33612fd6da",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:01 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:01 WAL Monitor: Stopped health monitoring
+[exit 0, 122.1 ms, sampled peak RSS 23416 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-2-2 --output json
+{
+  "branch_id": "6b010f79d48c914044462f0b",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:01 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:01 WAL Monitor: Stopped health monitoring
+[exit 0, 128.4 ms, sampled peak RSS 21724 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-2-3 --output json
+{
+  "branch_id": "6b010f79ff87e577fe3eec6a",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:01 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:01 WAL Monitor: Stopped health monitoring
+[exit 0, 119.5 ms, sampled peak RSS 22136 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-2-4 --output json
+{
+  "branch_id": "6b010f792464b4da0155718c",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:01 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:01 WAL Monitor: Stopped health monitoring
+[exit 0, 122.9 ms, sampled peak RSS 24236 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-2-5 --output json
+{
+  "branch_id": "6b010f7973661a2b70533621",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:01 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:01 WAL Monitor: Stopped health monitoring
+[exit 0, 116.7 ms, sampled peak RSS 22152 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-2-6 --output json
+{
+  "branch_id": "6b010f79faae0ab1103b09fd",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:01 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:01 WAL Monitor: Stopped health monitoring
+[exit 0, 125.2 ms, sampled peak RSS 22116 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-2-7 --output json
+{
+  "branch_id": "6b010f79b135d800e553c4de",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:01 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:01 WAL Monitor: Stopped health monitoring
+[exit 0, 117.5 ms, sampled peak RSS 22228 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-2-8 --output json
+{
+  "branch_id": "6b010f797c6ff19d0ebe5386",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:01 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:01 WAL Monitor: Stopped health monitoring
+[exit 0, 119.7 ms, sampled peak RSS 23508 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-2-9 --output json
+{
+  "branch_id": "6b010f79ad343785e54ba9ed",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:01 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:02 WAL Monitor: Stopped health monitoring
+[exit 0, 140.9 ms, sampled peak RSS 23512 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-2-10 --output json
+{
+  "branch_id": "6b010f790d38150b47cd0a0e",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:02 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:02 WAL Monitor: Stopped health monitoring
+[exit 0, 129.7 ms, sampled peak RSS 23208 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-2-11 --output json
+{
+  "branch_id": "6b010f7903db6a68e3370729",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:02 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:02 WAL Monitor: Stopped health monitoring
+[exit 0, 127.5 ms, sampled peak RSS 23596 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-2-12 --output json
+{
+  "branch_id": "6b010f79fefce636b23041ca",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:02 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:02 WAL Monitor: Stopped health monitoring
+[exit 0, 124.0 ms, sampled peak RSS 22188 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-2-13 --output json
+{
+  "branch_id": "6b010f79a4fa6d127d28eb20",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:02 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:02 WAL Monitor: Stopped health monitoring
+[exit 0, 126.1 ms, sampled peak RSS 20820 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-2-14 --output json
+{
+  "branch_id": "6b010f79b5148ae8d0e66490",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:02 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:02 WAL Monitor: Stopped health monitoring
+[exit 0, 126.9 ms, sampled peak RSS 24836 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-2-15 --output json
+{
+  "branch_id": "6b010f79d82d8340faefa132",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:02 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:02 WAL Monitor: Stopped health monitoring
+[exit 0, 119.1 ms, sampled peak RSS 23416 kB]
+$ argon sandbox create -p ready-one-100000 --name c16-3-0 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-3-1 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-3-2 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-3-3 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-3-4 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-3-5 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-3-6 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-3-7 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-3-8 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-3-9 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-3-10 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-3-11 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-3-12 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-3-13 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-3-14 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-3-15 --watch --output json
+$ argon sandbox discard -p ready-one-100000 -b c16-3-0 --output json
+{
+  "branch_id": "6b010f866a823ff58b628a06",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:15 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:15 WAL Monitor: Stopped health monitoring
+[exit 0, 122.7 ms, sampled peak RSS 22384 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-3-1 --output json
+{
+  "branch_id": "6b010f86ae8b98a352319627",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:15 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:16 WAL Monitor: Stopped health monitoring
+[exit 0, 118.9 ms, sampled peak RSS 23340 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-3-2 --output json
+{
+  "branch_id": "6b010f868c179ced7530df71",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:16 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:16 WAL Monitor: Stopped health monitoring
+[exit 0, 123.1 ms, sampled peak RSS 25344 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-3-3 --output json
+{
+  "branch_id": "6b010f86233aff06357d5ffb",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:16 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:16 WAL Monitor: Stopped health monitoring
+[exit 0, 119.2 ms, sampled peak RSS 22240 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-3-4 --output json
+{
+  "branch_id": "6b010f8633c5dfe5685f758c",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:16 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:16 WAL Monitor: Stopped health monitoring
+[exit 0, 115.6 ms, sampled peak RSS 23536 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-3-5 --output json
+{
+  "branch_id": "6b010f86d4f0b046551ac5b6",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:16 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:16 WAL Monitor: Stopped health monitoring
+[exit 0, 117.4 ms, sampled peak RSS 25412 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-3-6 --output json
+{
+  "branch_id": "6b010f863e05c1db6ad4a38d",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:16 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:16 WAL Monitor: Stopped health monitoring
+[exit 0, 121.4 ms, sampled peak RSS 23524 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-3-7 --output json
+{
+  "branch_id": "6b010f8658cb7b053087a2c1",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:16 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:16 WAL Monitor: Stopped health monitoring
+[exit 0, 119.0 ms, sampled peak RSS 25396 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-3-8 --output json
+{
+  "branch_id": "6b010f8651731604119854e9",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:16 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:16 WAL Monitor: Stopped health monitoring
+[exit 0, 128.7 ms, sampled peak RSS 23416 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-3-9 --output json
+{
+  "branch_id": "6b010f86c07e45f29d4ef6fc",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:16 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:17 WAL Monitor: Stopped health monitoring
+[exit 0, 123.6 ms, sampled peak RSS 22400 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-3-10 --output json
+{
+  "branch_id": "6b010f86d61b1358e7407dfb",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:17 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:17 WAL Monitor: Stopped health monitoring
+[exit 0, 121.0 ms, sampled peak RSS 22216 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-3-11 --output json
+{
+  "branch_id": "6b010f86c66b4ad5161640f8",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:17 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:17 WAL Monitor: Stopped health monitoring
+[exit 0, 117.6 ms, sampled peak RSS 23396 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-3-12 --output json
+{
+  "branch_id": "6b010f86e90616196027ac19",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:17 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:17 WAL Monitor: Stopped health monitoring
+[exit 0, 114.4 ms, sampled peak RSS 23380 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-3-13 --output json
+{
+  "branch_id": "6b010f866c52d4fc2efba451",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:17 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:17 WAL Monitor: Stopped health monitoring
+[exit 0, 120.8 ms, sampled peak RSS 21880 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-3-14 --output json
+{
+  "branch_id": "6b010f865faa00ad036077ac",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:17 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:17 WAL Monitor: Stopped health monitoring
+[exit 0, 124.9 ms, sampled peak RSS 23380 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-3-15 --output json
+{
+  "branch_id": "6b010f86f377be514ad1b3d1",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:17 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:17 WAL Monitor: Stopped health monitoring
+[exit 0, 114.7 ms, sampled peak RSS 25660 kB]
+$ argon sandbox create -p ready-one-100000 --name c16-4-0 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-4-1 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-4-2 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-4-3 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-4-4 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-4-5 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-4-6 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-4-7 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-4-8 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-4-9 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-4-10 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-4-11 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-4-12 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-4-13 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-4-14 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-4-15 --watch --output json
+$ argon sandbox discard -p ready-one-100000 -b c16-4-0 --output json
+{
+  "branch_id": "6b010f956c1c488bbf182758",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:30 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:30 WAL Monitor: Stopped health monitoring
+[exit 0, 119.7 ms, sampled peak RSS 23700 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-4-1 --output json
+{
+  "branch_id": "6b010f95bbffc8a1b8a016b5",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:30 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:30 WAL Monitor: Stopped health monitoring
+[exit 0, 117.7 ms, sampled peak RSS 25428 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-4-2 --output json
+{
+  "branch_id": "6b010f95bd0459d0bd7c91ce",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:30 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:30 WAL Monitor: Stopped health monitoring
+[exit 0, 117.0 ms, sampled peak RSS 22416 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-4-3 --output json
+{
+  "branch_id": "6b010f95538cbd33384c96c7",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:30 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:30 WAL Monitor: Stopped health monitoring
+[exit 0, 119.7 ms, sampled peak RSS 21348 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-4-4 --output json
+{
+  "branch_id": "6b010f95c829575621a93e7b",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:30 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:30 WAL Monitor: Stopped health monitoring
+[exit 0, 118.3 ms, sampled peak RSS 22684 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-4-5 --output json
+{
+  "branch_id": "6b010f95be4d32662c7209db",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:30 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:30 WAL Monitor: Stopped health monitoring
+[exit 0, 118.1 ms, sampled peak RSS 20360 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-4-6 --output json
+{
+  "branch_id": "6b010f95200fbef6599bff86",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:30 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:30 WAL Monitor: Stopped health monitoring
+[exit 0, 115.3 ms, sampled peak RSS 21300 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-4-7 --output json
+{
+  "branch_id": "6b010f95d1ac185a7fbe95ab",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:30 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:31 WAL Monitor: Stopped health monitoring
+[exit 0, 117.9 ms, sampled peak RSS 21360 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-4-8 --output json
+{
+  "branch_id": "6b010f95580c80bd2cb408f2",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:31 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:31 WAL Monitor: Stopped health monitoring
+[exit 0, 119.9 ms, sampled peak RSS 18760 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-4-9 --output json
+{
+  "branch_id": "6b010f95718acef4e1857ea6",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:31 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:31 WAL Monitor: Stopped health monitoring
+[exit 0, 119.5 ms, sampled peak RSS 18908 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-4-10 --output json
+{
+  "branch_id": "6b010f95a6111025818346dc",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:31 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:31 WAL Monitor: Stopped health monitoring
+[exit 0, 118.7 ms, sampled peak RSS 25524 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-4-11 --output json
+{
+  "branch_id": "6b010f952b0ad83d5c6385d5",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:31 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:31 WAL Monitor: Stopped health monitoring
+[exit 0, 118.7 ms, sampled peak RSS 22404 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-4-12 --output json
+{
+  "branch_id": "6b010f9573d6f1b04687b35d",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:31 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:31 WAL Monitor: Stopped health monitoring
+[exit 0, 117.5 ms, sampled peak RSS 23416 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-4-13 --output json
+{
+  "branch_id": "6b010f95669a8dc2c838c82d",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:31 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:31 WAL Monitor: Stopped health monitoring
+[exit 0, 116.9 ms, sampled peak RSS 22144 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-4-14 --output json
+{
+  "branch_id": "6b010f959db5ec6d4600aef2",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:31 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:31 WAL Monitor: Stopped health monitoring
+[exit 0, 116.8 ms, sampled peak RSS 22240 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-4-15 --output json
+{
+  "branch_id": "6b010f95eadfe4db192114d8",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:31 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:32 WAL Monitor: Stopped health monitoring
+[exit 0, 120.0 ms, sampled peak RSS 21148 kB]
+$ argon sandbox create -p ready-one-100000 --name c16-5-0 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-5-1 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-5-2 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-5-3 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-5-4 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-5-5 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-5-6 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-5-7 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-5-8 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-5-9 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-5-10 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-5-11 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-5-12 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-5-13 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-5-14 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-5-15 --watch --output json
+$ argon sandbox discard -p ready-one-100000 -b c16-5-0 --output json
+{
+  "branch_id": "6b010fa4cb2ae4fc6b8dd8c4",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:42 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:42 WAL Monitor: Stopped health monitoring
+[exit 0, 122.3 ms, sampled peak RSS 23400 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-5-1 --output json
+{
+  "branch_id": "6b010fa4860b6ec54bf76509",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:43 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:43 WAL Monitor: Stopped health monitoring
+[exit 0, 114.5 ms, sampled peak RSS 24188 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-5-2 --output json
+{
+  "branch_id": "6b010fa44e2752827ad2dbb4",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:43 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:43 WAL Monitor: Stopped health monitoring
+[exit 0, 120.0 ms, sampled peak RSS 23300 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-5-3 --output json
+{
+  "branch_id": "6b010fa43f148e6cddf8b360",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:43 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:43 WAL Monitor: Stopped health monitoring
+[exit 0, 115.7 ms, sampled peak RSS 23264 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-5-4 --output json
+{
+  "branch_id": "6b010fa4ff286c2b4f871baa",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:43 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:43 WAL Monitor: Stopped health monitoring
+[exit 0, 118.2 ms, sampled peak RSS 22220 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-5-5 --output json
+{
+  "branch_id": "6b010fa4d8b2b9c365205d85",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:43 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:43 WAL Monitor: Stopped health monitoring
+[exit 0, 121.7 ms, sampled peak RSS 23252 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-5-6 --output json
+{
+  "branch_id": "6b010fa4b68527095ea46aab",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:43 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:43 WAL Monitor: Stopped health monitoring
+[exit 0, 120.0 ms, sampled peak RSS 24248 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-5-7 --output json
+{
+  "branch_id": "6b010fa4b12c4f6f0d559946",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:43 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:43 WAL Monitor: Stopped health monitoring
+[exit 0, 120.8 ms, sampled peak RSS 24260 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-5-8 --output json
+{
+  "branch_id": "6b010fa41dd5da3214fe4c40",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:43 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:43 WAL Monitor: Stopped health monitoring
+[exit 0, 121.5 ms, sampled peak RSS 22060 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-5-9 --output json
+{
+  "branch_id": "6b010fa4dbbbd1cbf57f0606",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:43 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:44 WAL Monitor: Stopped health monitoring
+[exit 0, 130.2 ms, sampled peak RSS 24328 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-5-10 --output json
+{
+  "branch_id": "6b010fa4cf7b204f0d824903",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:44 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:44 WAL Monitor: Stopped health monitoring
+[exit 0, 125.8 ms, sampled peak RSS 24340 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-5-11 --output json
+{
+  "branch_id": "6b010fa41d589adc7a214aa6",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:44 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:44 WAL Monitor: Stopped health monitoring
+[exit 0, 128.2 ms, sampled peak RSS 22176 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-5-12 --output json
+{
+  "branch_id": "6b010fa4c54d614f37ce5482",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:44 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:44 WAL Monitor: Stopped health monitoring
+[exit 0, 134.1 ms, sampled peak RSS 23440 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-5-13 --output json
+{
+  "branch_id": "6b010fa40bf71ba89f5c3407",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:44 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:44 WAL Monitor: Stopped health monitoring
+[exit 0, 125.7 ms, sampled peak RSS 23572 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-5-14 --output json
+{
+  "branch_id": "6b010fa4fcec80f80a51db47",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:44 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:44 WAL Monitor: Stopped health monitoring
+[exit 0, 119.4 ms, sampled peak RSS 22168 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-5-15 --output json
+{
+  "branch_id": "6b010fa4eeb4d6dafc4617ca",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:44 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:44 WAL Monitor: Stopped health monitoring
+[exit 0, 134.3 ms, sampled peak RSS 22196 kB]
+$ argon sandbox create -p ready-one-100000 --name c16-6-0 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-6-1 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-6-2 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-6-3 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-6-4 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-6-5 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-6-6 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-6-7 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-6-8 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-6-9 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-6-10 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-6-11 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-6-12 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-6-13 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-6-14 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-6-15 --watch --output json
+$ argon sandbox discard -p ready-one-100000 -b c16-6-0 --output json
+{
+  "branch_id": "6b010fb061ac2ccfa81f9053",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:57 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:57 WAL Monitor: Stopped health monitoring
+[exit 0, 125.9 ms, sampled peak RSS 24312 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-6-1 --output json
+{
+  "branch_id": "6b010fb06690dbab6861bd05",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:57 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:57 WAL Monitor: Stopped health monitoring
+[exit 0, 126.5 ms, sampled peak RSS 25512 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-6-2 --output json
+{
+  "branch_id": "6b010fb0bf382690a93054b4",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:57 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:57 WAL Monitor: Stopped health monitoring
+[exit 0, 121.0 ms, sampled peak RSS 24244 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-6-3 --output json
+{
+  "branch_id": "6b010fb03a90b9f9638dfa75",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:57 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:58 WAL Monitor: Stopped health monitoring
+[exit 0, 120.9 ms, sampled peak RSS 23404 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-6-4 --output json
+{
+  "branch_id": "6b010fb0055ee68fcd59c2d4",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:58 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:58 WAL Monitor: Stopped health monitoring
+[exit 0, 121.9 ms, sampled peak RSS 25468 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-6-5 --output json
+{
+  "branch_id": "6b010fb0b5fd02a884b39b13",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:58 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:58 WAL Monitor: Stopped health monitoring
+[exit 0, 120.9 ms, sampled peak RSS 20876 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-6-6 --output json
+{
+  "branch_id": "6b010fb0b72126b54b021700",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:58 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:58 WAL Monitor: Stopped health monitoring
+[exit 0, 123.6 ms, sampled peak RSS 22216 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-6-7 --output json
+{
+  "branch_id": "6b010fb01441eb0515e49a00",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:58 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:58 WAL Monitor: Stopped health monitoring
+[exit 0, 122.6 ms, sampled peak RSS 21176 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-6-8 --output json
+{
+  "branch_id": "6b010fb07c08c266ae796211",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:58 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:58 WAL Monitor: Stopped health monitoring
+[exit 0, 123.8 ms, sampled peak RSS 21620 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-6-9 --output json
+{
+  "branch_id": "6b010fb03f7d307fcb5de9f4",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:58 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:58 WAL Monitor: Stopped health monitoring
+[exit 0, 118.7 ms, sampled peak RSS 25504 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-6-10 --output json
+{
+  "branch_id": "6b010fb0211e9e77a97ba26b",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:58 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:58 WAL Monitor: Stopped health monitoring
+[exit 0, 125.9 ms, sampled peak RSS 22492 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-6-11 --output json
+{
+  "branch_id": "6b010fb04461241ea1a0488c",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:58 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:59 WAL Monitor: Stopped health monitoring
+[exit 0, 121.6 ms, sampled peak RSS 23488 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-6-12 --output json
+{
+  "branch_id": "6b010fb09a8ddee811128e80",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:59 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:59 WAL Monitor: Stopped health monitoring
+[exit 0, 120.3 ms, sampled peak RSS 20168 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-6-13 --output json
+{
+  "branch_id": "6b010fb0f90207f5126db7a4",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:59 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:59 WAL Monitor: Stopped health monitoring
+[exit 0, 119.7 ms, sampled peak RSS 25284 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-6-14 --output json
+{
+  "branch_id": "6b010fb0841ff6baeb38c57b",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:59 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:59 WAL Monitor: Stopped health monitoring
+[exit 0, 121.4 ms, sampled peak RSS 23404 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-6-15 --output json
+{
+  "branch_id": "6b010fb0e892a3cb67985222",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:27:59 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:27:59 WAL Monitor: Stopped health monitoring
+[exit 0, 120.9 ms, sampled peak RSS 23208 kB]
+$ argon sandbox create -p ready-one-100000 --name c16-7-0 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-7-1 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-7-2 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-7-3 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-7-4 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-7-5 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-7-6 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-7-7 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-7-8 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-7-9 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-7-10 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-7-11 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-7-12 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-7-13 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-7-14 --watch --output json
+$ argon sandbox create -p ready-one-100000 --name c16-7-15 --watch --output json
+$ argon sandbox discard -p ready-one-100000 -b c16-7-0 --output json
+{
+  "branch_id": "6b010fbf1ffa25cfdb479d11",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:28:11 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:28:11 WAL Monitor: Stopped health monitoring
+[exit 0, 118.9 ms, sampled peak RSS 23444 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-7-1 --output json
+{
+  "branch_id": "6b010fbf38d1f54e4c4f6e58",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:28:11 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:28:12 WAL Monitor: Stopped health monitoring
+[exit 0, 120.6 ms, sampled peak RSS 22148 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-7-2 --output json
+{
+  "branch_id": "6b010fbf51bb76d2a67adbf5",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:28:12 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:28:12 WAL Monitor: Stopped health monitoring
+[exit 0, 120.1 ms, sampled peak RSS 23348 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-7-3 --output json
+{
+  "branch_id": "6b010fbfffb83db765d94875",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:28:12 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:28:12 WAL Monitor: Stopped health monitoring
+[exit 0, 117.4 ms, sampled peak RSS 24236 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-7-4 --output json
+{
+  "branch_id": "6b010fbf198c4a95c35e1bb1",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:28:12 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:28:12 WAL Monitor: Stopped health monitoring
+[exit 0, 113.7 ms, sampled peak RSS 22204 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-7-5 --output json
+{
+  "branch_id": "6b010fbf1e88674ee0a4ed9d",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:28:12 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:28:12 WAL Monitor: Stopped health monitoring
+[exit 0, 115.2 ms, sampled peak RSS 22152 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-7-6 --output json
+{
+  "branch_id": "6b010fbf8e12f7907400f38e",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:28:12 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:28:12 WAL Monitor: Stopped health monitoring
+[exit 0, 118.6 ms, sampled peak RSS 25424 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-7-7 --output json
+{
+  "branch_id": "6b010fbffc482f2ad3a1aafa",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:28:12 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:28:12 WAL Monitor: Stopped health monitoring
+[exit 0, 120.1 ms, sampled peak RSS 22196 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-7-8 --output json
+{
+  "branch_id": "6b010fbf2a3d619f60d7d67e",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:28:12 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:28:12 WAL Monitor: Stopped health monitoring
+[exit 0, 127.1 ms, sampled peak RSS 23412 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-7-9 --output json
+{
+  "branch_id": "6b010fbfee859c95d40f5af5",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:28:12 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:28:13 WAL Monitor: Stopped health monitoring
+[exit 0, 122.3 ms, sampled peak RSS 23704 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-7-10 --output json
+{
+  "branch_id": "6b010fbfff72be10663b6d22",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:28:13 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:28:13 WAL Monitor: Stopped health monitoring
+[exit 0, 121.6 ms, sampled peak RSS 25592 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-7-11 --output json
+{
+  "branch_id": "6b010fbf08c799fd3ffe9d7f",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:28:13 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:28:13 WAL Monitor: Stopped health monitoring
+[exit 0, 116.7 ms, sampled peak RSS 24248 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-7-12 --output json
+{
+  "branch_id": "6b010fbf1ee5db9f196bdcdc",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:28:13 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:28:13 WAL Monitor: Stopped health monitoring
+[exit 0, 117.1 ms, sampled peak RSS 25524 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-7-13 --output json
+{
+  "branch_id": "6b010fbf13e74cce66dbea44",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:28:13 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:28:13 WAL Monitor: Stopped health monitoring
+[exit 0, 120.4 ms, sampled peak RSS 23192 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-7-14 --output json
+{
+  "branch_id": "6b010fbfa76c04d49e1697ab",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:28:13 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:28:13 WAL Monitor: Stopped health monitoring
+[exit 0, 122.6 ms, sampled peak RSS 22116 kB]
+$ argon sandbox discard -p ready-one-100000 -b c16-7-15 --output json
+{
+  "branch_id": "6b010fbf9e526508ec6a0792",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:28:13 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:28:13 WAL Monitor: Stopped health monitoring
+[exit 0, 122.1 ms, sampled peak RSS 24256 kB]
+
+===== 1000000 documents, layout one: metadata argonbench_ready_meta_4546992f4ede, source argonbench_ready_src_4546992f4ede =====
+$ argon import database --uri mongodb://localhost:27017/?replicaSet=rs0 --database argonbench_ready_src_4546992f4ede --project ready-one-1000000 --source-quiesced --yes --output json
+{
+  "project_id": "6b010fd3613f8c4befdd706c",
+  "branch_id": "6b010fd3613f8c4befdd706e",
+  "imported_documents": 1000000,
+  "wal_entries_created": 1000000,
+  "imported_collections": [
+    "items"
+  ],
+  "duration": 37478843100,
+  "start_lsn": 2,
+  "end_lsn": 1000002
+}
+[stderr] 2026/11/21 03:28:19 WAL Monitor: Started health monitoring
+[stderr] 🚀 Starting import of database 'argonbench_ready_src_4546992f4ede'...
+[stderr] 2026/11/21 03:28:56 WAL Monitor: Stopped health monitoring
+[exit 0, 37690.0 ms, sampled peak RSS 3440364 kB]
+$ argon sandbox create -p ready-one-1000000 --name r0 --watch --output json
+[stderr] 2026/11/21 03:28:56 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:29:11 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-one-1000000 -b r0 --output json
+{
+  "branch_id": "6b010ff8257041d3c7cf1b64",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:29:12 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:29:12 WAL Monitor: Stopped health monitoring
+[exit 0, 115.3 ms, sampled peak RSS 25560 kB]
+$ argon branches create p0 -p ready-one-1000000 --from main --output json
+{
+  "branch": {
+    "id": "6b0110086839acc1a8bc773a",
+    "project_id": "6b010fd3613f8c4befdd706c",
+    "name": "p0",
+    "parent_id": "6b010fd3613f8c4befdd706e",
+    "head_lsn": 1000002,
+    "base_lsn": 1000002,
+    "created_at": "2026-11-21T03:29:12.242211759Z",
+    "created_lsn": 1000006,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:29:12 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:29:12 WAL Monitor: Stopped health monitoring
+[exit 0, 9.1 ms, sampled peak RSS 1260 kB]
+$ argon checkout -p ready-one-1000000 -b p0 --output json
+{
+  "branch_id": "6b0110086839acc1a8bc773a",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b0110086839acc1a8bc773a?replicaSet=rs0",
+  "lsn": 1000002,
+  "physical_db": "argon_br_6b0110086839acc1a8bc773a"
+}
+[stderr] 2026/11/21 03:29:12 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:29:24 WAL Monitor: Stopped health monitoring
+[exit 0, 12587.5 ms, sampled peak RSS 2707184 kB]
+$ argon sandbox discard -p ready-one-1000000 -b p0 --output json
+{
+  "branch_id": "6b0110086839acc1a8bc773a",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:29:24 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:29:24 WAL Monitor: Stopped health monitoring
+[exit 0, 114.6 ms, sampled peak RSS 25416 kB]
+$ argon sandbox create -p ready-one-1000000 --name r1 --watch --output json
+[stderr] 2026/11/21 03:29:24 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:29:39 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-one-1000000 -b r1 --output json
+{
+  "branch_id": "6b01101491274c227e788e0c",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:29:39 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:29:39 WAL Monitor: Stopped health monitoring
+[exit 0, 117.1 ms, sampled peak RSS 24244 kB]
+$ argon branches create p1 -p ready-one-1000000 --from main --output json
+{
+  "branch": {
+    "id": "6b011023bd42aaacc8e19d5c",
+    "project_id": "6b010fd3613f8c4befdd706c",
+    "name": "p1",
+    "parent_id": "6b010fd3613f8c4befdd706e",
+    "head_lsn": 1000002,
+    "base_lsn": 1000002,
+    "created_at": "2026-11-21T03:29:39.398657924Z",
+    "created_lsn": 1000011,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:29:39 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:29:39 WAL Monitor: Stopped health monitoring
+[exit 0, 10.9 ms, sampled peak RSS 1472 kB]
+$ argon checkout -p ready-one-1000000 -b p1 --output json
+{
+  "branch_id": "6b011023bd42aaacc8e19d5c",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b011023bd42aaacc8e19d5c?replicaSet=rs0",
+  "lsn": 1000002,
+  "physical_db": "argon_br_6b011023bd42aaacc8e19d5c"
+}
+[stderr] 2026/11/21 03:29:39 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:29:52 WAL Monitor: Stopped health monitoring
+[exit 0, 13224.0 ms, sampled peak RSS 2685416 kB]
+$ argon sandbox discard -p ready-one-1000000 -b p1 --output json
+{
+  "branch_id": "6b011023bd42aaacc8e19d5c",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:29:52 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:29:52 WAL Monitor: Stopped health monitoring
+[exit 0, 126.8 ms, sampled peak RSS 23480 kB]
+$ argon sandbox create -p ready-one-1000000 --name r2 --watch --output json
+[stderr] 2026/11/21 03:29:52 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:30:09 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-one-1000000 -b r2 --output json
+{
+  "branch_id": "6b011030c6f9576ee811ff12",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:30:10 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:30:10 WAL Monitor: Stopped health monitoring
+[exit 0, 122.0 ms, sampled peak RSS 24412 kB]
+$ argon branches create p2 -p ready-one-1000000 --from main --output json
+{
+  "branch": {
+    "id": "6b0110428b353a7a0acb1cff",
+    "project_id": "6b010fd3613f8c4befdd706c",
+    "name": "p2",
+    "parent_id": "6b010fd3613f8c4befdd706e",
+    "head_lsn": 1000002,
+    "base_lsn": 1000002,
+    "created_at": "2026-11-21T03:30:10.22012455Z",
+    "created_lsn": 1000016,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:30:10 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:30:10 WAL Monitor: Stopped health monitoring
+[exit 0, 11.1 ms, sampled peak RSS 1476 kB]
+$ argon checkout -p ready-one-1000000 -b p2 --output json
+{
+  "branch_id": "6b0110428b353a7a0acb1cff",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b0110428b353a7a0acb1cff?replicaSet=rs0",
+  "lsn": 1000002,
+  "physical_db": "argon_br_6b0110428b353a7a0acb1cff"
+}
+[stderr] 2026/11/21 03:30:10 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:30:26 WAL Monitor: Stopped health monitoring
+[exit 0, 16566.4 ms, sampled peak RSS 2671108 kB]
+$ argon sandbox discard -p ready-one-1000000 -b p2 --output json
+{
+  "branch_id": "6b0110428b353a7a0acb1cff",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:30:26 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:30:26 WAL Monitor: Stopped health monitoring
+[exit 0, 119.2 ms, sampled peak RSS 25464 kB]
+$ argon sandbox create -p ready-one-1000000 --name r3 --watch --output json
+[stderr] 2026/11/21 03:30:26 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:30:43 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-one-1000000 -b r3 --output json
+{
+  "branch_id": "6b011052ffad3bd5e192fb73",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:30:43 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:30:43 WAL Monitor: Stopped health monitoring
+[exit 0, 115.3 ms, sampled peak RSS 25400 kB]
+$ argon branches create p3 -p ready-one-1000000 --from main --output json
+{
+  "branch": {
+    "id": "6b0110647a2cd89949a7e2f5",
+    "project_id": "6b010fd3613f8c4befdd706c",
+    "name": "p3",
+    "parent_id": "6b010fd3613f8c4befdd706e",
+    "head_lsn": 1000002,
+    "base_lsn": 1000002,
+    "created_at": "2026-11-21T03:30:44.007369635Z",
+    "created_lsn": 1000021,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:30:44 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:30:44 WAL Monitor: Stopped health monitoring
+[exit 0, 13.3 ms, sampled peak RSS 1424 kB]
+$ argon checkout -p ready-one-1000000 -b p3 --output json
+{
+  "branch_id": "6b0110647a2cd89949a7e2f5",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b0110647a2cd89949a7e2f5?replicaSet=rs0",
+  "lsn": 1000002,
+  "physical_db": "argon_br_6b0110647a2cd89949a7e2f5"
+}
+[stderr] 2026/11/21 03:30:44 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:31:03 WAL Monitor: Stopped health monitoring
+[exit 0, 19939.5 ms, sampled peak RSS 2718620 kB]
+$ argon sandbox discard -p ready-one-1000000 -b p3 --output json
+{
+  "branch_id": "6b0110647a2cd89949a7e2f5",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:31:03 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:31:04 WAL Monitor: Stopped health monitoring
+[exit 0, 123.5 ms, sampled peak RSS 23192 kB]
+$ argon sandbox create -p ready-one-1000000 --name r4 --watch --output json
+[stderr] 2026/11/21 03:31:04 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:31:25 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-one-1000000 -b r4 --output json
+{
+  "branch_id": "6b011078e5df5aa630c3d52a",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:31:25 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:31:25 WAL Monitor: Stopped health monitoring
+[exit 0, 123.0 ms, sampled peak RSS 24464 kB]
+$ argon branches create p4 -p ready-one-1000000 --from main --output json
+{
+  "branch": {
+    "id": "6b01108d667afa6c3d327f4c",
+    "project_id": "6b010fd3613f8c4befdd706c",
+    "name": "p4",
+    "parent_id": "6b010fd3613f8c4befdd706e",
+    "head_lsn": 1000002,
+    "base_lsn": 1000002,
+    "created_at": "2026-11-21T03:31:25.337388043Z",
+    "created_lsn": 1000026,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:31:25 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:31:25 WAL Monitor: Stopped health monitoring
+[exit 0, 17.2 ms, sampled peak RSS 4072 kB]
+$ argon checkout -p ready-one-1000000 -b p4 --output json
+{
+  "branch_id": "6b01108d667afa6c3d327f4c",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b01108d667afa6c3d327f4c?replicaSet=rs0",
+  "lsn": 1000002,
+  "physical_db": "argon_br_6b01108d667afa6c3d327f4c"
+}
+[stderr] 2026/11/21 03:31:25 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:31:44 WAL Monitor: Stopped health monitoring
+[exit 0, 19672.2 ms, sampled peak RSS 2712172 kB]
+$ argon sandbox discard -p ready-one-1000000 -b p4 --output json
+{
+  "branch_id": "6b01108d667afa6c3d327f4c",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:31:45 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:31:45 WAL Monitor: Stopped health monitoring
+[exit 0, 123.1 ms, sampled peak RSS 23460 kB]
+$ argon sandbox create -p ready-one-1000000 --name r5 --watch --output json
+[stderr] 2026/11/21 03:31:45 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:32:00 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-one-1000000 -b r5 --output json
+{
+  "branch_id": "6b0110a1828f4391f3d6faf2",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:32:00 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:32:01 WAL Monitor: Stopped health monitoring
+[exit 0, 129.9 ms, sampled peak RSS 25388 kB]
+$ argon branches create p5 -p ready-one-1000000 --from main --output json
+{
+  "branch": {
+    "id": "6b0110b1da1b3c99e8dc5763",
+    "project_id": "6b010fd3613f8c4befdd706c",
+    "name": "p5",
+    "parent_id": "6b010fd3613f8c4befdd706e",
+    "head_lsn": 1000002,
+    "base_lsn": 1000002,
+    "created_at": "2026-11-21T03:32:01.116125795Z",
+    "created_lsn": 1000031,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:32:01 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:32:01 WAL Monitor: Stopped health monitoring
+[exit 0, 12.3 ms, sampled peak RSS 1252 kB]
+$ argon checkout -p ready-one-1000000 -b p5 --output json
+{
+  "branch_id": "6b0110b1da1b3c99e8dc5763",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b0110b1da1b3c99e8dc5763?replicaSet=rs0",
+  "lsn": 1000002,
+  "physical_db": "argon_br_6b0110b1da1b3c99e8dc5763"
+}
+[stderr] 2026/11/21 03:32:01 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:32:21 WAL Monitor: Stopped health monitoring
+[exit 0, 20587.8 ms, sampled peak RSS 2711936 kB]
+$ argon sandbox discard -p ready-one-1000000 -b p5 --output json
+{
+  "branch_id": "6b0110b1da1b3c99e8dc5763",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:32:21 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:32:21 WAL Monitor: Stopped health monitoring
+[exit 0, 140.5 ms, sampled peak RSS 23320 kB]
+$ argon sandbox create -p ready-one-1000000 --name r6 --watch --output json
+[stderr] 2026/11/21 03:32:21 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:32:38 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-one-1000000 -b r6 --output json
+{
+  "branch_id": "6b0110c57dbef9a5c7954ced",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:32:38 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:32:38 WAL Monitor: Stopped health monitoring
+[exit 0, 123.4 ms, sampled peak RSS 23400 kB]
+$ argon branches create p6 -p ready-one-1000000 --from main --output json
+{
+  "branch": {
+    "id": "6b0110d6ddbd55eab34d9c1b",
+    "project_id": "6b010fd3613f8c4befdd706c",
+    "name": "p6",
+    "parent_id": "6b010fd3613f8c4befdd706e",
+    "head_lsn": 1000002,
+    "base_lsn": 1000002,
+    "created_at": "2026-11-21T03:32:38.563802132Z",
+    "created_lsn": 1000036,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:32:38 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:32:38 WAL Monitor: Stopped health monitoring
+[exit 0, 12.1 ms, sampled peak RSS 1260 kB]
+$ argon checkout -p ready-one-1000000 -b p6 --output json
+{
+  "branch_id": "6b0110d6ddbd55eab34d9c1b",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b0110d6ddbd55eab34d9c1b?replicaSet=rs0",
+  "lsn": 1000002,
+  "physical_db": "argon_br_6b0110d6ddbd55eab34d9c1b"
+}
+[stderr] 2026/11/21 03:32:38 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:32:51 WAL Monitor: Stopped health monitoring
+[exit 0, 12708.2 ms, sampled peak RSS 2694952 kB]
+$ argon sandbox discard -p ready-one-1000000 -b p6 --output json
+{
+  "branch_id": "6b0110d6ddbd55eab34d9c1b",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:32:51 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:32:51 WAL Monitor: Stopped health monitoring
+[exit 0, 120.6 ms, sampled peak RSS 22300 kB]
+$ argon sandbox create -p ready-one-1000000 --name r7 --watch --output json
+[stderr] 2026/11/21 03:32:51 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:33:08 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-one-1000000 -b r7 --output json
+{
+  "branch_id": "6b0110e3bcdabcfe85c22aa2",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:33:08 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:08 WAL Monitor: Stopped health monitoring
+[exit 0, 123.8 ms, sampled peak RSS 22176 kB]
+$ argon branches create p7 -p ready-one-1000000 --from main --output json
+{
+  "branch": {
+    "id": "6b0110f4b4ef7e7b4f822986",
+    "project_id": "6b010fd3613f8c4befdd706c",
+    "name": "p7",
+    "parent_id": "6b010fd3613f8c4befdd706e",
+    "head_lsn": 1000002,
+    "base_lsn": 1000002,
+    "created_at": "2026-11-21T03:33:08.385602007Z",
+    "created_lsn": 1000041,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:33:08 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:08 WAL Monitor: Stopped health monitoring
+[exit 0, 8.1 ms, sampled peak RSS 1456 kB]
+$ argon checkout -p ready-one-1000000 -b p7 --output json
+{
+  "branch_id": "6b0110f4b4ef7e7b4f822986",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b0110f4b4ef7e7b4f822986?replicaSet=rs0",
+  "lsn": 1000002,
+  "physical_db": "argon_br_6b0110f4b4ef7e7b4f822986"
+}
+[stderr] 2026/11/21 03:33:08 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:26 WAL Monitor: Stopped health monitoring
+[exit 0, 18116.4 ms, sampled peak RSS 2721112 kB]
+$ argon sandbox discard -p ready-one-1000000 -b p7 --output json
+{
+  "branch_id": "6b0110f4b4ef7e7b4f822986",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:33:26 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:26 WAL Monitor: Stopped health monitoring
+[exit 0, 127.7 ms, sampled peak RSS 23724 kB]
+
+===== 100000 documents, layout ten: metadata argonbench_ready_meta_3943039547af, source argonbench_ready_src_3943039547af =====
+$ argon import database --uri mongodb://localhost:27017/?replicaSet=rs0 --database argonbench_ready_src_3943039547af --project ready-ten-100000 --source-quiesced --yes --output json
+{
+  "project_id": "6b0111086bf0c4c3e85968a6",
+  "branch_id": "6b0111086bf0c4c3e85968a8",
+  "imported_documents": 100000,
+  "wal_entries_created": 100000,
+  "imported_collections": [
+    "items_0",
+    "items_1",
+    "items_2",
+    "items_3",
+    "items_4",
+    "items_5",
+    "items_6",
+    "items_7",
+    "items_8",
+    "items_9"
+  ],
+  "duration": 4354849793,
+  "start_lsn": 2,
+  "end_lsn": 100002
+}
+[stderr] 2026/11/21 03:33:28 WAL Monitor: Started health monitoring
+[stderr] 🚀 Starting import of database 'argonbench_ready_src_3943039547af'...
+[stderr] 2026/11/21 03:33:32 WAL Monitor: Stopped health monitoring
+[exit 0, 4451.0 ms, sampled peak RSS 423964 kB]
+$ argon sandbox create -p ready-ten-100000 --name r0 --watch --output json
+[stderr] 2026/11/21 03:33:32 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:33:34 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-ten-100000 -b r0 --output json
+{
+  "branch_id": "6b01110c28be7f3fbe9092b0",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:33:34 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:34 WAL Monitor: Stopped health monitoring
+[exit 0, 121.7 ms, sampled peak RSS 22288 kB]
+$ argon branches create p0 -p ready-ten-100000 --from main --output json
+{
+  "branch": {
+    "id": "6b01110e269616fac89af143",
+    "project_id": "6b0111086bf0c4c3e85968a6",
+    "name": "p0",
+    "parent_id": "6b0111086bf0c4c3e85968a8",
+    "head_lsn": 100002,
+    "base_lsn": 100002,
+    "created_at": "2026-11-21T03:33:34.441197839Z",
+    "created_lsn": 100006,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:33:34 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:34 WAL Monitor: Stopped health monitoring
+[exit 0, 11.5 ms, sampled peak RSS 1448 kB]
+$ argon checkout -p ready-ten-100000 -b p0 --output json
+{
+  "branch_id": "6b01110e269616fac89af143",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b01110e269616fac89af143?replicaSet=rs0",
+  "lsn": 100002,
+  "physical_db": "argon_br_6b01110e269616fac89af143"
+}
+[stderr] 2026/11/21 03:33:34 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:35 WAL Monitor: Stopped health monitoring
+[exit 0, 1432.1 ms, sampled peak RSS 160908 kB]
+$ argon sandbox discard -p ready-ten-100000 -b p0 --output json
+{
+  "branch_id": "6b01110e269616fac89af143",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:33:35 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:35 WAL Monitor: Stopped health monitoring
+[exit 0, 120.5 ms, sampled peak RSS 24552 kB]
+$ argon sandbox create -p ready-ten-100000 --name r1 --watch --output json
+[stderr] 2026/11/21 03:33:36 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:33:37 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-ten-100000 -b r1 --output json
+{
+  "branch_id": "6b0111109b3d452c3dad01d7",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:33:37 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:37 WAL Monitor: Stopped health monitoring
+[exit 0, 125.0 ms, sampled peak RSS 23504 kB]
+$ argon branches create p1 -p ready-ten-100000 --from main --output json
+{
+  "branch": {
+    "id": "6b01111269849cc8f80063e8",
+    "project_id": "6b0111086bf0c4c3e85968a6",
+    "name": "p1",
+    "parent_id": "6b0111086bf0c4c3e85968a8",
+    "head_lsn": 100002,
+    "base_lsn": 100002,
+    "created_at": "2026-11-21T03:33:38.010945507Z",
+    "created_lsn": 100011,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:33:38 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:38 WAL Monitor: Stopped health monitoring
+[exit 0, 13.8 ms, sampled peak RSS 3584 kB]
+$ argon checkout -p ready-ten-100000 -b p1 --output json
+{
+  "branch_id": "6b01111269849cc8f80063e8",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b01111269849cc8f80063e8?replicaSet=rs0",
+  "lsn": 100002,
+  "physical_db": "argon_br_6b01111269849cc8f80063e8"
+}
+[stderr] 2026/11/21 03:33:38 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:39 WAL Monitor: Stopped health monitoring
+[exit 0, 1264.2 ms, sampled peak RSS 158188 kB]
+$ argon sandbox discard -p ready-ten-100000 -b p1 --output json
+{
+  "branch_id": "6b01111269849cc8f80063e8",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:33:39 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:39 WAL Monitor: Stopped health monitoring
+[exit 0, 118.3 ms, sampled peak RSS 23420 kB]
+$ argon sandbox create -p ready-ten-100000 --name r2 --watch --output json
+[stderr] 2026/11/21 03:33:39 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:33:41 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-ten-100000 -b r2 --output json
+{
+  "branch_id": "6b011113a31c54110535a25a",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:33:41 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:41 WAL Monitor: Stopped health monitoring
+[exit 0, 125.6 ms, sampled peak RSS 23380 kB]
+$ argon branches create p2 -p ready-ten-100000 --from main --output json
+{
+  "branch": {
+    "id": "6b0111153beb7ad6dd012f65",
+    "project_id": "6b0111086bf0c4c3e85968a6",
+    "name": "p2",
+    "parent_id": "6b0111086bf0c4c3e85968a8",
+    "head_lsn": 100002,
+    "base_lsn": 100002,
+    "created_at": "2026-11-21T03:33:41.423600134Z",
+    "created_lsn": 100016,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:33:41 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:41 WAL Monitor: Stopped health monitoring
+[exit 0, 11.7 ms, sampled peak RSS 1416 kB]
+$ argon checkout -p ready-ten-100000 -b p2 --output json
+{
+  "branch_id": "6b0111153beb7ad6dd012f65",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b0111153beb7ad6dd012f65?replicaSet=rs0",
+  "lsn": 100002,
+  "physical_db": "argon_br_6b0111153beb7ad6dd012f65"
+}
+[stderr] 2026/11/21 03:33:41 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:42 WAL Monitor: Stopped health monitoring
+[exit 0, 1359.9 ms, sampled peak RSS 157784 kB]
+$ argon sandbox discard -p ready-ten-100000 -b p2 --output json
+{
+  "branch_id": "6b0111153beb7ad6dd012f65",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:33:42 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:42 WAL Monitor: Stopped health monitoring
+[exit 0, 120.2 ms, sampled peak RSS 24276 kB]
+$ argon sandbox create -p ready-ten-100000 --name r3 --watch --output json
+[stderr] 2026/11/21 03:33:42 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:33:44 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-ten-100000 -b r3 --output json
+{
+  "branch_id": "6b011116c63feff56585c2c8",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:33:44 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:45 WAL Monitor: Stopped health monitoring
+[exit 0, 121.4 ms, sampled peak RSS 22228 kB]
+$ argon branches create p3 -p ready-ten-100000 --from main --output json
+{
+  "branch": {
+    "id": "6b01111940a60abecf66d693",
+    "project_id": "6b0111086bf0c4c3e85968a6",
+    "name": "p3",
+    "parent_id": "6b0111086bf0c4c3e85968a8",
+    "head_lsn": 100002,
+    "base_lsn": 100002,
+    "created_at": "2026-11-21T03:33:45.078067177Z",
+    "created_lsn": 100021,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:33:45 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:45 WAL Monitor: Stopped health monitoring
+[exit 0, 15.2 ms, sampled peak RSS 4968 kB]
+$ argon checkout -p ready-ten-100000 -b p3 --output json
+{
+  "branch_id": "6b01111940a60abecf66d693",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b01111940a60abecf66d693?replicaSet=rs0",
+  "lsn": 100002,
+  "physical_db": "argon_br_6b01111940a60abecf66d693"
+}
+[stderr] 2026/11/21 03:33:45 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:46 WAL Monitor: Stopped health monitoring
+[exit 0, 1502.7 ms, sampled peak RSS 158680 kB]
+$ argon sandbox discard -p ready-ten-100000 -b p3 --output json
+{
+  "branch_id": "6b01111940a60abecf66d693",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:33:46 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:46 WAL Monitor: Stopped health monitoring
+[exit 0, 121.2 ms, sampled peak RSS 23244 kB]
+$ argon sandbox create -p ready-ten-100000 --name r4 --watch --output json
+[stderr] 2026/11/21 03:33:46 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:33:48 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-ten-100000 -b r4 --output json
+{
+  "branch_id": "6b01111a53781b63834f2954",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:33:48 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:48 WAL Monitor: Stopped health monitoring
+[exit 0, 121.5 ms, sampled peak RSS 22380 kB]
+$ argon branches create p4 -p ready-ten-100000 --from main --output json
+{
+  "branch": {
+    "id": "6b01111c212bc7d8a576a1b8",
+    "project_id": "6b0111086bf0c4c3e85968a6",
+    "name": "p4",
+    "parent_id": "6b0111086bf0c4c3e85968a8",
+    "head_lsn": 100002,
+    "base_lsn": 100002,
+    "created_at": "2026-11-21T03:33:48.736588595Z",
+    "created_lsn": 100026,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:33:48 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:48 WAL Monitor: Stopped health monitoring
+[exit 0, 11.0 ms, sampled peak RSS 1424 kB]
+$ argon checkout -p ready-ten-100000 -b p4 --output json
+{
+  "branch_id": "6b01111c212bc7d8a576a1b8",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b01111c212bc7d8a576a1b8?replicaSet=rs0",
+  "lsn": 100002,
+  "physical_db": "argon_br_6b01111c212bc7d8a576a1b8"
+}
+[stderr] 2026/11/21 03:33:48 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:50 WAL Monitor: Stopped health monitoring
+[exit 0, 1335.1 ms, sampled peak RSS 154948 kB]
+$ argon sandbox discard -p ready-ten-100000 -b p4 --output json
+{
+  "branch_id": "6b01111c212bc7d8a576a1b8",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:33:50 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:50 WAL Monitor: Stopped health monitoring
+[exit 0, 121.1 ms, sampled peak RSS 22200 kB]
+$ argon sandbox create -p ready-ten-100000 --name r5 --watch --output json
+[stderr] 2026/11/21 03:33:50 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:33:52 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-ten-100000 -b r5 --output json
+{
+  "branch_id": "6b01111ea2e3d17dc2d041f4",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:33:52 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:52 WAL Monitor: Stopped health monitoring
+[exit 0, 122.7 ms, sampled peak RSS 22376 kB]
+$ argon branches create p5 -p ready-ten-100000 --from main --output json
+{
+  "branch": {
+    "id": "6b01112075054decdcc571b8",
+    "project_id": "6b0111086bf0c4c3e85968a6",
+    "name": "p5",
+    "parent_id": "6b0111086bf0c4c3e85968a8",
+    "head_lsn": 100002,
+    "base_lsn": 100002,
+    "created_at": "2026-11-21T03:33:52.330829916Z",
+    "created_lsn": 100031,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:33:52 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:52 WAL Monitor: Stopped health monitoring
+[exit 0, 8.8 ms, sampled peak RSS 1416 kB]
+$ argon checkout -p ready-ten-100000 -b p5 --output json
+{
+  "branch_id": "6b01112075054decdcc571b8",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b01112075054decdcc571b8?replicaSet=rs0",
+  "lsn": 100002,
+  "physical_db": "argon_br_6b01112075054decdcc571b8"
+}
+[stderr] 2026/11/21 03:33:52 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:53 WAL Monitor: Stopped health monitoring
+[exit 0, 1338.2 ms, sampled peak RSS 159500 kB]
+$ argon sandbox discard -p ready-ten-100000 -b p5 --output json
+{
+  "branch_id": "6b01112075054decdcc571b8",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:33:53 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:53 WAL Monitor: Stopped health monitoring
+[exit 0, 120.1 ms, sampled peak RSS 23240 kB]
+$ argon sandbox create -p ready-ten-100000 --name r6 --watch --output json
+[stderr] 2026/11/21 03:33:53 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:33:55 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-ten-100000 -b r6 --output json
+{
+  "branch_id": "6b0111218b7cae76056f20ed",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:33:55 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:55 WAL Monitor: Stopped health monitoring
+[exit 0, 115.8 ms, sampled peak RSS 23228 kB]
+$ argon branches create p6 -p ready-ten-100000 --from main --output json
+{
+  "branch": {
+    "id": "6b011123028b6cfca71ee01a",
+    "project_id": "6b0111086bf0c4c3e85968a6",
+    "name": "p6",
+    "parent_id": "6b0111086bf0c4c3e85968a8",
+    "head_lsn": 100002,
+    "base_lsn": 100002,
+    "created_at": "2026-11-21T03:33:55.838113543Z",
+    "created_lsn": 100036,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:33:55 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:55 WAL Monitor: Stopped health monitoring
+[exit 0, 9.5 ms, sampled peak RSS 1412 kB]
+$ argon checkout -p ready-ten-100000 -b p6 --output json
+{
+  "branch_id": "6b011123028b6cfca71ee01a",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b011123028b6cfca71ee01a?replicaSet=rs0",
+  "lsn": 100002,
+  "physical_db": "argon_br_6b011123028b6cfca71ee01a"
+}
+[stderr] 2026/11/21 03:33:55 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:57 WAL Monitor: Stopped health monitoring
+[exit 0, 1392.3 ms, sampled peak RSS 158092 kB]
+$ argon sandbox discard -p ready-ten-100000 -b p6 --output json
+{
+  "branch_id": "6b011123028b6cfca71ee01a",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:33:57 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:57 WAL Monitor: Stopped health monitoring
+[exit 0, 124.6 ms, sampled peak RSS 22412 kB]
+$ argon sandbox create -p ready-ten-100000 --name r7 --watch --output json
+[stderr] 2026/11/21 03:33:57 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:33:59 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-ten-100000 -b r7 --output json
+{
+  "branch_id": "6b01112561b482d2972416cb",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:33:59 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:59 WAL Monitor: Stopped health monitoring
+[exit 0, 162.7 ms, sampled peak RSS 25484 kB]
+$ argon branches create p7 -p ready-ten-100000 --from main --output json
+{
+  "branch": {
+    "id": "6b01112742b8176070cc66bd",
+    "project_id": "6b0111086bf0c4c3e85968a6",
+    "name": "p7",
+    "parent_id": "6b0111086bf0c4c3e85968a8",
+    "head_lsn": 100002,
+    "base_lsn": 100002,
+    "created_at": "2026-11-21T03:33:59.436847378Z",
+    "created_lsn": 100041,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:33:59 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:33:59 WAL Monitor: Stopped health monitoring
+[exit 0, 14.5 ms, sampled peak RSS 1416 kB]
+$ argon checkout -p ready-ten-100000 -b p7 --output json
+{
+  "branch_id": "6b01112742b8176070cc66bd",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b01112742b8176070cc66bd?replicaSet=rs0",
+  "lsn": 100002,
+  "physical_db": "argon_br_6b01112742b8176070cc66bd"
+}
+[stderr] 2026/11/21 03:33:59 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:34:01 WAL Monitor: Stopped health monitoring
+[exit 0, 1589.0 ms, sampled peak RSS 158164 kB]
+$ argon sandbox discard -p ready-ten-100000 -b p7 --output json
+{
+  "branch_id": "6b01112742b8176070cc66bd",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:34:01 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:34:01 WAL Monitor: Stopped health monitoring
+[exit 0, 121.8 ms, sampled peak RSS 22336 kB]
+
+===== 1000000 documents, layout ten: metadata argonbench_ready_meta_f6537d315b03, source argonbench_ready_src_f6537d315b03 =====
+$ argon import database --uri mongodb://localhost:27017/?replicaSet=rs0 --database argonbench_ready_src_f6537d315b03 --project ready-ten-1000000 --source-quiesced --yes --output json
+{
+  "project_id": "6b01113376e2f0c1698fe762",
+  "branch_id": "6b01113376e2f0c1698fe764",
+  "imported_documents": 1000000,
+  "wal_entries_created": 1000000,
+  "imported_collections": [
+    "items_0",
+    "items_1",
+    "items_2",
+    "items_3",
+    "items_4",
+    "items_5",
+    "items_6",
+    "items_7",
+    "items_8",
+    "items_9"
+  ],
+  "duration": 37745206392,
+  "start_lsn": 2,
+  "end_lsn": 1000002
+}
+[stderr] 2026/11/21 03:34:11 WAL Monitor: Started health monitoring
+[stderr] 🚀 Starting import of database 'argonbench_ready_src_f6537d315b03'...
+[stderr] 2026/11/21 03:34:49 WAL Monitor: Stopped health monitoring
+[exit 0, 37875.8 ms, sampled peak RSS 886896 kB]
+$ argon sandbox create -p ready-ten-1000000 --name r0 --watch --output json
+[stderr] 2026/11/21 03:34:49 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:35:04 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-ten-1000000 -b r0 --output json
+{
+  "branch_id": "6b0111593d09cf3ee24b30ed",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:35:04 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:35:04 WAL Monitor: Stopped health monitoring
+[exit 0, 123.9 ms, sampled peak RSS 23688 kB]
+$ argon branches create p0 -p ready-ten-1000000 --from main --output json
+{
+  "branch": {
+    "id": "6b0111680df46c2e8a78e46e",
+    "project_id": "6b01113376e2f0c1698fe762",
+    "name": "p0",
+    "parent_id": "6b01113376e2f0c1698fe764",
+    "head_lsn": 1000002,
+    "base_lsn": 1000002,
+    "created_at": "2026-11-21T03:35:04.625426589Z",
+    "created_lsn": 1000006,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:35:04 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:35:04 WAL Monitor: Stopped health monitoring
+[exit 0, 10.3 ms, sampled peak RSS 1428 kB]
+$ argon checkout -p ready-ten-1000000 -b p0 --output json
+{
+  "branch_id": "6b0111680df46c2e8a78e46e",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b0111680df46c2e8a78e46e?replicaSet=rs0",
+  "lsn": 1000002,
+  "physical_db": "argon_br_6b0111680df46c2e8a78e46e"
+}
+[stderr] 2026/11/21 03:35:04 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:35:18 WAL Monitor: Stopped health monitoring
+[exit 0, 13887.8 ms, sampled peak RSS 419968 kB]
+$ argon sandbox discard -p ready-ten-1000000 -b p0 --output json
+{
+  "branch_id": "6b0111680df46c2e8a78e46e",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:35:18 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:35:18 WAL Monitor: Stopped health monitoring
+[exit 0, 119.4 ms, sampled peak RSS 23264 kB]
+$ argon sandbox create -p ready-ten-1000000 --name r1 --watch --output json
+[stderr] 2026/11/21 03:35:18 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:35:30 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-ten-1000000 -b r1 --output json
+{
+  "branch_id": "6b01117699115e7712235007",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:35:30 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:35:30 WAL Monitor: Stopped health monitoring
+[exit 0, 122.0 ms, sampled peak RSS 23328 kB]
+$ argon branches create p1 -p ready-ten-1000000 --from main --output json
+{
+  "branch": {
+    "id": "6b0111822d05e79c8f7adc7c",
+    "project_id": "6b01113376e2f0c1698fe762",
+    "name": "p1",
+    "parent_id": "6b01113376e2f0c1698fe764",
+    "head_lsn": 1000002,
+    "base_lsn": 1000002,
+    "created_at": "2026-11-21T03:35:30.887478587Z",
+    "created_lsn": 1000011,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:35:30 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:35:30 WAL Monitor: Stopped health monitoring
+[exit 0, 8.8 ms, sampled peak RSS 1408 kB]
+$ argon checkout -p ready-ten-1000000 -b p1 --output json
+{
+  "branch_id": "6b0111822d05e79c8f7adc7c",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b0111822d05e79c8f7adc7c?replicaSet=rs0",
+  "lsn": 1000002,
+  "physical_db": "argon_br_6b0111822d05e79c8f7adc7c"
+}
+[stderr] 2026/11/21 03:35:30 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:35:43 WAL Monitor: Stopped health monitoring
+[exit 0, 12426.9 ms, sampled peak RSS 409828 kB]
+$ argon sandbox discard -p ready-ten-1000000 -b p1 --output json
+{
+  "branch_id": "6b0111822d05e79c8f7adc7c",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:35:43 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:35:43 WAL Monitor: Stopped health monitoring
+[exit 0, 124.1 ms, sampled peak RSS 25632 kB]
+$ argon sandbox create -p ready-ten-1000000 --name r2 --watch --output json
+[stderr] 2026/11/21 03:35:43 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:35:57 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-ten-1000000 -b r2 --output json
+{
+  "branch_id": "6b01118f75b2ced4f56b37f1",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:35:57 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:35:57 WAL Monitor: Stopped health monitoring
+[exit 0, 122.0 ms, sampled peak RSS 25304 kB]
+$ argon branches create p2 -p ready-ten-1000000 --from main --output json
+{
+  "branch": {
+    "id": "6b01119d17bbab8250f47c60",
+    "project_id": "6b01113376e2f0c1698fe762",
+    "name": "p2",
+    "parent_id": "6b01113376e2f0c1698fe764",
+    "head_lsn": 1000002,
+    "base_lsn": 1000002,
+    "created_at": "2026-11-21T03:35:57.476652044Z",
+    "created_lsn": 1000016,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:35:57 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:35:57 WAL Monitor: Stopped health monitoring
+[exit 0, 7.6 ms, sampled peak RSS 1420 kB]
+$ argon checkout -p ready-ten-1000000 -b p2 --output json
+{
+  "branch_id": "6b01119d17bbab8250f47c60",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b01119d17bbab8250f47c60?replicaSet=rs0",
+  "lsn": 1000002,
+  "physical_db": "argon_br_6b01119d17bbab8250f47c60"
+}
+[stderr] 2026/11/21 03:35:57 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:36:11 WAL Monitor: Stopped health monitoring
+[exit 0, 13799.9 ms, sampled peak RSS 421212 kB]
+$ argon sandbox discard -p ready-ten-1000000 -b p2 --output json
+{
+  "branch_id": "6b01119d17bbab8250f47c60",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:36:11 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:36:11 WAL Monitor: Stopped health monitoring
+[exit 0, 133.6 ms, sampled peak RSS 23300 kB]
+$ argon sandbox create -p ready-ten-1000000 --name r3 --watch --output json
+[stderr] 2026/11/21 03:36:11 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:36:24 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-ten-1000000 -b r3 --output json
+{
+  "branch_id": "6b0111ab2250a64c3fc0b581",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:36:24 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:36:24 WAL Monitor: Stopped health monitoring
+[exit 0, 129.0 ms, sampled peak RSS 24300 kB]
+$ argon branches create p3 -p ready-ten-1000000 --from main --output json
+{
+  "branch": {
+    "id": "6b0111b85af756e13413ded8",
+    "project_id": "6b01113376e2f0c1698fe762",
+    "name": "p3",
+    "parent_id": "6b01113376e2f0c1698fe764",
+    "head_lsn": 1000002,
+    "base_lsn": 1000002,
+    "created_at": "2026-11-21T03:36:24.865466584Z",
+    "created_lsn": 1000021,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:36:24 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:36:24 WAL Monitor: Stopped health monitoring
+[exit 0, 14.1 ms, sampled peak RSS 1416 kB]
+$ argon checkout -p ready-ten-1000000 -b p3 --output json
+{
+  "branch_id": "6b0111b85af756e13413ded8",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b0111b85af756e13413ded8?replicaSet=rs0",
+  "lsn": 1000002,
+  "physical_db": "argon_br_6b0111b85af756e13413ded8"
+}
+[stderr] 2026/11/21 03:36:24 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:36:38 WAL Monitor: Stopped health monitoring
+[exit 0, 13810.3 ms, sampled peak RSS 414432 kB]
+$ argon sandbox discard -p ready-ten-1000000 -b p3 --output json
+{
+  "branch_id": "6b0111b85af756e13413ded8",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:36:38 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:36:38 WAL Monitor: Stopped health monitoring
+[exit 0, 129.0 ms, sampled peak RSS 20984 kB]
+$ argon sandbox create -p ready-ten-1000000 --name r4 --watch --output json
+[stderr] 2026/11/21 03:36:38 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:36:53 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-ten-1000000 -b r4 --output json
+{
+  "branch_id": "6b0111c67de61a538b2bcefa",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:36:53 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:36:53 WAL Monitor: Stopped health monitoring
+[exit 0, 129.9 ms, sampled peak RSS 20868 kB]
+$ argon branches create p4 -p ready-ten-1000000 --from main --output json
+{
+  "branch": {
+    "id": "6b0111d52135c131a818b78f",
+    "project_id": "6b01113376e2f0c1698fe762",
+    "name": "p4",
+    "parent_id": "6b01113376e2f0c1698fe764",
+    "head_lsn": 1000002,
+    "base_lsn": 1000002,
+    "created_at": "2026-11-21T03:36:53.359009833Z",
+    "created_lsn": 1000026,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:36:53 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:36:53 WAL Monitor: Stopped health monitoring
+[exit 0, 18.9 ms, sampled peak RSS 1336 kB]
+$ argon checkout -p ready-ten-1000000 -b p4 --output json
+{
+  "branch_id": "6b0111d52135c131a818b78f",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b0111d52135c131a818b78f?replicaSet=rs0",
+  "lsn": 1000002,
+  "physical_db": "argon_br_6b0111d52135c131a818b78f"
+}
+[stderr] 2026/11/21 03:36:53 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:37:04 WAL Monitor: Stopped health monitoring
+[exit 0, 11552.2 ms, sampled peak RSS 405220 kB]
+$ argon sandbox discard -p ready-ten-1000000 -b p4 --output json
+{
+  "branch_id": "6b0111d52135c131a818b78f",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:37:04 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:37:05 WAL Monitor: Stopped health monitoring
+[exit 0, 120.5 ms, sampled peak RSS 22216 kB]
+$ argon sandbox create -p ready-ten-1000000 --name r5 --watch --output json
+[stderr] 2026/11/21 03:37:05 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:37:19 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-ten-1000000 -b r5 --output json
+{
+  "branch_id": "6b0111e16016823cd07763f6",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:37:19 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:37:19 WAL Monitor: Stopped health monitoring
+[exit 0, 130.0 ms, sampled peak RSS 20552 kB]
+$ argon branches create p5 -p ready-ten-1000000 --from main --output json
+{
+  "branch": {
+    "id": "6b0111ef804fbdbfc14afbb2",
+    "project_id": "6b01113376e2f0c1698fe762",
+    "name": "p5",
+    "parent_id": "6b01113376e2f0c1698fe764",
+    "head_lsn": 1000002,
+    "base_lsn": 1000002,
+    "created_at": "2026-11-21T03:37:19.574325054Z",
+    "created_lsn": 1000031,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:37:19 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:37:19 WAL Monitor: Stopped health monitoring
+[exit 0, 11.1 ms, sampled peak RSS 1416 kB]
+$ argon checkout -p ready-ten-1000000 -b p5 --output json
+{
+  "branch_id": "6b0111ef804fbdbfc14afbb2",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b0111ef804fbdbfc14afbb2?replicaSet=rs0",
+  "lsn": 1000002,
+  "physical_db": "argon_br_6b0111ef804fbdbfc14afbb2"
+}
+[stderr] 2026/11/21 03:37:19 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:37:34 WAL Monitor: Stopped health monitoring
+[exit 0, 14648.0 ms, sampled peak RSS 417152 kB]
+$ argon sandbox discard -p ready-ten-1000000 -b p5 --output json
+{
+  "branch_id": "6b0111ef804fbdbfc14afbb2",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:37:34 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:37:34 WAL Monitor: Stopped health monitoring
+[exit 0, 118.3 ms, sampled peak RSS 21428 kB]
+$ argon sandbox create -p ready-ten-1000000 --name r6 --watch --output json
+[stderr] 2026/11/21 03:37:34 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:37:45 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-ten-1000000 -b r6 --output json
+{
+  "branch_id": "6b0111fe40c5c0650a911b04",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:37:45 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:37:45 WAL Monitor: Stopped health monitoring
+[exit 0, 126.9 ms, sampled peak RSS 20588 kB]
+$ argon branches create p6 -p ready-ten-1000000 --from main --output json
+{
+  "branch": {
+    "id": "6b011209c0f5aac20931f1c8",
+    "project_id": "6b01113376e2f0c1698fe762",
+    "name": "p6",
+    "parent_id": "6b01113376e2f0c1698fe764",
+    "head_lsn": 1000002,
+    "base_lsn": 1000002,
+    "created_at": "2026-11-21T03:37:45.871204177Z",
+    "created_lsn": 1000036,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:37:45 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:37:45 WAL Monitor: Stopped health monitoring
+[exit 0, 20.0 ms, sampled peak RSS 1400 kB]
+$ argon checkout -p ready-ten-1000000 -b p6 --output json
+{
+  "branch_id": "6b011209c0f5aac20931f1c8",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b011209c0f5aac20931f1c8?replicaSet=rs0",
+  "lsn": 1000002,
+  "physical_db": "argon_br_6b011209c0f5aac20931f1c8"
+}
+[stderr] 2026/11/21 03:37:45 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:37:56 WAL Monitor: Stopped health monitoring
+[exit 0, 11030.9 ms, sampled peak RSS 415348 kB]
+$ argon sandbox discard -p ready-ten-1000000 -b p6 --output json
+{
+  "branch_id": "6b011209c0f5aac20931f1c8",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:37:56 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:37:57 WAL Monitor: Stopped health monitoring
+[exit 0, 134.2 ms, sampled peak RSS 21664 kB]
+$ argon sandbox create -p ready-ten-1000000 --name r7 --watch --output json
+[stderr] 2026/11/21 03:37:57 WAL Monitor: Started health monitoring
+[stderr] Capturing writes (Ctrl-C to stop)...
+[stderr] Stopped; stream position saved.
+[stderr] 2026/11/21 03:38:09 WAL Monitor: Stopped health monitoring
+$ argon sandbox discard -p ready-ten-1000000 -b r7 --output json
+{
+  "branch_id": "6b0112156cb3c3f64d6e9a33",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:38:09 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:38:09 WAL Monitor: Stopped health monitoring
+[exit 0, 123.1 ms, sampled peak RSS 23004 kB]
+$ argon branches create p7 -p ready-ten-1000000 --from main --output json
+{
+  "branch": {
+    "id": "6b01122112d15497d13bdfb7",
+    "project_id": "6b01113376e2f0c1698fe762",
+    "name": "p7",
+    "parent_id": "6b01113376e2f0c1698fe764",
+    "head_lsn": 1000002,
+    "base_lsn": 1000002,
+    "created_at": "2026-11-21T03:38:09.908643508Z",
+    "created_lsn": 1000041,
+    "is_deleted": false
+  }
+}
+[stderr] 2026/11/21 03:38:09 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:38:09 WAL Monitor: Stopped health monitoring
+[exit 0, 14.3 ms, sampled peak RSS 1080 kB]
+$ argon checkout -p ready-ten-1000000 -b p7 --output json
+{
+  "branch_id": "6b01122112d15497d13bdfb7",
+  "capture_managed": false,
+  "connection_string": "mongodb://localhost:27017/argon_br_6b01122112d15497d13bdfb7?replicaSet=rs0",
+  "lsn": 1000002,
+  "physical_db": "argon_br_6b01122112d15497d13bdfb7"
+}
+[stderr] 2026/11/21 03:38:09 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:38:23 WAL Monitor: Stopped health monitoring
+[exit 0, 13124.3 ms, sampled peak RSS 411776 kB]
+$ argon sandbox discard -p ready-ten-1000000 -b p7 --output json
+{
+  "branch_id": "6b01122112d15497d13bdfb7",
+  "discarded": true
+}
+[stderr] 2026/11/21 03:38:23 WAL Monitor: Started health monitoring
+[stderr] 2026/11/21 03:38:23 WAL Monitor: Stopped health monitoring
+[exit 0, 141.4 ms, sampled peak RSS 21752 kB]
