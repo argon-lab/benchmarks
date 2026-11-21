@@ -2,6 +2,21 @@
 
 Every number below is scoped to its recorded engine, suite and environment. Historical measurements are retained as history; current hardening measurements are separately labelled. A dirty source snapshot is not a released engine version. See [README.md](README.md) for methodology and reproducible commands.
 
+## 2026-11-21 · published v2.10.0 and v2.11.1 alternated: what building indexes adds to a sandbox
+
+From 2.11.0 a checkout builds each collection's recorded secondary indexes. Both releases came from npm (`argonctl@2.10.0` with binary SHA256 `3cec9b88…0747`, `argonctl@2.11.1` with `ec9a7466…d7ad`). They were run three rounds each, alternated, with `scripts/sandbox_ready_docker.sh`, at 100,000 documents of about 1 KB. **The host load average was 11 to 13 on 12 CPUs throughout; only the comparison is meaningful.**
+
+Milliseconds until `sandbox create --watch` replies, median (min–max) of nine sandboxes:
+
+| Fixture | 2.10.0 | 2.11.1 |
+|---|---:|---:|
+| 1 collection, `_id` index only | 1,980 (1,668–2,319) | 2,035 (1,727–2,346) |
+| 10 collections, 20 secondary indexes | 1,700 (1,614–2,553) | 4,210 (4,053–4,273) |
+
+Without secondary indexes the time is unchanged. Building 20 secondary indexes adds about 2.5 s at this size. [Report and raw samples](reports/2026-11-21-v2.10.0-v2.11.1-index-cost/README.md).
+
+A transcript of what a 2.11.1 sandbox enforces (indexes, a scoped credential and its revocation) is in [reports/2026-11-21-v2.11.1-sandbox-safety](reports/2026-11-21-v2.11.1-sandbox-safety/README.md). It is not a benchmark.
+
 ## 2026-11-20 · published v2.9.0: time from `sandbox create` to the first write
 
 This measures what an agent waits for before it can write to a new sandbox: `argon sandbox create --watch`, then a first majority-acknowledged insert on the connection string it returns. The CLI is `npm install -g argonctl@2.9.0`; the executable the launcher starts has SHA256 `c26620d7b4ca311d8affc52ee4e91f453feb54fe5485ed5b6e20176c265f0ee8`. MongoDB 7.0.45 ran as a single-member replica set with a 2 GiB cache. Documents are about 1 KB each. Window: `2026-11-21T03:24Z` → `03:38Z`. **Another session's containers shared the Docker VM throughout, and the host load average was 5 to 17 on 12 CPUs. Absolute figures are higher than on an idle machine.**
