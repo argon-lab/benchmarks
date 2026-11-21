@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "suite": {
+    "git_head": "b92458ab29414be7719096fa90e32b260076f574",
+    "dirty": true,
+    "scripts_sha256": {
+      "sandbox_ready.py": "e9b50b3a2b0a34caeac607c5e7a7a72db140aba549161579005c94887c08a4ed",
+      "sandbox_ready_docker.sh": "2e2efddbeb5647a23521a68aa0de26de60435127bd5f8f40ce532f185eb4fbcd",
+      "cli_scale.py": "edecc18d17f0a81286972fb41623b1e27e8ec18f7af107afff059b4af6061c66"
+    }
+  },
+  "argon": {
+    "npm_package": "argonctl@2.9.0",
+    "npm_dist_integrity": "sha512-K6YbQZH5AToLFjfXDrj+G9wJfAWeWkpI/ZH3NZg7czGC5diuM1+VBpQoFfAHPQBNpcV6QgZQOnsW3OrLRcy32Q==",
+    "reported_version": "argon version 2.9.0",
+    "binary": "bin/argon-bin, the executable the npm launcher starts",
+    "binary_sha256": "c26620d7b4ca311d8affc52ee4e91f453feb54fe5485ed5b6e20176c265f0ee8",
+    "package_checksums": {
+      "argon-darwin-amd64": "ac858d2ae48afe4f03d461fb486a0c35f1576cf91ba9e00fb874cab9efc14dfb",
+      "argon-darwin-arm64": "060faa382df498ca03e33bcfc472a9da955949a6d1bcb3b2598c59e9673cdb0b",
+      "argon-linux-amd64": "9f137fd91b8e1edd22f0b3ee8b7b8f7700eb1658084741e790197b1c5e7cec22",
+      "argon-linux-arm64": "c26620d7b4ca311d8affc52ee4e91f453feb54fe5485ed5b6e20176c265f0ee8",
+      "argon-windows-amd64.exe": "1683df5e974d1926f24372c00bdadfda9365e189a8f6a4a5f9932b10edd756ea"
+    }
+  },
+  "runner": {
+    "image": "node:24-bookworm",
+    "image_digest": "node@sha256:9d266751ca3d7fdbe651c878ffd5ad0a42fed49a18c283509267c97f025b7496",
+    "node": "v24.22.3",
+    "npm": "11.19.1",
+    "python": "Python 3.11.2",
+    "pymongo": "4.20.0",
+    "network": "shares the MongoDB container's network namespace; MongoDB is reached at localhost:27017"
+  },
+  "mongodb": {
+    "image": "mongo:7.0.45@sha256:c53852c00c23ca9f23fc39690350ffa9a80e3642fe8f96879726d8da0abe80a7",
+    "command": "mongod --replSet rs0 --bind_ip_all --wiredTigerCacheSizeGB 2",
+    "published_ports": "none"
+  },
+  "host": {
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "machdep.cpu.brand_string": "Apple M6",
+    "hw.memsize": "25769803776",
+    "hw.ncpu": "12",
+    "kern.osproductversion": "27.0.1"
+  },
+  "docker": {
+    "ServerVersion": "29.9.3",
+    "OperatingSystem": "Docker Desktop",
+    "OSType": "linux",
+    "Architecture": "aarch64",
+    "NCPU": 12,
+    "MemTotal": 14635769856,
+    "KernelVersion": "7.0.14-linuxkit"
+  }
+}
