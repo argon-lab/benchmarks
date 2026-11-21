@@ -1,5 +1,5 @@
-github.com/argon-lab/argon/v2 v2.9.0 h1:wMeht7NTb9ukaTK4Bhmd8GCFkHoVZDb6Shnh+JLExr4=
-github.com/argon-lab/argon/v2 v2.9.0/go.mod h1:FBjAl9clW1LUvuMKEMn04zYDt1v0ak7CnXfEXFpFpOY=
+github.com/argon-lab/argon/v2 v2.10.0 h1:gL02/hMsA8lv3VCkd9ccSUM1RdjQ8nkDDU5UkZm9RgY=
+github.com/argon-lab/argon/v2 v2.10.0/go.mod h1:FBjAl9clW1LUvuMKEMn04zYDt1v0ak7CnXfEXFpFpOY=
 github.com/aws/aws-sdk-go-v2 v1.42.1 h1:9eOTgu1z/dVtYpNZ3/8/XbbaX0x/BqE3HUzAzs6K0ek=
 github.com/aws/aws-sdk-go-v2 v1.42.1/go.mod h1:5pKeft2eJj+gElQ38Jqg4ibCqh+/AK33/0X3hip7IjM=
 github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.7.14 h1:3IZY0XAJquT3aHzbkHfPzy4ACPcEjVG0x87KOwtpqGY=
