@@ -2,6 +2,36 @@
 
 Every number below is scoped to its recorded engine, suite and environment. Historical measurements are retained as history; current hardening measurements are separately labelled. A dirty source snapshot is not a released engine version. See [README.md](README.md) for methodology and reproducible commands.
 
+## 2026-11-20 · published v2.9.0: time from `sandbox create` to the first write
+
+This measures what an agent waits for before it can write to a new sandbox: `argon sandbox create --watch`, then a first majority-acknowledged insert on the connection string it returns. The CLI is `npm install -g argonctl@2.9.0`; the executable the launcher starts has SHA256 `c26620d7b4ca311d8affc52ee4e91f453feb54fe5485ed5b6e20176c265f0ee8`. MongoDB 7.0.45 ran as a single-member replica set with a 2 GiB cache. Documents are about 1 KB each. Window: `2026-11-21T03:24Z` → `03:38Z`. **Another session's containers shared the Docker VM throughout, and the host load average was 5 to 17 on 12 CPUs. Absolute figures are higher than on an idle machine.**
+
+Milliseconds, median (min–max) of eight rounds:
+
+| Fixture | Ready (forked, copied, capture running) | of which `checkout` alone | First write acknowledged | Total to first write |
+|---|---:|---:|---:|---:|
+| 10,000 documents, 1 collection | 217 (198–264) | 183 (166–216) | 4 (3–9) | 222 (203–271) |
+| 100,000 documents, 1 collection | 2,371 (1,960–2,904) | 2,396 (2,024–3,699) | 10 (6–27) | 2,381 (1,968–2,921) |
+| 1,000,000 documents, 1 collection | 16,043 (13,648–20,439) | 17,341 (12,587–20,588) | 6 (4–12) | 16,047 (13,654–20,448) |
+| 100,000 documents, 10 collections | 1,386 (1,355–1,496) | 1,376 (1,264–1,589) | 5 (3–6) | 1,391 (1,358–1,501) |
+| 1,000,000 documents, 10 collections | 13,059 (10,801–14,703) | 13,462 (11,031–14,648) | 7 (6–14) | 13,072 (10,807–14,709) |
+
+Creating several at once from the same parent at 100,000 documents, ready time per sandbox:
+
+| Sandboxes started together | Ready, each | Until all are ready |
+|---|---:|---:|
+| 1 | 2,240 (1,642–3,192) | 2,240 (1,642–3,192) |
+| 4 | 2,578 (1,805–3,569) | 2,591 (1,825–3,571) |
+| 16 | 10,906 (9,011–12,072) | 11,068 (9,139–12,073) |
+
+- **The physical copy is almost all of the wait.** A fork takes 8–34 ms at every size. `checkout` alone takes about as long as the whole ready time, and grows with the data: about 0.2 s at 10 MB, 2.4 s at 100 MB and 16 s at 1 GB. After that the first write takes milliseconds.
+- **Concurrency.** Four sandboxes at once cost about what one does. Sixteen take about five times as long each, so sixteen 100 MB sandboxes are all ready after about 11 s.
+- **Capture lag.** A write became visible in Argon's history about 505 ms after its acknowledgement in every cell. That is the capture's default batching, not a cost of size.
+- **Indexes.** The ten-collection fixture had a compound and a unique secondary index per collection in the source. Argon copies documents only, so the sandboxes have only `_id` indexes, as in the one-collection fixture. Why ten smaller collections copied faster than one large one was not investigated. It also means an agent's sandbox does not enforce the source's unique constraints. `argon merge check` reports such collisions before a write-back.
+- **Tail latency.** Eight rounds give a median and a range, not tail latency.
+
+[Report, raw samples, host load log and provenance](reports/2026-11-20-v2.9.0-sandbox-ready/README.md).
+
 ## 2026-11-19 · published v2.8.0: walkthrough of a followed source, from online import to write-back
 
 Not a benchmark: a transcript of the published 2.8.0 CLI (`argonctl@2.8.0`, SHA256 `58ad3b5d4b2bc35fc8086480fddc9e89ec126c2e725fbde2b03926cebd9dbbd7`) importing a 50,200-document database online while an application thread writes to it, following it, forking sandboxes, previewing a plan and writing it back to the source with `--approve`, with the refusals and an aborted write-back. Two MongoDB 7.0.45 one-member replica sets without access control. Sandboxes held the source's values with fields in a different order, and a written-back replacement carried that order to the source. [Report and transcript](reports/2026-11-19-v2.8.0-live-source-walkthrough/README.md).
