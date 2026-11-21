@@ -1,0 +1,22 @@
+2026-11-21T08:46:38Z
+ 3:46  up 1 day,  2:24, 1 user, load averages: 12.15 11.91 10.96
+argonbench-ready-runner 52.93% 150MiB / 13.63GiB
+argonbench-ready-mongo 52.14% 449.4MiB / 13.63GiB
+lf-mac-release-6dcf13a5e7eb 0.00% 52.15MiB / 4GiB
+lf-mac-ops-a1aa192db535 0.00% 55.21MiB / 6GiB
+lf-mac-merge-7fab94de8661 0.01% 50.59MiB / 3GiB
+lf-mac-ci-10515a31fcad 0.00% 52.17MiB / 6GiB
+argon-follow-mongo2 0.46% 90.41MiB / 13.63GiB
+argon-follow-mongo 0.51% 110.4MiB / 13.63GiB
+
+2026-11-21T08:47:10Z
+ 3:47  up 1 day,  2:25, 1 user, load averages: 11.84 11.83 10.96
+argonbench-ready-runner 60.17% 186.4MiB / 13.63GiB
+argonbench-ready-mongo 54.05% 1.839GiB / 13.63GiB
+lf-mac-release-6dcf13a5e7eb 0.31% 51.67MiB / 4GiB
+lf-mac-ops-a1aa192db535 0.01% 55.25MiB / 6GiB
+lf-mac-merge-7fab94de8661 0.02% 50.47MiB / 3GiB
+lf-mac-ci-10515a31fcad 0.00% 52.42MiB / 6GiB
+argon-follow-mongo2 0.46% 90.51MiB / 13.63GiB
+argon-follow-mongo 0.46% 111.2MiB / 13.63GiB
+

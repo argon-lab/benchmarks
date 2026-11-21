@@ -1,0 +1,452 @@
+{
+  "schema_version": 1,
+  "kind": "sandbox-ready",
+  "version": "2.11.1",
+  "reported_version": "argon version 2.11.1",
+  "binary_sha256": "ec9a7466cc0a932e9006342c26cb167030d294c832364b44f330ef7fa01ad7ad",
+  "config": {
+    "fixtures": [
+      [
+        100000,
+        "one"
+      ],
+      [
+        100000,
+        "ten"
+      ]
+    ],
+    "rounds": 3,
+    "concurrency": [],
+    "concurrency_fixture": [
+      "100000",
+      "one"
+    ],
+    "concurrency_rounds": 8,
+    "document": "string _id item-%08d, name, qty, price, category, sku, 900-byte payload"
+  },
+  "environment": {
+    "mongodb_version": "7.0.45",
+    "wiredtiger_cache_bytes": 2147483648,
+    "platform": "Linux-7.0.14-linuxkit-aarch64-with-glibc2.36",
+    "machine": "aarch64",
+    "python": "3.11.2",
+    "logical_cpus": 12,
+    "isolation": "shared developer host; background load is sampled in host-load.log, not controlled",
+    "host": {
+      "schema_version": 1,
+      "suite": {
+        "git_head": "5ac3b313f1c4fcd795215209e3deb9dcf0af1ccf",
+        "dirty": true,
+        "scripts_sha256": {
+          "sandbox_ready.py": "e9b50b3a2b0a34caeac607c5e7a7a72db140aba549161579005c94887c08a4ed",
+          "sandbox_ready_docker.sh": "2e2efddbeb5647a23521a68aa0de26de60435127bd5f8f40ce532f185eb4fbcd",
+          "cli_scale.py": "edecc18d17f0a81286972fb41623b1e27e8ec18f7af107afff059b4af6061c66"
+        }
+      },
+      "argon": {
+        "npm_package": "argonctl@2.11.1",
+        "npm_dist_integrity": "sha512-tFnvTLXicPB1wFrbShM42guzhzQc3Qr6L/e3fuHpE0Y7HRwji7p0o9oxaZHBUQ2ymygZzvZrW8nZpIZ6Eju1xg==",
+        "reported_version": "argon version 2.11.1",
+        "binary": "bin/argon-bin, the executable the npm launcher starts",
+        "binary_sha256": "ec9a7466cc0a932e9006342c26cb167030d294c832364b44f330ef7fa01ad7ad",
+        "package_checksums": {
+          "argon-darwin-amd64": "8c3f7126d01b11ff98bf9582a2fbbc30edeece233dd49548a9e26d3c298bf6e5",
+          "argon-darwin-arm64": "d704021ec850588ba676c26ac9e7b9631d7108837312bc20ffac4e97eac57956",
+          "argon-linux-amd64": "61ea627dac34bf60a141d46fb91be8ed0d8873cbe5f40be69f2cc53f1e09ecde",
+          "argon-linux-arm64": "ec9a7466cc0a932e9006342c26cb167030d294c832364b44f330ef7fa01ad7ad",
+          "argon-windows-amd64.exe": "a93d8f21824961082068d6290aceb5cd182ef90081b9d9dc0c9d91cf5d621a03"
+        }
+      },
+      "runner": {
+        "image": "node:24-bookworm",
+        "image_digest": "node@sha256:9d266751ca3d7fdbe651c878ffd5ad0a42fed49a18c283509267c97f025b7496",
+        "node": "v24.22.3",
+        "npm": "11.19.1",
+        "python": "Python 3.11.2",
+        "pymongo": "4.20.0",
+        "network": "shares the MongoDB container's network namespace; MongoDB is reached at localhost:27017"
+      },
+      "mongodb": {
+        "image": "mongo:7.0.45@sha256:c53852c00c23ca9f23fc39690350ffa9a80e3642fe8f96879726d8da0abe80a7",
+        "command": "mongod --replSet rs0 --bind_ip_all --wiredTigerCacheSizeGB 2",
+        "published_ports": "none"
+      },
+      "host": {
+        "platform": "macOS-27.0.1-arm64-arm-64bit",
+        "machine": "arm64",
+        "machdep.cpu.brand_string": "Apple M6",
+        "hw.memsize": "25769803776",
+        "hw.ncpu": "12",
+        "kern.osproductversion": "27.0.1"
+      },
+      "docker": {
+        "ServerVersion": "29.9.3",
+        "OperatingSystem": "Docker Desktop",
+        "OSType": "linux",
+        "Architecture": "aarch64",
+        "NCPU": 12,
+        "MemTotal": 14635769856,
+        "KernelVersion": "7.0.14-linuxkit"
+      }
+    }
+  },
+  "started_at": "2026-11-21T08:51:35Z",
+  "fixtures": [
+    {
+      "documents": 100000,
+      "layout": "one",
+      "collections": 1,
+      "storage": {
+        "source": {
+          "logical_data_bytes": 102938890,
+          "allocated_storage_bytes": 6524928,
+          "allocated_index_bytes": 2392064,
+          "objects": 100000
+        },
+        "sandbox": {
+          "logical_data_bytes": 102938932,
+          "allocated_storage_bytes": 8167424,
+          "allocated_index_bytes": 1789952,
+          "objects": 100001
+        }
+      },
+      "samples": [
+        {
+          "operation": "seed_ms",
+          "iteration": 0,
+          "ms": 1068.4540829970501
+        },
+        {
+          "operation": "import_ms",
+          "iteration": 0,
+          "ms": 4859.458127000835
+        },
+        {
+          "operation": "ready_ms",
+          "iteration": 0,
+          "ms": 2199.9737930018455
+        },
+        {
+          "operation": "first_write_ack_ms",
+          "iteration": 0,
+          "ms": 9.778791994904168
+        },
+        {
+          "operation": "create_to_first_write_ms",
+          "iteration": 0,
+          "ms": 2209.7525849967496
+        },
+        {
+          "operation": "ack_to_captured_ms",
+          "iteration": 0,
+          "ms": 507.1741249994375
+        },
+        {
+          "operation": "fork_ms",
+          "iteration": 0,
+          "ms": 15.598250000039116
+        },
+        {
+          "operation": "checkout_ms",
+          "iteration": 0,
+          "ms": 2002.953001006972
+        },
+        {
+          "operation": "ready_ms",
+          "iteration": 1,
+          "ms": 2345.5867509910604
+        },
+        {
+          "operation": "first_write_ack_ms",
+          "iteration": 1,
+          "ms": 5.877166986465454
+        },
+        {
+          "operation": "create_to_first_write_ms",
+          "iteration": 1,
+          "ms": 2351.463917977526
+        },
+        {
+          "operation": "ack_to_captured_ms",
+          "iteration": 1,
+          "ms": 510.35895899985917
+        },
+        {
+          "operation": "fork_ms",
+          "iteration": 1,
+          "ms": 21.513917003176175
+        },
+        {
+          "operation": "checkout_ms",
+          "iteration": 1,
+          "ms": 2276.0817920061527
+        },
+        {
+          "operation": "ready_ms",
+          "iteration": 2,
+          "ms": 2186.5564180043293
+        },
+        {
+          "operation": "first_write_ack_ms",
+          "iteration": 2,
+          "ms": 6.609959003981203
+        },
+        {
+          "operation": "create_to_first_write_ms",
+          "iteration": 2,
+          "ms": 2193.1663770083105
+        },
+        {
+          "operation": "ack_to_captured_ms",
+          "iteration": 2,
+          "ms": 503.7213339965092
+        },
+        {
+          "operation": "fork_ms",
+          "iteration": 2,
+          "ms": 17.086083011236042
+        },
+        {
+          "operation": "checkout_ms",
+          "iteration": 2,
+          "ms": 2062.490208991221
+        }
+      ],
+      "summaries": {
+        "ack_to_captured_ms": {
+          "n": 3,
+          "median": 507.1741249994375,
+          "min": 503.7213339965092,
+          "max": 510.35895899985917
+        },
+        "checkout_ms": {
+          "n": 3,
+          "median": 2062.490208991221,
+          "min": 2002.953001006972,
+          "max": 2276.0817920061527
+        },
+        "create_to_first_write_ms": {
+          "n": 3,
+          "median": 2209.7525849967496,
+          "min": 2193.1663770083105,
+          "max": 2351.463917977526
+        },
+        "first_write_ack_ms": {
+          "n": 3,
+          "median": 6.609959003981203,
+          "min": 5.877166986465454,
+          "max": 9.778791994904168
+        },
+        "fork_ms": {
+          "n": 3,
+          "median": 17.086083011236042,
+          "min": 15.598250000039116,
+          "max": 21.513917003176175
+        },
+        "import_ms": {
+          "n": 1,
+          "median": 4859.458127000835,
+          "min": 4859.458127000835,
+          "max": 4859.458127000835
+        },
+        "ready_ms": {
+          "n": 3,
+          "median": 2199.9737930018455,
+          "min": 2186.5564180043293,
+          "max": 2345.5867509910604
+        },
+        "seed_ms": {
+          "n": 1,
+          "median": 1068.4540829970501,
+          "min": 1068.4540829970501,
+          "max": 1068.4540829970501
+        }
+      },
+      "cli_peak_rss_kb": {
+        "import": 570476,
+        "sandbox_discard": 25416,
+        "fork": 23280,
+        "checkout": 389752
+      }
+    },
+    {
+      "documents": 100000,
+      "layout": "ten",
+      "collections": 10,
+      "storage": {
+        "source": {
+          "logical_data_bytes": 102938890,
+          "allocated_storage_bytes": 10678272,
+          "allocated_index_bytes": 11657216,
+          "objects": 100000
+        },
+        "sandbox": {
+          "logical_data_bytes": 102938932,
+          "allocated_storage_bytes": 9850880,
+          "allocated_index_bytes": 6184960,
+          "objects": 100001
+        }
+      },
+      "samples": [
+        {
+          "operation": "seed_ms",
+          "iteration": 0,
+          "ms": 1291.6400420072023
+        },
+        {
+          "operation": "import_ms",
+          "iteration": 0,
+          "ms": 4849.480168995797
+        },
+        {
+          "operation": "ready_ms",
+          "iteration": 0,
+          "ms": 4273.053209995851
+        },
+        {
+          "operation": "first_write_ack_ms",
+          "iteration": 0,
+          "ms": 7.570624991785735
+        },
+        {
+          "operation": "create_to_first_write_ms",
+          "iteration": 0,
+          "ms": 4280.623834987637
+        },
+        {
+          "operation": "ack_to_captured_ms",
+          "iteration": 0,
+          "ms": 507.5014579924755
+        },
+        {
+          "operation": "fork_ms",
+          "iteration": 0,
+          "ms": 20.619916991563514
+        },
+        {
+          "operation": "checkout_ms",
+          "iteration": 0,
+          "ms": 4245.9740019985475
+        },
+        {
+          "operation": "ready_ms",
+          "iteration": 1,
+          "ms": 4225.939002004452
+        },
+        {
+          "operation": "first_write_ack_ms",
+          "iteration": 1,
+          "ms": 8.801417003269307
+        },
+        {
+          "operation": "create_to_first_write_ms",
+          "iteration": 1,
+          "ms": 4234.740419007721
+        },
+        {
+          "operation": "ack_to_captured_ms",
+          "iteration": 1,
+          "ms": 505.9217920061201
+        },
+        {
+          "operation": "fork_ms",
+          "iteration": 1,
+          "ms": 19.406749997870065
+        },
+        {
+          "operation": "checkout_ms",
+          "iteration": 1,
+          "ms": 4324.6594600059325
+        },
+        {
+          "operation": "ready_ms",
+          "iteration": 2,
+          "ms": 4250.212168990402
+        },
+        {
+          "operation": "first_write_ack_ms",
+          "iteration": 2,
+          "ms": 12.780125005519949
+        },
+        {
+          "operation": "create_to_first_write_ms",
+          "iteration": 2,
+          "ms": 4262.9922939959215
+        },
+        {
+          "operation": "ack_to_captured_ms",
+          "iteration": 2,
+          "ms": 509.1716250026366
+        },
+        {
+          "operation": "fork_ms",
+          "iteration": 2,
+          "ms": 22.151208002469502
+        },
+        {
+          "operation": "checkout_ms",
+          "iteration": 2,
+          "ms": 4501.859584997874
+        }
+      ],
+      "summaries": {
+        "ack_to_captured_ms": {
+          "n": 3,
+          "median": 507.5014579924755,
+          "min": 505.9217920061201,
+          "max": 509.1716250026366
+        },
+        "checkout_ms": {
+          "n": 3,
+          "median": 4324.6594600059325,
+          "min": 4245.9740019985475,
+          "max": 4501.859584997874
+        },
+        "create_to_first_write_ms": {
+          "n": 3,
+          "median": 4262.9922939959215,
+          "min": 4234.740419007721,
+          "max": 4280.623834987637
+        },
+        "first_write_ack_ms": {
+          "n": 3,
+          "median": 8.801417003269307,
+          "min": 7.570624991785735,
+          "max": 12.780125005519949
+        },
+        "fork_ms": {
+          "n": 3,
+          "median": 20.619916991563514,
+          "min": 19.406749997870065,
+          "max": 22.151208002469502
+        },
+        "import_ms": {
+          "n": 1,
+          "median": 4849.480168995797,
+          "min": 4849.480168995797,
+          "max": 4849.480168995797
+        },
+        "ready_ms": {
+          "n": 3,
+          "median": 4250.212168990402,
+          "min": 4225.939002004452,
+          "max": 4273.053209995851
+        },
+        "seed_ms": {
+          "n": 1,
+          "median": 1291.6400420072023,
+          "min": 1291.6400420072023,
+          "max": 1291.6400420072023
+        }
+      },
+      "cli_peak_rss_kb": {
+        "import": 429216,
+        "sandbox_discard": 25512,
+        "fork": 23624,
+        "checkout": 161880
+      }
+    }
+  ],
+  "complete": true,
+  "finished_at": "2026-11-21T08:52:32Z"
+}
