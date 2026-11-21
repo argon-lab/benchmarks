@@ -1,0 +1,167 @@
+# What an Argon sandbox enforces
+argonctl@2.11.1 from npm: argon version 2.11.1
+MongoDB 7.0.45 (mongo:7.0.45@sha256:c53852c00c23ca9f23fc39690350ffa9a80e3642fe8f96879726d8da0abe80a7), one-member replica set with --auth --keyFile
+MONGODB_URI for the CLI is a root user ($ENGINE). The source database is shop on the same deployment; billing is another database there.
+Started 2026-11-21T08:55:33Z
+
+## The source: shop.orders, 1,000 documents and three secondary indexes
+
+$ mongosh "$ENGINE" --eval 'db.getSiblingDB("shop").orders.getIndexes().map(i => i.name)'
+[ '_id_', 'sku_1', 'status_1_total_-1', 'createdAt_1' ]
+
+## Import it (nothing else writes to it)
+
+$ argon import database --uri "$ENGINE" --database shop --project shop --source-quiesced --yes
+🚀 Starting import of database 'shop'...
+✅ Import Complete
+
+📊 Import Results:
+   Project ID: 6b015c8505a12e8564bcec6d
+   Branch ID: 6b015c8505a12e8564bcec6f
+   Documents Imported: 1.0K
+   WAL Entries Created: 1.0K
+   Collections: 1
+   Duration: 61.623125ms
+   LSN Range: 2 - 1002
+
+📁 Imported Collections:
+   • orders
+
+🚀 Your data now has time travel capabilities!
+   Create branches: argon branches create <name> -p 6b015c8505a12e8564bcec6d
+   Time travel: argon time-travel info -p 6b015c8505a12e8564bcec6d -b main
+
+## A sandbox with its own MongoDB user
+
+$ argon sandbox create -p shop --name agent-run --ttl 1h --credential --output json
+{
+  "branch_id": "6b015c853b80203ac4b6089f",
+  "capture_managed": false,
+  "connection_string": "mongodb://sandbox_6b015c853b80203ac4b6089f:•••@localhost:27017/argon_br_6b015c853b80203ac4b6089f?authSource=argon_br_6b015c853b80203ac4b6089f\u0026replicaSet=rs0",
+  "expires_at": "2026-11-21T09:55:33.799551586Z",
+  "fork_lsn": 1002,
+  "index_notes": [
+    "index createdAt_1 on orders was built without its TTL expiry"
+  ],
+  "indexes": 3,
+  "name": "agent-run",
+  "physical_db": "argon_br_6b015c853b80203ac4b6089f"
+}
+($SANDBOX below is that connection string. main is checked out as argon_br_6b015c8505a12e8564bcec6f.)
+
+## Inside the sandbox
+
+$ mongosh "$SANDBOX" --eval 'db.orders.getIndexes().map(i => i.name + (i.unique ? " unique" : "") + (i.expireAfterSeconds === undefined ? "" : " ttl"))'
+[ '_id_', 'sku_1 unique', 'status_1_total_-1', 'createdAt_1' ]
+
+$ mongosh "$SANDBOX" --eval 'db.orders.updateOne({_id: 7}, {$set: {status: "refunded"}})'
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+$ mongosh "$SANDBOX" --eval 'db.orders.insertOne({_id: 5000, sku: "sku-42"})'
+E11000 duplicate key error collection: argon_br_6b015c853b80203ac4b6089f.orders index: sku_1 dup key: { sku: "sku-42" }
+
+## Outside the sandbox
+
+$ mongosh "$SANDBOX" --eval 'db.getSiblingDB("billing").invoices.findOne()'
+not authorized on billing to execute command { find: "invoices", filter: {}, limit: 1, lsid: { id: UUID("b4c658e5-9442-44bc-90a8-eb24ad3f2ad9") }, $clusterTime: { clusterTime: Timestamp(1795251335, 2), signature: { hash: BinData(0, AE58D3FC3F6BF7827D33544333BD6139014D98B5), keyId: 7710545750450503686 } }, $db: "billing" }
+
+$ mongosh "$SANDBOX" --eval 'db.getSiblingDB("argon_br_6b015c8505a12e8564bcec6f").orders.findOne()'   # main's database
+not authorized on argon_br_6b015c8505a12e8564bcec6f to execute command { find: "orders", filter: {}, limit: 1, lsid: { id: UUID("65bd38ba-e317-44f2-b324-915eb5ccfa67") }, $clusterTime: { clusterTime: Timestamp(1795251335, 2), signature: { hash: BinData(0, AE58D3FC3F6BF7827D33544333BD6139014D98B5), keyId: 7710545750450503686 } }, $db: "argon_br_6b015c8505a12e8564bcec6f" }
+
+$ mongosh "$SANDBOX" --eval 'db.getSiblingDB("argon_wal").wal_log.findOne()'
+not authorized on argon_wal to execute command { find: "wal_log", filter: {}, limit: 1, lsid: { id: UUID("37b81eb1-1747-4997-a71d-9d33cf46bad7") }, $clusterTime: { clusterTime: Timestamp(1795251335, 2), signature: { hash: BinData(0, AE58D3FC3F6BF7827D33544333BD6139014D98B5), keyId: 7710545750450503686 } }, $db: "argon_wal" }
+
+## Discard the sandbox while a connection is still open
+
+$ argon sandbox discard -p shop -b agent-run
+Discarded; storage reclaimed.
+
+$ # output of the connection opened before the discard
+first write: ok
+second write: Command update requires authentication
+
+$ mongosh "$SANDBOX" --eval 'db.orders.findOne()'   # a new connection
+MongoServerError: Authentication failed.
+
+## An index the data violates
+
+$ argon branches create cleanup -p shop --from main
+⚡ Created branch 'cleanup' (a metadata write, no data copied)
+   Project: shop
+   Based on: main
+   Ready for instant experimentation!
+
+Next steps:
+  argon time-travel info --project shop --branch cleanup
+
+$ argon checkout -p shop -b cleanup
+checked out as argon_br_6b015c99715c67de331a48e3 with 3 secondary index(es)
+
+$ argon watch -p shop -b cleanup &   # capture the branch's writes
+
+$ mongosh "$CLEANUP" --eval 'db.orders.dropIndex("sku_1"); db.orders.insertOne({_id: 6000, sku: "sku-42"})'
+{
+  acknowledged: true,
+  insertedId: 6000
+}
+
+$ argon merge preview -p shop -b cleanup
+Merging cleanup → main
+  put    orders/~argon:bson:DAAAABBpAHAXAAAA
+1 change(s), 0 conflict(s)
+
+Plan 6b015ca0d335a77244e5d98c saved (pending).
+Apply with: argon merge apply 6b015ca0d335a77244e5d98c
+
+$ argon merge apply 6b015ca0d335a77244e5d98c   # main is checked out and has sku_1
+Error: apply failed: write exception: write errors: [E11000 duplicate key error collection: argon_br_6b015c8505a12e8564bcec6f.orders index: sku_1 dup key: { sku: "sku-42" }]
+
+$ argon branches list -p shop
+Branches in project 'shop':
+
+🌿 main
+   LSN Range: 0 → 1002
+   Created: 2026-11-21 08:55:33
+   Features: ✅ Time travel, ✅ Instant creation
+
+🌿 cleanup
+   LSN Range: 1002 → 1006
+   Created: 2026-11-21 08:55:53
+   Features: ✅ Time travel, ✅ Instant creation
+
+
+## The same merge with main not checked out
+
+$ argon release -p shop -b main
+Released. Check the branch out again anytime to rebuild it from the WAL.
+
+$ argon merge apply 6b015ca0d335a77244e5d98c
+Error: apply failed: stale plan: branch state changed since preview; run preview again
+
+$ argon merge preview -p shop -b cleanup
+Merging cleanup → main
+  put    orders/~argon:bson:DAAAABBpAHAXAAAA
+1 change(s), 0 conflict(s)
+
+Plan 6b015ca01cdbacf2ac128b6b saved (pending).
+Apply with: argon merge apply 6b015ca01cdbacf2ac128b6b
+
+$ argon merge apply 6b015ca01cdbacf2ac128b6b
+Merged: 1 change(s) applied.
+
+$ argon sandbox create -p shop --name next-run --ttl 1h
+Sandbox "next-run" forked from main at LSN 1008.
+Expires: 2026-11-21T09:56:00Z
+Connection string:
+  mongodb://argon:•••@localhost:27017/argon_br_6b015ca060cf6cc68d9a045a?authSource=admin&replicaSet=rs0
+Note: index sku_1 on orders was not built: (DuplicateKey) Index build failed: e1e92b8c-2252-49bc-8fa0-da9e97821ff4: Collection argon_br_6b015ca060cf6cc68d9a045a.orders ( 2af956b0-05c0-4bf4-937e-d9cb5f8d5ae8 ) :: caused by :: E11000 duplicate key error collection: argon_br_6b015ca060cf6cc68d9a045a.orders index: sku_1 dup key: { sku: "sku-42" }
+Note: index createdAt_1 on orders was built without its TTL expiry
+Capture its writes with: argon watch -p shop -b next-run
+
+Finished 2026-11-21T08:56:01Z
