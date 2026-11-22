@@ -195,6 +195,10 @@ say(f"== {datetime.datetime.utcnow():%Y-%m-%dT%H:%M:%SZ}")
 say(run("--version", quiet=True).stdout.strip())
 say("source: " + str(source.admin.command("buildInfo")["version"]) + ", replica set " + source.admin.command("hello")["setName"]
     + "; Argon metadata: " + MongoClient(ARGON_URI).admin.command("hello")["setName"] + " (a separate deployment)")
+if os.environ.get("CLEAN_SOURCE") == "1":
+    # A shared source (an Atlas cluster) may still hold an earlier run's shop.
+    for name in shop.list_collection_names():
+        shop[name].drop()
 orders.insert_many([order(i) for i in range(1, N + 1)])
 shop.get_collection("customers", write_concern=WriteConcern("majority")).insert_many([{"_id": f"cust-{i:03d}", "name": f"Customer {i}", "tier": "standard"} for i in range(200)])
 say(f"seeded shop.orders with {N} documents and shop.customers with 200")
@@ -311,4 +315,9 @@ follower.send_signal(signal.SIGINT)
 follower.wait(timeout=60)
 run("source", "status", "-p", "shop", expect=None)
 app.stop = True
+if os.environ.get("CLEAN_SOURCE") == "1":
+    app.join(timeout=10)
+    for name in shop.list_collection_names():
+        shop[name].drop()
+    say("[the source's shop collections were dropped]")
 say(f"\n== finished {datetime.datetime.utcnow():%Y-%m-%dT%H:%M:%SZ}")
