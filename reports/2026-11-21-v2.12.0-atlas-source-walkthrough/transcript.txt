@@ -1,0 +1,391 @@
+== 2026-11-21T23:18:48Z
+argon version 2.12.0
+source: 8.0.39, replica set atlas-<id>-shard-0; Argon metadata: rs0 (a separate deployment)
+seeded shop.orders with 2000 documents and shop.customers with 200
+the application thread is writing to the source (one write, then 50 ms of sleep, for the whole run)
+
+##### 1. Import while the source is being written
+
+$ argon import preview --database shop --online
+📋 Import Preview for Database 'shop'
+
+📊 Summary:
+   Collections: 2
+   Documents: 2.2K
+   Estimated Size: 328.8 KB
+   Estimated WAL Entries: 2.2K
+
+📁 Collections:
+   • orders
+     Documents: 2.0K
+     Size: 316.2 KB
+     Indexes: 1
+
+   • customers
+     Documents: 200
+     Size: 12.6 KB
+     Indexes: 1
+
+💡 Next steps:
+   Replica set, still being written: argon import database --uri <uri> --database shop --project <project-name> --online
+   Writers stopped:                  argon import database --uri <uri> --database shop --project <project-name> --source-quiesced
+[exit 0, 572 ms]
+
+$ argon import database --database shop --project shop --online --yes
+✅ Import Complete
+
+📊 Import Results:
+   Project ID: 6b0226df24a6c715de343232
+   Branch ID: 6b0226df24a6c715de343234
+   Documents Imported: 2.2K
+   WAL Entries Created: 2.2K
+   Collections: 2
+   Duration: 887.464125ms
+   LSN Range: 2 - 2225
+   Consistent: LSN 2225 is the source at cluster time Timestamp(1795303135, 26)
+   LSNs below 2225 are the copy in progress, not states the source was in.
+   main follows database 'shop'; keep it current with: argon source follow -p <project>
+
+📁 Imported Collections:
+   • customers
+   • orders
+
+🚀 Your data now has time travel capabilities!
+   Create branches: argon branches create <name> -p 6b0226df24a6c715de343232
+   Time travel: argon time-travel info -p 6b0226df24a6c715de343232 -b main
+[stderr] 🚀 Starting import of database 'shop'...
+[exit 0, 952 ms]
+[the application made 13 writes to the source while this command ran (1.0 s)]
+
+##### 2. Follow
+
+$ argon source follow -p shop    (left running; its output is in follow.log)
+
+$ argon source status -p shop
+Project shop: main follows database "shop"
+  Source:      mongodb+srv://cluster1.<id>.mongodb.net/shop (replica set atlas-<id>-shard-0)
+  Identity:    replica-set name and TLS-verified MongoDB Atlas hosts
+  State:       running (last report 2026-11-21T23:18:56Z)
+  Health:      healthy (exact)
+  Checkpoint:  The branch head is a verified exact source checkpoint.
+  Next:        No repair is needed.
+  Owner:       follow on 4bc7fcc92133 (PID 282, last heartbeat 2026-11-21T23:19:04Z)
+  Head:        LSN 2333
+  Position:    source cluster time Timestamp(1795303143, 87)
+  Consistent:  LSN 2333 is the source at Timestamp(1795303143, 87)
+  Last change: 2026-11-21T23:19:03Z (stored 96 ms after it happened)
+  History:     exact outside the ranges below
+    inexact LSN 3-2225: online import: the source was written while it was copied (exact again at LSN 2225)
+[exit 0, 9 ms]
+
+##### 3. Is main the source? (the application is paused for this comparison only)
+[application paused; following stored the source's newest write 0.5 s after it was made, on an otherwise idle source]
+
+$ argon source status -p shop
+Project shop: main follows database "shop"
+  Source:      mongodb+srv://cluster1.<id>.mongodb.net/shop (replica set atlas-<id>-shard-0)
+  Identity:    replica-set name and TLS-verified MongoDB Atlas hosts
+  State:       running (last report 2026-11-21T23:18:56Z)
+  Health:      healthy (exact)
+  Checkpoint:  The branch head is a verified exact source checkpoint.
+  Next:        No repair is needed.
+  Owner:       follow on 4bc7fcc92133 (PID 282, last heartbeat 2026-11-21T23:19:04Z)
+  Head:        LSN 2334
+  Position:    source cluster time Timestamp(1795303144, 37)
+  Consistent:  LSN 2334 is the source at Timestamp(1795303144, 37)
+  Last change: 2026-11-21T23:19:03Z (stored 546 ms after it happened)
+  History:     exact outside the ranges below
+    inexact LSN 3-2225: online import: the source was written while it was copied (exact again at LSN 2225)
+[exit 0, 7 ms]
+
+$ argon sandbox create -p shop --name check --watch --actor check    (left running)
+Sandbox "check" forked from main at LSN 2334.
+Expires: 2026-11-22T00:19:04Z
+Connection string:
+  mongodb://argon-atlaspost-meta:27017/argon_br_6b0226e830b7c9298d1eb44b?replicaSet=rs0
+Capturing writes (Ctrl-C to stop)...
+[orders: source 2077 documents, sandbox forked from main 2077 documents; values IDENTICAL (sha256 8a6077029cd073c3 / 8a6077029cd073c3); exact BSON bytes IDENTICAL (sha256 8ebdf6cf33613739 / 8ebdf6cf33613739)]
+[customers: source 200 documents, sandbox forked from main 200 documents; values IDENTICAL (sha256 4596f17c23748169 / 4596f17c23748169); exact BSON bytes IDENTICAL (sha256 cbd620837406d59f / cbd620837406d59f)]
+
+$ argon sandbox discard -p shop -b check
+Discarded; storage reclaimed.
+[exit 0, 117 ms]
+[application resumed]
+
+##### 4. An agent works in a sandbox
+
+$ argon sandbox create -p shop --name agent-1 --watch --actor agent-1    (left running)
+Sandbox "agent-1" forked from main at LSN 2334.
+Expires: 2026-11-22T00:19:05Z
+Connection string:
+  mongodb://argon-atlaspost-meta:27017/argon_br_6b0226e93663898f81659960?replicaSet=rs0
+Capturing writes (Ctrl-C to stop)...
+[field order of order-000042 on the source before: _id, status, customer, total_cents, items, placed_at, touches]
+[the agent, through the sandbox's connection string: set order-000042 to refunded, inserted order-000042-refund, deleted order-000017]
+
+$ argon diff -p shop -b agent-1
+Merging agent-1 → main
+  delete orders/order-000017
+  put    orders/order-000042
+  put    orders/order-000042-refund
+3 change(s), 0 conflict(s)
+[exit 0, 18 ms]
+
+##### 5. Review
+
+$ argon merge preview -p shop -b agent-1 -o json
+{
+  "plan": {
+    "format_version": 3,
+    "source_version": 2,
+    "target_version": 114,
+    "id": "6b0226e941354f0e6bf9a928",
+    "project_id": "6b0226df24a6c715de343232",
+    "source_branch_id": "6b0226e93663898f81659960",
+    "source_branch": "agent-1",
+    "target_branch_id": "6b0226df24a6c715de343234",
+    "target_branch": "main",
+    "source_head": 2340,
+    "target_head": 2345,
+    "base_lsn": 2334,
+    "status": "pending",
+    "created_at": "2026-11-21T23:19:05.233091051Z",
+    "provenance_version": 1,
+    "followed_database": "shop",
+    "followed_replica_set_id": "atlas-tls:atlas-<id>-shard-0",
+    "changes": [
+      {
+        "delete": true,
+        "collection": "orders",
+        "document_id": "order-000017",
+        "document_key": "order-000017",
+        "before": {
+          "_id": "order-000017",
+          "status": "paid",
+          "customer": "cust-017",
+          "total_cents": {
+            "$numberInt": "1129"
+          },
+          "items": [
+            {
+              "sku": "sku-17",
+              "qty": {
+                "$numberInt": "3"
+              }
+            }
+          ],
+          "placed_at": {
+            "$date": {
+              "$numberLong": "1793492220000"
+            }
+          },
+          "touches": {
+            "$numberInt": "0"
+          }
+        }
+      },
+      {
+        "collection": "orders",
+        "document_id": "order-000042",
+        "document_key": "order-000042",
+        "document": {
+          "_id": "order-000042",
+          "status": "refunded",
+          "customer": "cust-042",
+          "total_cents": {
+            "$numberInt": "2054"
+          },
+          "items": [
+            {
+              "sku": "sku-42",
+              "qty": {
+                "$numberInt": "1"
+              }
+            }
+          ],
+          "placed_at": {
+            "$date": {
+              "$numberLong": "1793493720000"
+            }
+          },
+          "touches": {
+            "$numberInt": "0"
+          },
+          "refund_cents": {
+            "$numberInt": "2054"
+          }
+        },
+        "before": {
+          "_id": "order-000042",
+          "status": "paid",
+          "customer": "cust-042",
+          "total_cents": {
+            "$numberInt": "2054"
+          },
+          "items": [
+            {
+              "sku": "sku-42",
+              "qty": {
+                "$numberInt": "1"
+              }
+            }
+          ],
+          "placed_at": {
+            "$date": {
+              "$numberLong": "1793493720000"
+            }
+          },
+          "touches": {
+            "$numberInt": "0"
+          }
+        }
+      },
+      {
+        "collection": "orders",
+        "document_id": "order-000042-refund",
+        "document_key": "order-000042-refund",
+        "document": {
+          "_id": "order-000042-refund",
+          "status": "refund",
+          "customer": "cust-042",
+          "total_cents": {
+            "$numberInt": "-2054"
+          },
+          "refunds": "order-000042"
+        }
+      }
+    ],
+    "conflicts": null,
+    "approval_digest": "852c9aacbdf9f9409789da45f4f12be730dd2a0b0d27079ba0a63279fe5940b5"
+  }
+}
+[exit 0, 19 ms]
+
+##### 6. What is refused
+
+$ argon merge apply 6b0226e941354f0e6bf9a928 --write-back
+[stderr] Error: --write-back requires --approve with a 64-character lowercase hex digest; run argon merge list -p <project> --output json and pass that plan's approval_digest with --approve. For an older plan, preview again with this version
+[exit 1, 4 ms]
+
+$ argon merge apply 6b0226e941354f0e6bf9a928 --write-back --approve 0000000000000000000000000000000000000000000000000000000000000000
+[stderr] Error: approval digest does not match the saved plan; run argon merge list -p <project> --output json and pass that plan's approval_digest with --approve. For an older plan, preview again with this version
+[exit 1, 7 ms]
+
+$ argon merge apply 6b0226e941354f0e6bf9a928 --write-back --approve 852c9aacbdf9f9409789da45f4f12be730dd2a0b0d27079ba0a63279fe5940b5 --uri mongodb://argon-atlaspost-meta:27017/?replicaSet=rs0
+[stderr] Error: write-back failed: this project identifies its source by a verified TLS connection to MongoDB Atlas, and this connection is not one (mongodb+srv://cluster1.<id>.mongodb.net/shop): use the Atlas connection string with TLS certificate checks on and no custom certificate authority, from a machine whose connection to Atlas is not intercepted by a private root (for example a TLS-inspecting proxy)
+[exit 1, 15 ms]
+
+$ argon merge apply 6b0226e941354f0e6bf9a928
+[stderr] Error: apply failed: merge apply refused: branch main follows the external database "shop" and only changes when that database does; write to a sandbox forked from it, inspect the lossless images with `argon merge list -p <project> --output json` and write the plan to the source with `argon merge apply <plan> --write-back --approve <digest>`, or stop following with `argon source detach`
+[exit 1, 14 ms]
+[after the four refusals the three documents on the source are as they were]
+
+##### 7. Write back
+
+$ argon merge apply 6b0226e941354f0e6bf9a928 --write-back --approve 852c9aacbdf9f9409789da45f4f12be730dd2a0b0d27079ba0a63279fe5940b5
+Written to the source database: 3 change(s) in one transaction.
+main shows them once following has read them from the source (argon source status).
+[exit 0, 599 ms]
+[on the source now]
+  order-000042: {"_id": "order-000042", "status": "refunded", "customer": "cust-042", "total_cents": 2054, "items": [{"sku": "sku-42", "qty": 1}], "placed_at": "2026-11-01 00:42:00", "touches": 0, "refund_cents": 2054}
+  order-000042-refund: {"_id": "order-000042-refund", "status": "refund", "customer": "cust-042", "total_cents": -2054, "refunds": "order-000042"}
+  order-000017: null
+[field order of order-000042 on the source after: _id, status, customer, total_cents, items, placed_at, touches, refund_cents]
+
+$ argon merge apply 6b0226e941354f0e6bf9a928 --write-back --approve 852c9aacbdf9f9409789da45f4f12be730dd2a0b0d27079ba0a63279fe5940b5
+[stderr] Error: merge plan is applied, not pending
+[exit 1, 7 ms]
+
+$ argon merge list -p shop
+PLAN                       STATUS     SOURCE→TARGET     CHANGES  CONFLICTS CREATED
+6b0226e941354f0e6bf9a928   applied    agent-1→main            3          0 2026-11-21 23:19:05
+For write-back, inspect every image with argon merge list -p shop --output json and use the approval_digest for this plan.
+[exit 0, 7 ms]
+
+$ argon source status -p shop
+Project shop: main follows database "shop"
+  Source:      mongodb+srv://cluster1.<id>.mongodb.net/shop (replica set atlas-<id>-shard-0)
+  Identity:    replica-set name and TLS-verified MongoDB Atlas hosts
+  State:       running (last report 2026-11-21T23:18:56Z)
+  Health:      healthy (exact)
+  Checkpoint:  The branch head is a verified exact source checkpoint.
+  Next:        No repair is needed.
+  Owner:       follow on 4bc7fcc92133 (PID 282, last heartbeat 2026-11-21T23:19:12Z)
+  Head:        LSN 2439
+  Position:    source cluster time Timestamp(1795303151, 54)
+  Consistent:  LSN 2439 is the source at Timestamp(1795303151, 54)
+  Last change: 2026-11-21T23:19:11Z (stored 84 ms after it happened)
+  History:     exact outside the ranges below
+    inexact LSN 3-2225: online import: the source was written while it was copied (exact again at LSN 2225)
+[exit 0, 6 ms]
+
+##### 8. Someone changes a reviewed document before the write-back
+
+$ argon sandbox create -p shop --name agent-2 --watch --actor agent-2    (left running)
+Sandbox "agent-2" forked from main at LSN 2440.
+Expires: 2026-11-22T00:19:12Z
+Connection string:
+  mongodb://argon-atlaspost-meta:27017/argon_br_6b0226f02e8e002745ac6d92?replicaSet=rs0
+Capturing writes (Ctrl-C to stop)...
+[the agent set order-000050 and order-000051 to cancelled in its sandbox]
+
+$ argon merge preview -p shop -b agent-2 -o json    (plan 6b0226f076bf4a7f5f617c7a, 2 changes, approval_digest 323cd7b613239f9eca06bc140be05b5633525b11b812f9a2b671c273438344d7)
+[after the review, directly on the source: order-000051 set to shipped with a tracking number]
+
+$ argon merge apply 6b0226f076bf4a7f5f617c7a --write-back --approve 323cd7b613239f9eca06bc140be05b5633525b11b812f9a2b671c273438344d7
+[stderr] Error: write-back failed: write-back aborted, nothing was written: document orders/order-000051 in the source database differs from the state this plan was reviewed against. Let following catch up and run preview again
+[exit 1, 366 ms]
+  order-000050 on the source: {"_id": "order-000050", "status": "paid", "customer": "cust-050", "total_cents": 2350, "items": [{"sku": "sku-00", "qty": 3}], "placed_at": "2026-11-01 00:50:00", "touches": 0}
+  order-000051 on the source: {"_id": "order-000051", "status": "shipped", "customer": "cust-051", "total_cents": 2387, "items": [{"sku": "sku-01", "qty": 1}], "placed_at": "2026-11-01 00:51:00", "touches": 0, "tracking": "ZX-51"}
+
+$ argon merge list -p shop
+PLAN                       STATUS     SOURCE→TARGET     CHANGES  CONFLICTS CREATED
+6b0226f076bf4a7f5f617c7a   pending    agent-2→main            2          0 2026-11-21 23:19:12
+For write-back, inspect every image with argon merge list -p shop --output json and use the approval_digest for this plan.
+6b0226e941354f0e6bf9a928   applied    agent-1→main            3          0 2026-11-21 23:19:05
+For write-back, inspect every image with argon merge list -p shop --output json and use the approval_digest for this plan.
+[exit 0, 12 ms]
+[following has stored the concurrent edit; preview again]
+
+$ argon merge preview -p shop -b agent-2
+Merging agent-2 → main
+  put    orders/order-000050
+  CONFLICT orders/order-000051 (both sides changed since the fork)
+1 change(s), 1 conflict(s)
+
+Plan 6b0226f1c7d84c551fb104f6 saved (pending).
+For write-back, inspect every image with argon merge list -p shop --output json and use the approval_digest for this plan.
+Write-back requires the source URI in ARGON_SOURCE_URI or --uri.
+Then run argon merge apply 6b0226f1c7d84c551fb104f6 --write-back --approve <digest from that output> with --strategy theirs or --strategy ours.
+[exit 0, 18 ms]
+
+##### 9. Totals
+[application stopped after 125 inserts and 123 updates in all; 103 of them after the review of the first plan]
+[shop.orders on the source: 2125 documents; expected 2000 seeded + 125 inserted by the application + 1 inserted by the plan - 1 deleted by the plan = 2125]
+
+$ argon sandbox create -p shop --name final-check --watch --actor final-check    (left running)
+Sandbox "final-check" forked from main at LSN 2462.
+Expires: 2026-11-22T00:19:13Z
+Connection string:
+  mongodb://argon-atlaspost-meta:27017/argon_br_6b0226f15d98acc50f0c3844?replicaSet=rs0
+Capturing writes (Ctrl-C to stop)...
+[orders: source 2125 documents, a new sandbox forked from main 2125 documents; values IDENTICAL (sha256 b3d9dac106a980a1 / b3d9dac106a980a1); exact BSON bytes IDENTICAL (sha256 d4bb1d8cbdd9d2c9 / d4bb1d8cbdd9d2c9)]
+
+$ argon source status -p shop
+Project shop: main follows database "shop"
+  Source:      mongodb+srv://cluster1.<id>.mongodb.net/shop (replica set atlas-<id>-shard-0)
+  Identity:    replica-set name and TLS-verified MongoDB Atlas hosts
+  State:       stopped (last report 2026-11-21T23:19:13Z)
+  Health:      healthy (exact)
+  Checkpoint:  The branch head is a verified exact source checkpoint.
+  Next:        No repair is needed.
+  Head:        LSN 2462
+  Position:    source cluster time Timestamp(1795303153, 21)
+  Consistent:  LSN 2462 is the source at Timestamp(1795303153, 21)
+  Last change: 2026-11-21T23:19:13Z (stored 557 ms after it happened)
+  History:     exact outside the ranges below
+    inexact LSN 3-2225: online import: the source was written while it was copied (exact again at LSN 2225)
+[exit 0, 7 ms]
+[the source's shop collections were dropped]
+
+== finished 2026-11-21T23:19:14Z
