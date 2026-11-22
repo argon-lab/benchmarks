@@ -69,7 +69,7 @@ This job checks correctness and reproducibility of the container workflow. Its t
 
 ## Published results
 
-The [v2.6.0 report](reports/2026-11-18-v2.6.0-cli-scale/README.md) alternates 2.6.0 and 2.5.0 on one project to measure the first diff after a checkout. The [v2.5.0 CLI workflow report](reports/2026-11-18-v2.5.0-cli-scale/README.md) repeats the measurement below on 2.5.0, with 2.4.0 run again beside it. The [v2.4.0 CLI workflow report](reports/2026-11-18-v2.4.0-cli-scale/README.md) times whole commands of the published CLI at 10k, 100k and 1m documents; it is a separate measurement from the matrices. The [v2.2.0 matrix](reports/2026-11-11-v2.2.0/README.md) repeats the 12 cells against containerized MongoDB, with a v2.1.5 baseline from the same environment. The [v2.1.2 release matrix](reports/2026-09-24-v2.1.2/README.md) covers 1k/10k/50k documents with 1/4 workers and 1/4 ancestry levels. See [RESULTS.md](RESULTS.md). Historical numbers retain their original date and exact scope. New results include raw samples and source hashes; no dirty working tree is identified as a released engine version. Benchmark failure exits nonzero and does not publish a complete report.
+The [report index](reports/README.md) lists every recorded run, newest first, and says which are benchmarks and which are transcripts. [RESULTS.md](RESULTS.md) summarises the headline numbers. Historical numbers retain their original date and exact scope. New results include raw samples and source hashes; no dirty working tree is identified as a released engine version. Benchmark failure exits nonzero and does not publish a complete report.
 
 ## CLI workflow as the database grows
 
@@ -123,6 +123,8 @@ so read the logical bytes and treat allocated bytes as a lower bound.
 `scripts/sandbox_ready_docker.sh <version> <output directory> [sandbox_ready.py flags]` times what an agent waits for with a published release: `argon sandbox create --watch` until its reply, then a first majority-acknowledged write on the returned connection string. It also times `branches create` and `checkout` separately, starts 1, 4 and 16 sandboxes together, and samples the host's load every 30 seconds into `host-load.log`. `--fixtures`, `--rounds`, `--concurrency` and `--concurrency-fixture` change the matrix.
 
 `scripts/sandbox_safety_walkthrough_docker.sh <version> <output directory>` runs a published release against MongoDB with access control and writes a transcript. The transcript shows the indexes built in a sandbox, a duplicate key refused there, a `--credential` sandbox user refused outside its database and revoked on discard, and a merge that conflicts with a unique index. Passwords are masked.
+
+`scripts/atlas_source_walkthrough_docker.sh <version> <output directory> <file holding the Atlas URI> [orders]` runs the same path with a MongoDB Atlas cluster as the source. The connection string is read from a file and never printed; the transcript masks the cluster's host and replica-set name, and the script fails if the password or the host appears in any output.
 
 `scripts/gc_case_docker.sh <version> <sizes> <output file>` times `argon diff` before and after `argon gc` has deleted the parent's entries, the case in which 2.5.0 and later read the parent's snapshot.
 
