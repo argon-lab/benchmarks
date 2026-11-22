@@ -1,0 +1,43 @@
+# Pinned actions and the pinned base images get one grouped update a week.
+# Go modules are not listed: the engine version is chosen per measurement and
+# bumped by hand with the release it measures.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      actions:
+        patterns: ["*"]
+    commit-message:
+      prefix: ci
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    ignore:
+      # Measurements are pinned to a reviewed MongoDB and Go line; only
+      # patch releases come automatically.
+      - dependency-name: "mongo"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
+      - dependency-name: "golang"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
+    commit-message:
+      prefix: deps
+  - package-ecosystem: docker-compose
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    ignore:
+      # Measurements are pinned to a reviewed MongoDB and Go line; only
+      # patch releases come automatically.
+      - dependency-name: "mongo"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
+      - dependency-name: "golang"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
+    commit-message:
+      prefix: deps

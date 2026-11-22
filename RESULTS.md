@@ -2,6 +2,10 @@
 
 Every number below is scoped to its recorded engine, suite and environment. Historical measurements are retained as history; current hardening measurements are separately labelled. A dirty source snapshot is not a released engine version. See [README.md](README.md) for methodology and reproducible commands.
 
+## 2026-11-21 · published v2.12.0: walkthrough with MongoDB Atlas as the source
+
+Not a benchmark: a transcript of the published 2.12.0 CLI with a free MongoDB Atlas M0 (MongoDB 8.0.39) as the source and the engine on a local 7.0.45 replica set. An application thread writes to Atlas throughout. It shows the online import, following with the cluster identified by its TLS-verified Atlas hosts, a sandbox byte-identical to Atlas, four refused write-backs, a write-back in one transaction, and a write-back aborted because Atlas changed after review. [Report and transcript](reports/2026-11-21-v2.12.0-atlas-source-walkthrough/README.md).
+
 ## 2026-11-21 · published v2.10.0 and v2.11.1 alternated: what building indexes adds to a sandbox
 
 From 2.11.0 a checkout builds each collection's recorded secondary indexes. Both releases came from npm (`argonctl@2.10.0` with binary SHA256 `3cec9b88…0747`, `argonctl@2.11.1` with `ec9a7466…d7ad`). They were run three rounds each, alternated, with `scripts/sandbox_ready_docker.sh`, at 100,000 documents of about 1 KB. **The host load average was 11 to 13 on 12 CPUs throughout; only the comparison is meaningful.**
